@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+	<EditTextPreference android:title="Some value"
+					    android:key="someval"
+					    android:summary="Please provide some value"
+    ></EditTextPreference>
+	<EditTextPreference android:title="Some other value"
+					    android:key="someval2"
+					    android:summary="Please provide some other value"
+    ></EditTextPreference>
+     <RingtonePreference android:showDefault="true"
+         android:key="Audio" android:title="Alarm Noise"
+         android:ringtoneType="notification">
+      </RingtonePreference>
+</PreferenceScreen>

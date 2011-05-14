@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="hello">Hello World, SomethingSomething!</string>
     <string name="app_name">Forget Me Not</string>
+    <string name="about_title">About</string>
+    <string name="cr_title">Create a New Reminder</string>
+    <string name="cr_who">Select a Contact</string>
+    <string name="cr_when">Start Date</string>
+    <string name="cr_repeat_period">Repeat</string>
 </resources>

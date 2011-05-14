@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    >
+    <!-- 
+<TextView  
+    android:layout_width="fill_parent" 
+    android:layout_height="wrap_content" 
+    android:text="@string/cr_who"
+    />
+<Button android:text="Save" android:id="@+id/cr_contact_icon" android:layout_width="wrap_content" android:layout_height="wrap_content" />
+<ImageButton android:src="@drawable/ic_contact_picture" android:layout_width="wrap_content" android:id="@+id/cr_contact_icon" android:layout_height="wrap_content" />
+    -->
+
+    <Button
+        android:id="@+id/cr_contact_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:background="@drawable/ic_contact_picture" />
+        
+<!--
+<View android:background="#222277" android:layout_width = "fill_parent" android:layout_height="1dip" android:layout_centerVertical ="true" />
+<TextView  
+    android:layout_width="fill_parent" 
+    android:layout_height="wrap_content" 
+    android:text="@string/cr_when"
+    />
+<android.widget.CalendarView android:id="@+id/widgetCalendarView1" android:layout_width="wrap_content" android:layout_height="wrap_content"></android.widget.CalendarView>
+  -->
+<!--  el cheapo horizontal rule: -->
+
+<!-- 
+<View android:background="#7777ff" android:layout_width = "fill_parent" android:layout_height="1dip" android:layout_centerVertical ="true" />
+<EditText android:text="" android:layout_width="fill_parent" android:id="@+id/cr_note" android:layout_height="wrap_content"></EditText>
+<TextView  
+    android:layout_width="fill_parent" 
+    android:layout_height="wrap_content" 
+    android:text="@string/cr_repeat_period"
+    />
+    
+<View android:background="#222277" android:layout_width = "fill_parent" android:layout_height="1dip" android:layout_centerVertical ="true" />
+ -->
+
+<!--  
+<android.widget.NumberPicker android:id="@+id/cr_repeat_days" android:layout_width="wrap_content" android:layout_height="wrap_content"></android.widget.NumberPicker>
+ -->
+<Button android:text="Save" android:id="@+id/cr_save" android:layout_width="wrap_content" android:layout_height="wrap_content" />
+
+</LinearLayout>

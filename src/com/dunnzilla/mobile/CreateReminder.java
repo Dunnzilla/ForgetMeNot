@@ -11,21 +11,25 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.util.Log;
 import android.view.View;
 //import android.widget.Button;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class CreateReminder extends Activity {
 	static final int PICK_CONTACT = 1001;
 	private int    m_contactID;
 	private String m_displayName;
     private String m_type;
-    private String m_emailAddress;
-    private String m_phoneNumber;
     private Bitmap m_ContactIconBitmap;
+    private DB 	   m_db;
+    private String m_errorMessage;
+    private static final String TAG = "CreateReminder";
 
 	@Override
     public void onCreate(Bundle savedInstanceState) {
@@ -40,16 +44,46 @@ public class CreateReminder extends Activity {
         		startActivityForResult(i, PICK_CONTACT);
         	}
     	}; 
-
-        DB db = new DB(this);
-        db.open();
+    	
+    	m_db = new DB(this);
+    	m_db.open();
         
         ImageButton ContactIcon  = (ImageButton) findViewById(R.id.cr_contact_icon);
         TableRow tContactRow = (TableRow) findViewById(R.id.cr_row01);
+        Button bSave = (Button) findViewById(R.id.cr_save);
         
         ContactIcon.setOnClickListener( vocl_pickContact );
         tContactRow.setOnClickListener( vocl_pickContact );
+        bSave.setOnClickListener( new View.OnClickListener() {
+        	public void onClick(View view) {
+        		if( validateSettings() ) {
+        			saveReminder(); /** @todo Move into a smarter class when adding the Edit ability (v0.6?) */
+        			finish();
+        		} else {
+        			Toast.makeText(CreateReminder.this, CreateReminder.this.getErrMessage(), Toast.LENGTH_SHORT).show();
+        		}
+        	}
+        });        
     }
+	
+	public boolean validateSettings() {
+		if( m_contactID <= 0) {
+			CreateReminder.this.setErrMessage("Choose a contact.");
+			return false;
+		}
+
+		if( CreateReminder.this.m_displayName.length() <= 0 || CreateReminder.this.m_displayName == "null" ) {
+			return false;
+		}
+		return true;
+	}
+	
+	public String getErrMessage() {
+		return m_errorMessage;
+	}
+	private void setErrMessage(String e) {
+		m_errorMessage = e;
+	}
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
 		if ( resultCode == RESULT_OK ) {
@@ -63,6 +97,9 @@ public class CreateReminder extends Activity {
     	super.onActivityResult(requestCode, resultCode, intent);
     }
 
+    public void saveReminder() {
+    	Log.v(TAG, "Saving " + CreateReminder.this.m_displayName);
+    }
     protected void updateLayout(Intent _intent) {
     	if( m_contactID <= 0 ) {
     		return;
@@ -96,31 +133,7 @@ public class CreateReminder extends Activity {
            if( b != null ) {
         	   m_ContactIconBitmap = b;
            }
-           
-           String hasPhone = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.HAS_PHONE_NUMBER));
-           if ( hasPhone.equalsIgnoreCase("1"))
-               hasPhone = "true";
-           else
-               hasPhone = "false" ;
-
-           if (Boolean.parseBoolean(hasPhone)) 
-           {
-            Cursor phones = getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null,ContactsContract.CommonDataKinds.Phone.CONTACT_ID +" = "+ m_contactID,null, null);
-            while (phones.moveToNext()) 
-            {
-              m_phoneNumber = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
-            }
-            phones.close();
-           }
-
-           Cursor emails = getContentResolver().query(ContactsContract.CommonDataKinds.Email.CONTENT_URI,null,ContactsContract.CommonDataKinds.Email.CONTACT_ID + " = " + m_contactID,null, null);
-           while (emails.moveToNext()) 
-           {
-            m_emailAddress = emails.getString(emails.getColumnIndex(ContactsContract.CommonDataKinds.Email.DATA));
-           }
-           emails.close();
-
-      }  while(cursor.moveToNext());        
+      }  while(cursor.moveToNext());
        cursor.close();
     }//getContactInfo
     
@@ -132,5 +145,4 @@ public class CreateReminder extends Activity {
         }
         return BitmapFactory.decodeStream(input);
     }
-
 }

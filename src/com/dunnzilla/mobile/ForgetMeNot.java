@@ -28,10 +28,6 @@ public class ForgetMeNot extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
 
-
-//		Intent i = new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI);//
-//		startActivityForResult(i, PICK_CONTACT;
-
         Button bCreate = (Button) findViewById(R.id.btn_create_fmn);
         bCreate.setOnClickListener( new View.OnClickListener() {
         	public void onClick(View view) {

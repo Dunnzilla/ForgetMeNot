@@ -44,7 +44,7 @@ public class About extends Activity {
 		    Log.v(TAG, e.getMessage());    
 		}
 		TextView tvVersion = (TextView) findViewById(R.id.about_versionName);
-		ImageView ivLogo = (ImageView) findViewById(R.drawable.logo);
+//		ImageView ivLogo = (ImageView) findViewById(R.drawable.logo);
 		tvVersion.setText("Version " + androidManifest_versionName);
 		/*
 		 * FMN logo based on WC image

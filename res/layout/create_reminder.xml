@@ -1,52 +1,112 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     >
-    <!-- 
-<TextView  
-    android:layout_width="fill_parent" 
-    android:layout_height="wrap_content" 
-    android:text="@string/cr_who"
-    />
-<Button android:text="Save" android:id="@+id/cr_contact_icon" android:layout_width="wrap_content" android:layout_height="wrap_content" />
-<ImageButton android:src="@drawable/ic_contact_picture" android:layout_width="wrap_content" android:id="@+id/cr_contact_icon" android:layout_height="wrap_content" />
-    -->
 
-    <Button
+	<TableRow android:id="@+id/cr_row01" android:layout_width="wrap_content" android:layout_height="wrap_content" >
+    <ImageButton
         android:id="@+id/cr_contact_icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="10dp"
-        android:background="@drawable/ic_contact_picture" />
+        android:layout_margin="10dp"
+        android:src="@drawable/cr_contact_icon" />
+
+	<TextView  
+	    android:id="@+id/cr_text_who"
+	    android:layout_width="fill_parent" 
+	    android:layout_height="wrap_content" 
+	    android:text="@string/cr_who"
+		android:textSize="25dip"
+		android:textColor="#ccc"
+		android:shadowColor="#030303"
+		android:layout_marginLeft="5dip"
+		android:layout_marginTop="5dip"
+	    />
         
-<!--
-<View android:background="#222277" android:layout_width = "fill_parent" android:layout_height="1dip" android:layout_centerVertical ="true" />
-<TextView  
-    android:layout_width="fill_parent" 
-    android:layout_height="wrap_content" 
-    android:text="@string/cr_when"
-    />
-<android.widget.CalendarView android:id="@+id/widgetCalendarView1" android:layout_width="wrap_content" android:layout_height="wrap_content"></android.widget.CalendarView>
-  -->
-<!--  el cheapo horizontal rule: -->
+	</TableRow>
+	<View android:background="#7777cc" android:layout_width = "fill_parent" android:layout_height="1dip" android:layout_marginTop="2dp" android:layout_marginBottom="2dp" />
+	<!--  ======================================================================================== --><!--
+	
+	<TableRow android:id="@+id/cr_row02" android:layout_width="wrap_content" android:layout_height="wrap_content" >
 
-<!-- 
-<View android:background="#7777ff" android:layout_width = "fill_parent" android:layout_height="1dip" android:layout_centerVertical ="true" />
-<EditText android:text="" android:layout_width="fill_parent" android:id="@+id/cr_note" android:layout_height="wrap_content"></EditText>
-<TextView  
-    android:layout_width="fill_parent" 
-    android:layout_height="wrap_content" 
-    android:text="@string/cr_repeat_period"
-    />
-    
-<View android:background="#222277" android:layout_width = "fill_parent" android:layout_height="1dip" android:layout_centerVertical ="true" />
- -->
+	<TextView  
+	    android:layout_width="fill_parent" 
+	    android:layout_height="wrap_content" 
+	    android:text="@string/cr_when"
+	    android:id="@+id/cr_label_when"
+	    />
+	<android.widget.CalendarView
+		android:id="@+id/cr_datetime_start"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		/>
+	</TableRow>
+	<View android:background="#7777cc" android:layout_width = "fill_parent" android:layout_height="1dip" android:layout_marginTop="2dp" android:layout_marginBottom="2dp" />
 
-<!--  
-<android.widget.NumberPicker android:id="@+id/cr_repeat_days" android:layout_width="wrap_content" android:layout_height="wrap_content"></android.widget.NumberPicker>
- -->
-<Button android:text="Save" android:id="@+id/cr_save" android:layout_width="wrap_content" android:layout_height="wrap_content" />
 
-</LinearLayout>
+	--><!--  ======================================================================================== -->
+	<TableRow android:id="@+id/cr_row03" android:layout_width="wrap_content" android:layout_height="wrap_content" >
+
+	<TextView  
+		android:id="@+id/cr_label_repeat_period"
+	    android:layout_width="fill_parent" 
+	    android:layout_height="wrap_content" 
+	    android:text="@string/cr_repeat_period"
+	    />
+
+	<EditText
+		android:id="@+id/cr_period" 
+		android:text="7"
+		android:layout_width="75sp" android:layout_height="wrap_content"
+		android:maxLength="3"
+		/>
+	<TextView  
+		android:id="@+id/cr_label_days"
+	    android:layout_width="fill_parent" 
+	    android:layout_height="wrap_content"
+	    android:layout_marginLeft="5dp" 
+	    android:text="days"
+	    />	
+		<!--
+		@todo Using this widget causes FC as soon as I try to setContentView(R.layout.create_reminder);
+		
+	<android.widget.NumberPicker
+		android:id="@+id/cr_period"
+		android:layout_width="wrap_content" android:layout_height="wrap_content"
+		/>
+
+	
+	--></TableRow>
+	<View android:background="#7777cc" android:layout_width = "fill_parent" android:layout_height="1dip" android:layout_marginTop="2dp" android:layout_marginBottom="2dp" />
+	<!--  ======================================================================================== -->
+	<TableRow android:id="@+id/cr_row04" android:layout_width="wrap_content" android:layout_height="wrap_content" >
+
+	<TextView  
+	    android:id="@+id/cr_label_note"
+	    android:layout_width="fill_parent" 
+	    android:layout_height="wrap_content" 
+	    android:text="Note"
+	    />
+	    
+	<EditText
+		android:id="@+id/cr_note" 
+		android:text=""
+		android:layout_width="fill_parent" android:layout_height="wrap_content"
+		/>
+		
+	</TableRow>
+	<!--  ======================================================================================== -->
+	<View android:background="#7777cc" android:layout_width = "fill_parent" android:layout_height="1dip" android:layout_marginTop="2dp" android:layout_marginBottom="2dp" />
+	<TableRow android:id="@+id/cr_row05" android:layout_width="wrap_content" android:layout_height="wrap_content" >
+
+	<Button android:layout_height="wrap_content"
+			android:id="@+id/cr_save"
+			android:layout_width="wrap_content"
+			android:text="Save"
+			android:layout_centerHorizontal="true"
+			/>
+	</TableRow>
+</TableLayout>

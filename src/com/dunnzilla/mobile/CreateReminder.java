@@ -49,11 +49,11 @@ public class CreateReminder extends Activity {
     	m_db.open();
         
         ImageButton ContactIcon  = (ImageButton) findViewById(R.id.cr_contact_icon);
-        TableRow tContactRow = (TableRow) findViewById(R.id.cr_row01);
+        TextView tvContactName = (TextView) findViewById(R.id.cr_text_who);
         Button bSave = (Button) findViewById(R.id.cr_save);
         
         ContactIcon.setOnClickListener( vocl_pickContact );
-        tContactRow.setOnClickListener( vocl_pickContact );
+        tvContactName.setOnClickListener( vocl_pickContact );
         bSave.setOnClickListener( new View.OnClickListener() {
         	public void onClick(View view) {
         		if( validateSettings() ) {

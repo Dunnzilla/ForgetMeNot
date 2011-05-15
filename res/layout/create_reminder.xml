@@ -1,60 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    >
+    android:layout_height="fill_parent" android:layout_width="fill_parent">
 
-	<TableRow android:id="@+id/cr_row01" android:layout_width="wrap_content" android:layout_height="wrap_content" >
     <ImageButton
         android:id="@+id/cr_contact_icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="10dp"
-        android:layout_margin="10dp"
         android:src="@drawable/cr_contact_icon" />
 
-	<TextView  
+	<TextView
 	    android:id="@+id/cr_text_who"
 	    android:layout_width="fill_parent" 
 	    android:layout_height="wrap_content" 
 	    android:text="@string/cr_who"
 		android:textSize="25dip"
-		android:textColor="#ccc"
-		android:shadowColor="#030303"
-		android:layout_marginLeft="5dip"
-		android:layout_marginTop="5dip"
+		android:textColor="#999999"
+		android:layout_marginLeft="2dip"
+		android:layout_marginTop="10dip"
+		android:layout_toRightOf="@id/cr_contact_icon"
 	    />
-        
-	</TableRow>
-	<View android:background="#7777cc" android:layout_width = "fill_parent" android:layout_height="1dip" android:layout_marginTop="2dp" android:layout_marginBottom="2dp" />
-	<!--  ======================================================================================== --><!--
+    
+	<View android:id="@+id/hr2" android:layout_below="@id/cr_contact_icon" android:background="#7777cc" android:layout_width = "fill_parent" android:layout_height="1dip" android:layout_marginTop="2dp" android:layout_marginBottom="2dp" />
+	<!--  ======================================================================================== -->
 	
-	<TableRow android:id="@+id/cr_row02" android:layout_width="wrap_content" android:layout_height="wrap_content" >
-
 	<TextView  
 	    android:layout_width="fill_parent" 
 	    android:layout_height="wrap_content" 
 	    android:text="@string/cr_when"
 	    android:id="@+id/cr_label_when"
+	    android:layout_below="@id/hr2"
 	    />
-	<android.widget.CalendarView
-		android:id="@+id/cr_datetime_start"
-		android:layout_width="wrap_content"
+	
+	<DatePicker
+		android:id="@+id/cr_datepicker_start"
 		android:layout_height="wrap_content"
+		android:layout_width="fill_parent"
+		android:layout_gravity="center_horizontal"
+		android:layout_below="@id/cr_label_when"
 		/>
-	</TableRow>
-	<View android:background="#7777cc" android:layout_width = "fill_parent" android:layout_height="1dip" android:layout_marginTop="2dp" android:layout_marginBottom="2dp" />
 
-
-	--><!--  ======================================================================================== -->
-	<TableRow android:id="@+id/cr_row03" android:layout_width="wrap_content" android:layout_height="wrap_content" >
+	<View android:id="@+id/hr3" android:layout_below="@id/cr_datepicker_start" android:background="#7777cc" android:layout_width = "fill_parent" android:layout_height="1dip" android:layout_marginTop="2dp" android:layout_marginBottom="2dp" />
+	<!--  ======================================================================================== -->
+	
 
 	<TextView  
 		android:id="@+id/cr_label_repeat_period"
-	    android:layout_width="fill_parent" 
 	    android:layout_height="wrap_content" 
 	    android:text="@string/cr_repeat_period"
+	    android:layout_gravity="left"
+	    android:layout_width="35dp"
+	    android:layout_below="@id/hr3"
+	    android:layout_marginTop="12dp"
 	    />
 
 	<EditText
@@ -62,51 +59,52 @@
 		android:text="7"
 		android:layout_width="75sp" android:layout_height="wrap_content"
 		android:maxLength="3"
+		android:layout_toRightOf="@id/cr_label_repeat_period"
+		android:layout_below="@id/hr3"
+		android:layout_marginLeft="5dp" 
 		/>
+		
 	<TextView  
 		android:id="@+id/cr_label_days"
 	    android:layout_width="fill_parent" 
 	    android:layout_height="wrap_content"
 	    android:layout_marginLeft="5dp" 
 	    android:text="days"
+	    android:layout_toRightOf="@id/cr_period"
+	    android:layout_below="@id/hr3"
+	    android:layout_alignTop="@id/cr_label_repeat_period"
 	    />	
-		<!--
-		@todo Using this widget causes FC as soon as I try to setContentView(R.layout.create_reminder);
-		
-	<android.widget.NumberPicker
-		android:id="@+id/cr_period"
-		android:layout_width="wrap_content" android:layout_height="wrap_content"
-		/>
 
-	
-	--></TableRow>
-	<View android:background="#7777cc" android:layout_width = "fill_parent" android:layout_height="1dip" android:layout_marginTop="2dp" android:layout_marginBottom="2dp" />
 	<!--  ======================================================================================== -->
-	<TableRow android:id="@+id/cr_row04" android:layout_width="wrap_content" android:layout_height="wrap_content" >
+	<View android:id="@+id/hr4" android:layout_below="@id/cr_period" android:background="#7777cc" android:layout_width = "fill_parent" android:layout_height="1dip" android:layout_marginTop="2dp" android:layout_marginBottom="2dp" />
 
 	<TextView  
 	    android:id="@+id/cr_label_note"
 	    android:layout_width="fill_parent" 
 	    android:layout_height="wrap_content" 
 	    android:text="Note"
+	    android:layout_below="@id/hr4"
 	    />
 	    
 	<EditText
 		android:id="@+id/cr_note" 
 		android:text=""
-		android:layout_width="fill_parent" android:layout_height="wrap_content"
+		android:layout_width="fill_parent"
+		android:layout_height="60dp"
+		android:layout_below="@id/cr_label_note"
 		/>
 		
-	</TableRow>
 	<!--  ======================================================================================== -->
-	<View android:background="#7777cc" android:layout_width = "fill_parent" android:layout_height="1dip" android:layout_marginTop="2dp" android:layout_marginBottom="2dp" />
-	<TableRow android:id="@+id/cr_row05" android:layout_width="wrap_content" android:layout_height="wrap_content" >
+	<View android:id="@+id/hr5" android:layout_below="@id/cr_note"  android:background="#7777cc" android:layout_width = "fill_parent" android:layout_height="1dip" android:layout_marginTop="2dp" android:layout_marginBottom="2dp" />
 
 	<Button android:layout_height="wrap_content"
 			android:id="@+id/cr_save"
-			android:layout_width="wrap_content"
+			android:layout_width="fill_parent"
 			android:text="Save"
 			android:layout_centerHorizontal="true"
+			android:layout_gravity="center"
+			android:layout_below="@id/hr5"
 			/>
-	</TableRow>
-</TableLayout>
+
+
+</RelativeLayout>

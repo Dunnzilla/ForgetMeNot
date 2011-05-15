@@ -1,5 +1,8 @@
 package com.dunnzilla.mobile;
 
+import java.text.SimpleDateFormat;
+
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
@@ -9,12 +12,35 @@ public class DB {
 	private SQLiteDatabase		m_DB;
 	private final Context		m_Context;
 	private final DBHelper		m_DBHelper;
+	private static final String TAG = "com.dunnzilla.mobile.DB";
 	
 	
 	public DB(Context c) {
 		m_Context = c;
 		m_DBHelper = new DBHelper(m_Context, DBConst.DBNAME, null, DBConst.VERSION);
 		
+	}
+
+	public void insert(Reminder r) {
+		try {
+			open();
+			ContentValues cv = new ContentValues();
+			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"); 
+
+			cv.put(DBConst.f_CONTACT_ID, r.getContactID());
+			cv.put(DBConst.f_DATETIME_START, dateFormat.format(r.getDateStart()));
+			cv.put(DBConst.f_PERIOD, r.getPeriod());
+			cv.put(DBConst.f_URI_ACTION, r.getActionURI());
+			cv.put(DBConst.f_NOTE, r.getNote());
+			// TODO f_DATETIME_STOP
+
+			m_DB.insert(DBConst.TABLE, null, cv);
+
+		} catch (SQLiteException e) {
+			Log.w(TAG, e.getMessage());
+		}
+		
+
 	}
 	public void open() throws SQLiteException {
 		try {

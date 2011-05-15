@@ -17,7 +17,7 @@ public class DBHelper extends SQLiteOpenHelper {
 	private static final String TAG = "DBHelper";
 	private static final String sql_CREATE_TABLES =
 		"CREATE TABLE " + DBConst.TABLE + " ( "
-		+ DBConst.f_ID + " integer primary autoincrement, "
+		+ DBConst.f_ID + " integer PRIMARY KEY AUTOINCREMENT, "
 		+ DBConst.f_CONTACT_ID + " integer NOT NULL, " 
 		+ DBConst.f_DATETIME_C + " datetime DEFAULT CURRENT_TIMESTAMP, " 
 		+ DBConst.f_DATETIME_M + " datetime DEFAULT CURRENT_TIMESTAMP, " 
@@ -43,6 +43,6 @@ public class DBHelper extends SQLiteOpenHelper {
 		/**
 		 * @todo Create upgrade plan so no data is lost.
 		 */
-		Log.v(TAG, "No need to upgrade database.");
+		Log.w(TAG, "No need to upgrade database.");
 	}
 }

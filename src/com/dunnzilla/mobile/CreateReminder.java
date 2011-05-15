@@ -1,6 +1,7 @@
 package com.dunnzilla.mobile;
 
 import java.io.InputStream;
+import java.util.Date;
 
 import android.app.Activity;
 import android.content.ContentUris;
@@ -15,6 +16,7 @@ import android.util.Log;
 import android.view.View;
 //import android.widget.Button;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TableRow;
@@ -22,21 +24,17 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class CreateReminder extends Activity {
-	static final int PICK_CONTACT = 1001;
-	private int    m_contactID;
-	private String m_displayName;
-    private String m_type;
-    private Bitmap m_ContactIconBitmap;
+	static final int 			PICK_CONTACT = 1001;
+    private static final String TAG = "CreateReminder";
+    
     private DB 	   m_db;
     private String m_errorMessage;
-    private static final String TAG = "CreateReminder";
+    Reminder		reminder;
 
 	@Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.create_reminder);
-        
-        m_ContactIconBitmap = null;
         
         View.OnClickListener vocl_pickContact = new View.OnClickListener() {
         	public void onClick(View view) {
@@ -47,6 +45,7 @@ public class CreateReminder extends Activity {
     	
     	m_db = new DB(this);
     	m_db.open();
+    	reminder = new Reminder();
         
         ImageButton ContactIcon  = (ImageButton) findViewById(R.id.cr_contact_icon);
         TextView tvContactName = (TextView) findViewById(R.id.cr_text_who);
@@ -56,9 +55,9 @@ public class CreateReminder extends Activity {
         tvContactName.setOnClickListener( vocl_pickContact );
         bSave.setOnClickListener( new View.OnClickListener() {
         	public void onClick(View view) {
-        		if( validateSettings() ) {
-        			saveReminder(); /** @todo Move into a smarter class when adding the Edit ability (v0.6?) */
-        			finish();
+        		if( CreateReminder.this.validateSettings() ) {
+        			CreateReminder.this.saveReminder();  // TODO Possibly move into a smarter class when adding the Edit ability (v0.6?)
+        			CreateReminder.this.finish();
         		} else {
         			Toast.makeText(CreateReminder.this, CreateReminder.this.getErrMessage(), Toast.LENGTH_SHORT).show();
         		}
@@ -67,12 +66,8 @@ public class CreateReminder extends Activity {
     }
 	
 	public boolean validateSettings() {
-		if( m_contactID <= 0) {
+		if( CreateReminder.this.reminder.getContactID() <= 0) {
 			CreateReminder.this.setErrMessage("Choose a contact.");
-			return false;
-		}
-
-		if( CreateReminder.this.m_displayName.length() <= 0 || CreateReminder.this.m_displayName == "null" ) {
 			return false;
 		}
 		return true;
@@ -98,20 +93,25 @@ public class CreateReminder extends Activity {
     }
 
     public void saveReminder() {
-    	Log.v(TAG, "Saving " + CreateReminder.this.m_displayName);
+    	DatePicker dp = (DatePicker)findViewById(R.id.cr_datepicker_start);
+    	Date d = new Date(dp.getYear() - 1900, dp.getMonth(), dp.getDayOfMonth());
+    	CreateReminder.this.reminder.setDateStart(d);
+    	Log.v(TAG, "Saving " + CreateReminder.this.reminder.getDisplayName() + " starting date " + "");
+    	CreateReminder.this.m_db.insert(reminder);
     }
     protected void updateLayout(Intent _intent) {
-    	if( m_contactID <= 0 ) {
+    	if( ! reminder.valid() ) {
+    		/** @todo Do something to visually indicate the contact chosen is invalid, or is pending selection */
     		return;
     	}
 		ImageView ivContactIcon = (ImageView) findViewById(R.id.cr_contact_icon);
-		if(m_ContactIconBitmap != null) {
-			ivContactIcon.setImageBitmap(m_ContactIconBitmap);
+		if( reminder.getContactIconBitmap() != null) {
+			ivContactIcon.setImageBitmap(reminder.getContactIconBitmap());
     	}
 
-    	if( m_displayName.length() > 0 ) {
+    	if( reminder.getDisplayName().length() > 0 ) {
     		TextView tvName = (TextView) findViewById(R.id.cr_text_who);
-    		tvName.setText(m_displayName);
+    		tvName.setText(reminder.getDisplayName());
     		tvName.setTextColor(0xFFFFFFFF);
     	}
     }
@@ -127,11 +127,11 @@ public class CreateReminder extends Activity {
     	   return;
        }
        do {           
-    	   m_contactID = cursor.getInt(cursor.getColumnIndex(ContactsContract.Contacts._ID));
-           m_displayName = cursor.getString(cursor.getColumnIndexOrThrow(ContactsContract.Contacts.DISPLAY_NAME));
-           Bitmap b = loadContactPhoto(m_contactID);
+    	   reminder.setContactID(cursor.getInt(cursor.getColumnIndex(ContactsContract.Contacts._ID)));
+    	   reminder.setDisplayName(cursor.getString(cursor.getColumnIndexOrThrow(ContactsContract.Contacts.DISPLAY_NAME)));
+           Bitmap b = loadContactPhoto(reminder.getContactID());
            if( b != null ) {
-        	   m_ContactIconBitmap = b;
+        	   reminder.setContactIconBitmap(b);
            }
       }  while(cursor.moveToNext());
        cursor.close();

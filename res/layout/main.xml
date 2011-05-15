@@ -5,12 +5,20 @@
     android:layout_height="fill_parent"
     >
 
-<Button
-	android:text="Add Contact"
-	android:id="@+id/btn_create_fmn"
-	android:layout_width="wrap_content"
-	android:layout_alignParentBottom="true"
-	android:layout_height="wrap_content" />
-	
+	<ImageView
+		android:id="@+id/main_bg"
+		android:layout_height="wrap_content"
+		android:layout_width="wrap_content"
+		android:scaleType="fitStart"
+		android:src="@drawable/logo" />
+
+	<Button
+		android:text="Remember Someone"
+		android:id="@+id/btn_create_fmn"
+		android:layout_width="fill_parent"
+		android:layout_alignParentBottom="true"
+		android:layout_height="wrap_content"
+		android:layout_marginBottom="10dp"
+		/>
 
 </RelativeLayout>

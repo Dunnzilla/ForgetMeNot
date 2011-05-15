@@ -4,6 +4,7 @@ import java.text.SimpleDateFormat;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.util.Log;
@@ -18,9 +19,14 @@ public class DB {
 	public DB(Context c) {
 		m_Context = c;
 		m_DBHelper = new DBHelper(m_Context, DBConst.DBNAME, null, DBConst.VERSION);
-		
+		open();
 	}
-
+	public Cursor selectAll() {
+		Cursor c;
+		/* My eyes, they bleed: */
+		c = m_DB.query(DBConst.TABLE, null, null, null, null, null, null);
+		return c;
+	}
 	public void insert(Reminder r) {
 		try {
 			open();

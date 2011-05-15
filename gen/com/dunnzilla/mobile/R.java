@@ -24,7 +24,7 @@ public final class R {
         public static final int about_logo=0x7f060000;
         public static final int about_product_title=0x7f060001;
         public static final int about_versionName=0x7f060002;
-        public static final int btn_create_fmn=0x7f060013;
+        public static final int btn_create_fmn=0x7f060014;
         public static final int cr_contact_icon=0x7f060003;
         public static final int cr_datepicker_start=0x7f060007;
         public static final int cr_label_days=0x7f06000b;
@@ -39,14 +39,19 @@ public final class R {
         public static final int hr3=0x7f060008;
         public static final int hr4=0x7f06000c;
         public static final int hr5=0x7f06000f;
+        public static final int listview_reminder_row=0x7f060015;
+        public static final int main_bg=0x7f060013;
         public static final int name_entry=0x7f060011;
         public static final int number_entry=0x7f060012;
+        public static final int reminder_row_contactName=0x7f060016;
     }
     public static final class layout {
         public static final int about=0x7f030000;
         public static final int create_reminder=0x7f030001;
         public static final int list_entry=0x7f030002;
         public static final int main=0x7f030003;
+        public static final int reminder_list=0x7f030004;
+        public static final int reminder_row=0x7f030005;
     }
     public static final class string {
         public static final int about_title=0x7f050001;

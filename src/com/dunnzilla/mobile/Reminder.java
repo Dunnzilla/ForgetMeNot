@@ -1,8 +1,13 @@
 package com.dunnzilla.mobile;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.util.Log;
+
 
 public class Reminder {
 	// --- Database fields: ---
@@ -14,6 +19,7 @@ public class Reminder {
     private int		period;
 	// --- App fields ---
     private Bitmap contactIconBitmap;
+    private static final String TAG = "Reminder";
 
     // ===========================================
     public int getPeriod() {
@@ -40,6 +46,26 @@ public class Reminder {
     public Reminder() {
     	contactID = 0;
     	contactIconBitmap = null;
+    }
+    public void fillFromContacts(int contactID) {
+
+    }
+    public Reminder(Cursor cursor_reminder_db) {
+    	setContactID(cursor_reminder_db.getInt(cursor_reminder_db.getColumnIndex(DBConst.f_CONTACT_ID)));
+    	setNote(cursor_reminder_db.getString(cursor_reminder_db.getColumnIndex(DBConst.f_NOTE)));
+    	setPeriod(cursor_reminder_db.getInt(cursor_reminder_db.getColumnIndex(DBConst.f_PERIOD)));
+    	setActionURI(cursor_reminder_db.getString(cursor_reminder_db.getColumnIndex(DBConst.f_URI_ACTION)));
+    	
+    	
+    	String ds = cursor_reminder_db.getString(cursor_reminder_db.getColumnIndex(DBConst.f_DATETIME_START));
+		SimpleDateFormat f = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		Date d;
+		try {
+			d = f.parse(ds);
+	    	setDateStart(d);
+		} catch (ParseException e) {
+			Log.w(TAG, e.getMessage());
+		}
     }
     public boolean valid() {
     	if(contactID <= 0) {

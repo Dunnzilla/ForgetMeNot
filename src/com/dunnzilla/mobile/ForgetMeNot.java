@@ -2,6 +2,7 @@ package com.dunnzilla.mobile;
 
 
 import java.io.InputStream;
+import java.util.ArrayList;
 
 import android.app.Activity;
 import android.content.ContentResolver;
@@ -13,20 +14,28 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.SubMenu;
 import android.widget.Button;
 
+
 public class ForgetMeNot extends Activity {
 	private static final int MENU_ITEM_SETTINGS = 1, MENU_ITEM_ABOUT = 2;
 	private static final int MENU_GROUP_DEFAULT = 1;
+	private static final String TAG = "ForgetMeNot";
+
+	private ArrayList<Reminder> reminders;
+	private DB					db;
 	
 	@Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
+
+        repopulate();
 
         Button bCreate = (Button) findViewById(R.id.btn_create_fmn);
         bCreate.setOnClickListener( new View.OnClickListener() {
@@ -36,6 +45,58 @@ public class ForgetMeNot extends Activity {
         });
     }
 	
+	private void repopulate() {
+        db = new DB(ForgetMeNot.this);
+        
+        if(ForgetMeNot.this.reminders == null) {
+        	ForgetMeNot.this.reminders = new ArrayList<Reminder>();
+        } else {
+        	ForgetMeNot.this.reminders.clear();
+        }
+        
+		Cursor cu = db.selectAll();
+		startManagingCursor(cu);
+		if(cu.moveToFirst()) {
+			do {
+				Reminder r = new Reminder(cu);
+		    	
+
+				
+				// We don't store contact name, number or picture, as those could change.
+				// Instead, we store the ID and update the contact info at runtime based
+				// on whatever is in the address book.
+				// (There may be flaws in this method, but I'm new to Android so this
+				// seems like a decent way to decouple the Android data from the Reminder data)
+				
+		    	Uri uriPerson = ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI, r.getContactID());
+		    	// Then query for this specific record:
+		    	Cursor cursorPerson = managedQuery(uriPerson, null, null, null, null);
+
+		        if( cursorPerson.moveToFirst()) {
+			        do {
+			     	   // TODO try/catch
+			     	   r.setContactID(cursorPerson.getInt(cursorPerson.getColumnIndex(ContactsContract.Contacts._ID)));
+			     	   r.setDisplayName(cursorPerson.getString(cursorPerson.getColumnIndexOrThrow(ContactsContract.Contacts.DISPLAY_NAME)));
+			     	   
+			           InputStream streamPhoto = ContactsContract.Contacts.openContactPhotoInputStream(getContentResolver(), uriPerson);
+			           if (streamPhoto != null) {
+			        	   r.setContactIconBitmap(BitmapFactory.decodeStream(streamPhoto));
+			           }
+			       }  while(cursorPerson.moveToNext());
+		        }
+		        cursorPerson.close();
+				Log.v(TAG,
+						"ID " + r.getContactID()
+						+ " name " + r.getDisplayName()
+						+ " datestart " + r.getDateStart()
+						+ " period " + r.getPeriod()
+						+ " note " +  r.getNote()
+						);
+				reminders.add(r);
+			} while(cu.moveToNext());
+		}
+	}
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		menu.add(MENU_GROUP_DEFAULT, MENU_ITEM_SETTINGS, 0, "Settings");

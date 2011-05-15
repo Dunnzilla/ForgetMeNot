@@ -95,6 +95,14 @@ public class CreateReminder extends Activity {
     public void saveReminder() {
     	DatePicker dp = (DatePicker)findViewById(R.id.cr_datepicker_start);
     	Date d = new Date(dp.getYear() - 1900, dp.getMonth(), dp.getDayOfMonth());
+    	
+    	TextView tvPeriod = (TextView) findViewById(R.id.cr_period);
+    	TextView tvNote = (TextView) findViewById(R.id.cr_note);
+    	
+    	int i = Integer.parseInt(tvPeriod.getText().toString().trim());
+    	CreateReminder.this.reminder.setPeriod(i);
+    	CreateReminder.this.reminder.setNote(tvNote.getText().toString().trim());
+
     	CreateReminder.this.reminder.setDateStart(d);
     	Log.v(TAG, "Saving " + CreateReminder.this.reminder.getDisplayName() + " starting date " + "");
     	CreateReminder.this.m_db.insert(reminder);
@@ -126,7 +134,8 @@ public class CreateReminder extends Activity {
     	   cursor.close();
     	   return;
        }
-       do {           
+       do {
+    	   // TODO try/catch
     	   reminder.setContactID(cursor.getInt(cursor.getColumnIndex(ContactsContract.Contacts._ID)));
     	   reminder.setDisplayName(cursor.getString(cursor.getColumnIndexOrThrow(ContactsContract.Contacts.DISPLAY_NAME)));
            Bitmap b = loadContactPhoto(reminder.getContactID());

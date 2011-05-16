@@ -14,12 +14,10 @@ import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.View;
-//import android.widget.Button;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -46,7 +44,7 @@ public class CreateReminder extends Activity {
     	m_db = new DB(this);
     	m_db.open();
     	reminder = new Reminder();
-        
+
         ImageButton ContactIcon  = (ImageButton) findViewById(R.id.cr_contact_icon);
         TextView tvContactName = (TextView) findViewById(R.id.cr_text_who);
         Button bSave = (Button) findViewById(R.id.cr_save);
@@ -62,8 +60,9 @@ public class CreateReminder extends Activity {
         			Toast.makeText(CreateReminder.this, CreateReminder.this.getErrMessage(), Toast.LENGTH_SHORT).show();
         		}
         	}
-        });        
-    }
+        });
+        
+	}
 	
 	public boolean validateSettings() {
 		if( CreateReminder.this.reminder.getContactID() <= 0) {
@@ -105,7 +104,15 @@ public class CreateReminder extends Activity {
 
     	CreateReminder.this.reminder.setDateStart(d);
     	Log.v(TAG, "Saving " + CreateReminder.this.reminder.getDisplayName() + " starting date " + "");
+    	
+    	Intent intent = this.getIntent();
     	CreateReminder.this.m_db.insert(reminder);
+        if (getParent() == null) {
+            setResult(Activity.RESULT_OK, intent);
+        } else {
+            getParent().setResult(Activity.RESULT_OK, intent);
+        }        
+        finish();
     }
     protected void updateLayout(Intent _intent) {
     	if( ! reminder.valid() ) {

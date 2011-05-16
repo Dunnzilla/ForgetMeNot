@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-	<EditTextPreference android:title="Some value"
+	<EditTextPreference android:title="Some Value"
 					    android:key="someval"
 					    android:summary="Please provide some value"
     ></EditTextPreference>
-	<EditTextPreference android:title="Some other value"
+	<EditTextPreference android:title="Some Other Value"
 					    android:key="someval2"
 					    android:summary="Please provide some other value"
     ></EditTextPreference>

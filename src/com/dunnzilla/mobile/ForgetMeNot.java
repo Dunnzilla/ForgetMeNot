@@ -4,28 +4,26 @@ package com.dunnzilla.mobile;
 import java.io.InputStream;
 import java.util.ArrayList;
 
-import android.app.Activity;
-import android.content.ContentResolver;
+import android.app.ListActivity;
 import android.content.ContentUris;
 import android.content.Intent;
 import android.database.Cursor;
-import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
-import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.SubMenu;
 import android.widget.Button;
+import android.widget.ListAdapter;
 
 
-public class ForgetMeNot extends Activity {
+public class ForgetMeNot extends ListActivity {
 	private static final int MENU_ITEM_SETTINGS = 1, MENU_ITEM_ABOUT = 2;
 	private static final int MENU_GROUP_DEFAULT = 1;
-	private static final String TAG = "ForgetMeNot";
+	private static final int CREATE_REMINDER = 1001;
+	//private static final String TAG = "ForgetMeNot";
 
 	private ArrayList<Reminder> reminders;
 	private DB					db;
@@ -36,7 +34,7 @@ public class ForgetMeNot extends Activity {
         setContentView(R.layout.main);
 
         repopulate();
-
+        
         Button bCreate = (Button) findViewById(R.id.btn_create_fmn);
         bCreate.setOnClickListener( new View.OnClickListener() {
         	public void onClick(View view) {
@@ -59,8 +57,6 @@ public class ForgetMeNot extends Activity {
 		if(cu.moveToFirst()) {
 			do {
 				Reminder r = new Reminder(cu);
-		    	
-
 				
 				// We don't store contact name, number or picture, as those could change.
 				// Instead, we store the ID and update the contact info at runtime based
@@ -85,16 +81,19 @@ public class ForgetMeNot extends Activity {
 			       }  while(cursorPerson.moveToNext());
 		        }
 		        cursorPerson.close();
-				Log.v(TAG,
+/*				Log.v(TAG,
 						"ID " + r.getContactID()
 						+ " name " + r.getDisplayName()
 						+ " datestart " + r.getDateStart()
 						+ " period " + r.getPeriod()
 						+ " note " +  r.getNote()
 						);
-				reminders.add(r);
+*/				reminders.add(r);
 			} while(cu.moveToNext());
 		}
+        ListAdapter adapter;
+    	adapter = new ReminderAdapter(this, reminders);	        
+        setListAdapter(adapter);		
 	}
 
 	@Override
@@ -103,6 +102,19 @@ public class ForgetMeNot extends Activity {
 		menu.add(MENU_GROUP_DEFAULT, MENU_ITEM_ABOUT, 0, "About");
 		return super.onCreateOptionsMenu(menu);
 	}
+
+	@Override
+    public void onActivityResult(int requestCode, int resultCode, Intent intent) {
+		if ( resultCode == RESULT_OK ) {
+	    	switch(requestCode) {
+	    	case CREATE_REMINDER:
+	    		ForgetMeNot.this.repopulate();
+	       		break;
+	    	}
+		}
+    	super.onActivityResult(requestCode, resultCode, intent);
+    }
+
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch(item.getItemId()) {
@@ -120,7 +132,7 @@ public class ForgetMeNot extends Activity {
 	
     private void start_CreateReminder() {
     	Intent i = new Intent(this, CreateReminder.class);
-        startActivity(i);
+        startActivityForResult(i, CREATE_REMINDER);
     }
     private void start_Prefs() {
     	Intent i = new Intent(this, Prefs.class);

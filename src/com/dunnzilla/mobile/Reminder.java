@@ -11,6 +11,7 @@ import android.util.Log;
 
 public class Reminder {
 	// --- Database fields: ---
+	private int		ID;
 	private int		contactID;
 	private String	displayName;
     private String	actionURI;
@@ -47,15 +48,11 @@ public class Reminder {
     	contactID = 0;
     	contactIconBitmap = null;
     }
-    public void fillFromContacts(int contactID) {
-
-    }
     public Reminder(Cursor cursor_reminder_db) {
     	setContactID(cursor_reminder_db.getInt(cursor_reminder_db.getColumnIndex(DBConst.f_CONTACT_ID)));
     	setNote(cursor_reminder_db.getString(cursor_reminder_db.getColumnIndex(DBConst.f_NOTE)));
     	setPeriod(cursor_reminder_db.getInt(cursor_reminder_db.getColumnIndex(DBConst.f_PERIOD)));
     	setActionURI(cursor_reminder_db.getString(cursor_reminder_db.getColumnIndex(DBConst.f_URI_ACTION)));
-    	
     	
     	String ds = cursor_reminder_db.getString(cursor_reminder_db.getColumnIndex(DBConst.f_DATETIME_START));
 		SimpleDateFormat f = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -97,5 +94,11 @@ public class Reminder {
 	}
 	public void setContactIconBitmap(Bitmap contactIconBitmap) {
 		this.contactIconBitmap = contactIconBitmap;
-	}    
+	}
+	public int getID() {
+		return ID;
+	}
+	public void setID(int _ID) {
+		ID = _ID;
+	}
 }

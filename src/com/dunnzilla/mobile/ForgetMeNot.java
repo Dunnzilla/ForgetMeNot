@@ -9,18 +9,20 @@ import android.content.ContentUris;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.BitmapFactory;
+import android.graphics.PixelFormat;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.ListAdapter;
 
 
 public class ForgetMeNot extends ListActivity {
-	private static final int MENU_ITEM_SETTINGS = 1, MENU_ITEM_ABOUT = 2;
+	private static final int MENU_ITEM_SETTINGS = 1, MENU_ITEM_ABOUT = 2, MENU_ITEM_MESSAGE = 3;
 	private static final int MENU_GROUP_DEFAULT = 1;
 	private static final int CREATE_REMINDER = 1001;
 	//private static final String TAG = "ForgetMeNot";
@@ -92,14 +94,15 @@ public class ForgetMeNot extends ListActivity {
 			} while(cu.moveToNext());
 		}
         ListAdapter adapter;
-    	adapter = new ReminderAdapter(this, reminders);	        
-        setListAdapter(adapter);		
+    	adapter = new ReminderAdapter(this, reminders);
+        setListAdapter(adapter);	
 	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		menu.add(MENU_GROUP_DEFAULT, MENU_ITEM_SETTINGS, 0, "Settings");
 		menu.add(MENU_GROUP_DEFAULT, MENU_ITEM_ABOUT, 0, "About");
+		//menu.add(MENU_GROUP_DEFAULT, MENU_ITEM_MESSAGE, 0, "Random");
 		return super.onCreateOptionsMenu(menu);
 	}
 
@@ -124,12 +127,28 @@ public class ForgetMeNot extends ListActivity {
 		case MENU_ITEM_ABOUT:
 			start_About();
 			return true;
+		case MENU_ITEM_MESSAGE:
+			start_DevMessage();
 		default:
 			break;
 		}
 		return super.onOptionsItemSelected(item);
 	}
-	
+
+	// onAttachedToWindow() code courtesy of a June 4th, 2010 article by Eric Burke
+	// http://stuffthathappens.com/blog/2010/06/04/android-color-banding/ 
+	@Override
+	public void onAttachedToWindow() {
+		super.onAttachedToWindow();
+		Window window = getWindow();
+		// Eliminates color banding
+		window.setFormat(PixelFormat.RGBA_8888);
+	}
+	  
+	private void start_DevMessage() {
+		Intent i = new Intent(this, DevMessage.class);
+		startActivity(i);
+	}
     private void start_CreateReminder() {
     	Intent i = new Intent(this, CreateReminder.class);
         startActivityForResult(i, CREATE_REMINDER);

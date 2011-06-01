@@ -64,6 +64,7 @@ public class Reminder {
 			Log.w(TAG, e.getMessage());
 		}
     }
+    
     public boolean valid() {
     	if(contactID <= 0) {
     		return false;

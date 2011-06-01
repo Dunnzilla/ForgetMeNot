@@ -133,7 +133,7 @@ public class CreateReminder extends Activity {
     protected void getContactInfo(Intent _intent)
     {
     	/**
-    	 * @todo managedQuery() is deprecated in API 11, replaced by CursorLoader
+    	 * TODO managedQuery() is deprecated in API 11, replaced by CursorLoader
     	 */
     	Uri u = _intent.getData(); 
     	Cursor cursor = managedQuery(u, null, null, null, null);

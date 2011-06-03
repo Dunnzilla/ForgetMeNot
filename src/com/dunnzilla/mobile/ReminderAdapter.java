@@ -3,12 +3,19 @@ package com.dunnzilla.mobile;
 import java.io.InputStream;
 import java.util.ArrayList;
 
+
+import android.app.AlertDialog;
+import android.app.AlertDialog.Builder;
 import android.content.ContentUris;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.provider.ContactsContract;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -16,10 +23,12 @@ import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.ListAdapter;
+import android.widget.Toast;
 import android.widget.LinearLayout.LayoutParams;
 
 public class ReminderAdapter extends BaseAdapter implements ListAdapter {
 
+	private static final String TAG = "ReminderAdapter";
 	private ArrayList<Reminder> reminders;
 	private Context context;
 	TextView tvName;
@@ -68,7 +77,7 @@ public class ReminderAdapter extends BaseAdapter implements ListAdapter {
 	public View getView(int arg0, View oldView, ViewGroup vgParent) {
 		RelativeLayout v;
 		TextView tvName, tvNote;
-		if (oldView == null) {
+		if (oldView == null) {		 
 			Reminder r = reminders.get(arg0);
 			v = new RelativeLayout(context);
 			
@@ -78,7 +87,7 @@ public class ReminderAdapter extends BaseAdapter implements ListAdapter {
 			tvName.setId(2);
 			tvNote = new TextView(context);
 			tvNote.setId(3);
-			//v.setOrientation(LinearLayout.VERTICAL);
+
 			RelativeLayout.LayoutParams lp_tvName = new RelativeLayout.LayoutParams(
 					LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
 			RelativeLayout.LayoutParams lp_tvNote = new RelativeLayout.LayoutParams(
@@ -112,6 +121,63 @@ public class ReminderAdapter extends BaseAdapter implements ListAdapter {
 			lp_tvNote.addRule(RelativeLayout.RIGHT_OF, ib.getId());
 			lp_tvNote.setMargins(5, 0, 0, 0);
 
+			ib.setTag(R.string.TAG_ID_ReminderAdapter_Reminder, r);
+			ib.setTag(R.string.TAG_ID_ReminderAdapter_Context, context);
+			// Setup the onClicks
+			ib.setOnClickListener( new View.OnClickListener() {
+	        	public void onClick(View view) {
+	        		ArrayList<String> arPhones = new ArrayList<String>();
+	        		Reminder r = (Reminder) view.getTag(R.string.TAG_ID_ReminderAdapter_Reminder);
+	        		final Context contextParent = (Context) view.getTag(R.string.TAG_ID_ReminderAdapter_Context);
+	        		
+					Cursor phones = contextParent.getContentResolver().query(
+							ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
+							null,
+							ContactsContract.CommonDataKinds.Phone.CONTACT_ID
+									+ " = " + r.getContactID(), null, null);
+					while (phones.moveToNext()) {
+						String phoneNumber = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+						Log.v(TAG, "Phone # is " + phoneNumber);
+						arPhones.add(phoneNumber);
+					}
+
+					phones.close();
+					Uri uri;
+					if(arPhones.size() == 0) {
+						Toast.makeText(contextParent, R.string.MSG_ERR_CONTACT_NO_PHONE, Toast.LENGTH_SHORT).show();
+						return;
+					} else if(arPhones.size() > 1) {
+						
+						final String[] phonesArr = new String[arPhones.size()];
+						for (int i = 0; i < arPhones.size(); i++) {
+							phonesArr[i] = arPhones.get(i);
+						}
+
+						AlertDialog.Builder dialog = new AlertDialog.Builder(contextParent);
+						dialog.setTitle(R.string.TITLE_PICK_PHONE);
+						((Builder) dialog).setItems(phonesArr,
+								new DialogInterface.OnClickListener() {
+									public void onClick(DialogInterface dialog,
+											int which) {
+										String selectedPhone = phonesArr[which];
+										Uri uri = Uri.parse("tel://" + selectedPhone);
+										//editText.setText(selectedEmail);
+										Intent callIntent = new Intent(Intent.ACTION_CALL, uri); 
+										contextParent.startActivity(callIntent);
+										return;
+									}
+								}).create();
+						dialog.show();
+                        return;             
+					} else {
+						uri = Uri.parse("tel://" + arPhones.get(0));
+					}
+
+					Intent callIntent = new Intent(Intent.ACTION_CALL, uri); 
+					contextParent.startActivity(callIntent);
+	        	}
+	        });
+
 			// Let's add them to the view!
 			v.addView(ib, lp_ibContactIcon);
 			v.addView(tvName, lp_tvName);
@@ -129,5 +195,4 @@ public class ReminderAdapter extends BaseAdapter implements ListAdapter {
         }
         return BitmapFactory.decodeStream(input);
     }
-    
 }

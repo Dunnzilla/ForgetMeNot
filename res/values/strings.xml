@@ -6,4 +6,10 @@
     <string name="cr_who">Select a Contact</string>
     <string name="cr_when">Start Date</string>
     <string name="cr_repeat_period">Every</string>
+    <string name="MSG_ERR_CONTACT_NO_PHONE">Contact has no phone numbers!</string>
+    
+    <string name="TITLE_PICK_PHONE">Select a phone number</string>
+    
+    <string name="TAG_ID_ReminderAdapter_Reminder">TAG_ID_ReminderAdapter_Reminder</string>
+    <string name="TAG_ID_ReminderAdapter_Context">TAG_ID_ReminderAdapter_Context</string>
 </resources>

@@ -1,6 +1,5 @@
 package com.dunnzilla.mobile;
 
-
 import java.io.InputStream;
 import java.util.ArrayList;
 
@@ -44,7 +43,12 @@ public class ForgetMeNot extends ListActivity {
         	}
         });
     }
-	
+
+	@Override
+    public void onResume() {
+        super.onResume();
+        repopulate();
+	}
 	private void repopulate() {
         db = new DB(ForgetMeNot.this);
         

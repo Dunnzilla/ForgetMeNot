@@ -61,7 +61,6 @@ public class CreateReminder extends Activity {
         		}
         	}
         });
-        
 	}
 	
 	public boolean validateSettings() {

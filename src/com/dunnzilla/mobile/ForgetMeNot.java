@@ -3,7 +3,9 @@ package com.dunnzilla.mobile;
 import java.io.InputStream;
 import java.util.ArrayList;
 
+import android.app.ActivityManager;
 import android.app.ListActivity;
+import android.app.ActivityManager.RunningServiceInfo;
 import android.content.ContentUris;
 import android.content.Intent;
 import android.database.Cursor;
@@ -35,7 +37,21 @@ public class ForgetMeNot extends ListActivity {
         setContentView(R.layout.main);
 
         repopulate();
-        
+
+        boolean startReminderService = true;
+	    ActivityManager manager = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
+	    for (RunningServiceInfo s : manager.getRunningServices(Integer.MAX_VALUE)) {
+	    	// TODO get service name based on class name
+	        if ( "com.dunnzilla.mobile.ReminderService".equals(s.service.getClassName())) {
+	        	startReminderService = false;
+	        }
+	    }
+
+	    if( startReminderService ) {
+			Intent rsIntent = new Intent(getApplicationContext(), ReminderService.class);
+			getApplicationContext().startService(rsIntent);        	
+        }
+
         Button bCreate = (Button) findViewById(R.id.btn_create_fmn);
         bCreate.setOnClickListener( new View.OnClickListener() {
         	public void onClick(View view) {

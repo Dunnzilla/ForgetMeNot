@@ -18,6 +18,7 @@ import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.View.OnClickListener;
 import android.widget.BaseAdapter;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
@@ -81,12 +82,13 @@ public class ReminderAdapter extends BaseAdapter implements ListAdapter {
 			Reminder r = reminders.get(arg0);
 			v = new RelativeLayout(context);
 			
+			v.setId(1);
 			ImageButton ib = new ImageButton(context);
-			ib.setId(1);
+			ib.setId(2);
 			tvName = new TextView(context);
-			tvName.setId(2);
+			tvName.setId(3);
 			tvNote = new TextView(context);
-			tvNote.setId(3);
+			tvNote.setId(4);
 
 			RelativeLayout.LayoutParams lp_tvName = new RelativeLayout.LayoutParams(
 					LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
@@ -120,11 +122,9 @@ public class ReminderAdapter extends BaseAdapter implements ListAdapter {
 			lp_tvNote.addRule(RelativeLayout.BELOW, tvName.getId());
 			lp_tvNote.addRule(RelativeLayout.RIGHT_OF, ib.getId());
 			lp_tvNote.setMargins(5, 0, 0, 0);
-
-			ib.setTag(R.string.TAG_ID_ReminderAdapter_Reminder, r);
-			ib.setTag(R.string.TAG_ID_ReminderAdapter_Context, context);
-			// Setup the onClicks
-			ib.setOnClickListener( new View.OnClickListener() {
+			
+			// Setup the OnClickListener which will be used for all the views in this listview entry
+			OnClickListener oc = new View.OnClickListener() {
 	        	public void onClick(View view) {
 	        		ArrayList<String> arPhones = new ArrayList<String>();
 	        		Reminder r = (Reminder) view.getTag(R.string.TAG_ID_ReminderAdapter_Reminder);
@@ -176,7 +176,23 @@ public class ReminderAdapter extends BaseAdapter implements ListAdapter {
 					Intent callIntent = new Intent(Intent.ACTION_CALL, uri); 
 					contextParent.startActivity(callIntent);
 	        	}
-	        });
+	        };
+
+	        // TODO There has got to be a better way:
+			ib.setTag(R.string.TAG_ID_ReminderAdapter_Reminder, r);
+			ib.setTag(R.string.TAG_ID_ReminderAdapter_Context, context);
+			tvName.setTag(R.string.TAG_ID_ReminderAdapter_Reminder, r);
+			tvName.setTag(R.string.TAG_ID_ReminderAdapter_Context, context);
+			tvNote.setTag(R.string.TAG_ID_ReminderAdapter_Reminder, r);
+			tvNote.setTag(R.string.TAG_ID_ReminderAdapter_Context, context);
+			v.setTag(R.string.TAG_ID_ReminderAdapter_Reminder, r);
+			v.setTag(R.string.TAG_ID_ReminderAdapter_Context, context);
+
+			
+			ib.setOnClickListener(oc);
+			tvName.setOnClickListener(oc);
+			tvNote.setOnClickListener(oc);
+			v.setOnClickListener(oc);
 
 			// Let's add them to the view!
 			v.addView(ib, lp_ibContactIcon);

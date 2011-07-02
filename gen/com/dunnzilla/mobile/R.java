@@ -20,12 +20,13 @@ public final class R {
         public static final int icon=0x7f020006;
         public static final int listview_gradient=0x7f020007;
         public static final int logo=0x7f020008;
+        public static final int notify_icon_logo_24=0x7f020009;
     }
     public static final class id {
         public static final int about_logo=0x7f060000;
         public static final int about_product_title=0x7f060001;
         public static final int about_versionName=0x7f060002;
-        public static final int btn_create_fmn=0x7f060015;
+        public static final int btn_create_fmn=0x7f060018;
         public static final int btn_devmessage_okay=0x7f060012;
         public static final int cr_contact_icon=0x7f060003;
         public static final int cr_datepicker_start=0x7f060007;
@@ -42,31 +43,36 @@ public final class R {
         public static final int hr3=0x7f060008;
         public static final int hr4=0x7f06000c;
         public static final int hr5=0x7f06000f;
-        public static final int listview_reminder_row=0x7f060016;
-        public static final int name_entry=0x7f060013;
-        public static final int number_entry=0x7f060014;
-        public static final int reminder_row_contactName=0x7f060017;
+        public static final int listview_reminder_row=0x7f060019;
+        public static final int name_entry=0x7f060016;
+        public static final int number_entry=0x7f060017;
+        public static final int reminder_row_contactName=0x7f06001a;
+        public static final int vr_contact_icon=0x7f060013;
+        public static final int vr_text_who=0x7f060014;
+        public static final int vr_text_who_summary=0x7f060015;
     }
     public static final class layout {
         public static final int about=0x7f030000;
         public static final int create_reminder=0x7f030001;
         public static final int devmessage=0x7f030002;
-        public static final int list_entry=0x7f030003;
-        public static final int main=0x7f030004;
-        public static final int reminder_list=0x7f030005;
-        public static final int reminder_row=0x7f030006;
+        public static final int display_reminder=0x7f030003;
+        public static final int list_entry=0x7f030004;
+        public static final int main=0x7f030005;
+        public static final int reminder_list=0x7f030006;
+        public static final int reminder_row=0x7f030007;
     }
     public static final class string {
-        public static final int MSG_ERR_CONTACT_NO_PHONE=0x7f050006;
-        public static final int TAG_ID_ReminderAdapter_Context=0x7f050009;
-        public static final int TAG_ID_ReminderAdapter_Reminder=0x7f050008;
-        public static final int TITLE_PICK_PHONE=0x7f050007;
+        public static final int MSG_ERR_CONTACT_NO_PHONE=0x7f050007;
+        public static final int TAG_ID_ReminderAdapter_Context=0x7f05000a;
+        public static final int TAG_ID_ReminderAdapter_Reminder=0x7f050009;
+        public static final int TITLE_PICK_PHONE=0x7f050008;
         public static final int about_title=0x7f050001;
         public static final int app_name=0x7f050000;
         public static final int cr_repeat_period=0x7f050005;
         public static final int cr_title=0x7f050002;
         public static final int cr_when=0x7f050004;
         public static final int cr_who=0x7f050003;
+        public static final int vr_default_name=0x7f050006;
     }
     public static final class xml {
         public static final int prefs=0x7f040000;

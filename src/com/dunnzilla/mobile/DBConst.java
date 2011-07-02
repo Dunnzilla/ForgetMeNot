@@ -5,7 +5,7 @@ public class DBConst {
 	public static final String DBNAME="forgetmenot.db";
 	public static final int    VERSION=1;
 	public static final String TABLE = "reminders";
-	public static final String f_ID = "id";
+	public static final String f_ID = "_id";
 	public static final String f_CONTACT_ID = "contact_id";
 	public static final String f_DATETIME_C = "datetime_c";
 	public static final String f_DATETIME_M = "datetime_m";

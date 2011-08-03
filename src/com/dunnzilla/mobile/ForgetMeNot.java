@@ -36,6 +36,7 @@ public class ForgetMeNot extends ListActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
 
+        // TODO I think there's a better way to do this
         repopulate();
 
         boolean startReminderService = true;

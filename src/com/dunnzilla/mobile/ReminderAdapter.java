@@ -3,7 +3,6 @@ package com.dunnzilla.mobile;
 import java.io.InputStream;
 import java.util.ArrayList;
 
-
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.content.ContentUris;
@@ -81,7 +80,7 @@ public class ReminderAdapter extends BaseAdapter implements ListAdapter {
 		if (oldView == null) {		 
 			Reminder r = reminders.get(arg0);
 			v = new RelativeLayout(context);
-			
+
 			v.setId(1);
 			ImageButton ib = new ImageButton(context);
 			ib.setId(2);
@@ -104,12 +103,12 @@ public class ReminderAdapter extends BaseAdapter implements ListAdapter {
 				ib.setImageResource(R.drawable.ic_contact_picture);
 			}
 	           
-			tvName.setText(reminders.get(arg0).getDisplayName());
+			tvName.setText(r.getDisplayName());
 			tvName.setShadowLayer(4.0f, 4.0f, 4.0f, 0xFF000000);
 			// TODO change color based on whatever silliness the user wants.
 			tvName.setTextColor(0xFFFFFFFF);
 			tvName.setTextSize(android.util.TypedValue.COMPLEX_UNIT_PT, 8);
-			tvNote.setText(reminders.get(arg0).getNote());
+			tvNote.setText(r.getNote());
 
 			// Set up the relative positions
 			lp_ibContactIcon.addRule(RelativeLayout.ALIGN_PARENT_TOP);

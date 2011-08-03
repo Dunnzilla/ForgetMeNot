@@ -1,4 +1,28 @@
 --------------------------------------------------------------------------
+ForgetMeNot 0.4.4
+
+===================================
+FEATURES
+===================================
+1. Clicking a notification will now take you to a skeleton of the reminder
+   display for that notification.
+
+2. Notifications will fire once per hour (configurable).
+3. Reminders you do not take action on are repeated once per day as notifications.
+
+===================================
+NEW BUGS
+===================================
+1. Incomplete checkin!
+
+===================================
+FIXED BUGS
+===================================
+No explicit bug fixes.
+
+
+
+--------------------------------------------------------------------------
 ForgetMeNot 0.4.3
 ===================================
 FEATURES

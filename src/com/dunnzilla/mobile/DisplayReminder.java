@@ -27,7 +27,6 @@ public class DisplayReminder extends Activity {
     private DB		m_db;
     Reminder		reminder;
 
-    // TODO how do I pass in the reminder # to view, and how to parse the Intent which describes it?
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,25 +34,48 @@ public class DisplayReminder extends Activity {
         
     	m_db = new DB(this);
     	m_db.open();
-    	reminder = new Reminder();
 
-        ImageButton ContactIcon  = (ImageButton) findViewById(R.id.cr_contact_icon);
-        TextView tvContactName = (TextView) findViewById(R.id.cr_text_who);
-        Button bSave = (Button) findViewById(R.id.cr_save);
+        // TODO how do I pass in the reminder # to view, and how to parse the Intent which describes it?
+        loadReminderFromID(1);
+        Intent i = new Intent();
+        updateLayout(i);
 	}
-	
+
+    protected void loadReminderFromID(long id) {
+		Cursor cu = m_db.selectID(id);
+		if(cu.moveToFirst()) {
+			reminder = new Reminder(cu);
+	    	Uri uriPerson = ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI, reminder.getContactID());
+	    	// Then query for this specific record:
+	    	Cursor cursorPerson = managedQuery(uriPerson, null, null, null, null);
+
+	        if( cursorPerson.moveToFirst()) {
+		        do {
+		     	   // TODO try/catch
+		     	   reminder.setContactID(cursorPerson.getInt(cursorPerson.getColumnIndex(ContactsContract.Contacts._ID)));
+		     	   reminder.setDisplayName(cursorPerson.getString(cursorPerson.getColumnIndexOrThrow(ContactsContract.Contacts.DISPLAY_NAME)));
+		     	   
+		           InputStream streamPhoto = ContactsContract.Contacts.openContactPhotoInputStream(getContentResolver(), uriPerson);
+		           if (streamPhoto != null) {
+		        	   reminder.setContactIconBitmap(BitmapFactory.decodeStream(streamPhoto));
+		           }
+		       }  while(cursorPerson.moveToNext());
+	        }
+	        cursorPerson.close();
+		}
+    }
     protected void updateLayout(Intent _intent) {
     	if( ! reminder.valid() ) {
     		// TODO Do something to visually indicate the contact chosen is invalid, or is pending selection
     		return;
     	}
-		ImageView ivContactIcon = (ImageView) findViewById(R.id.cr_contact_icon);
+		ImageView ivContactIcon = (ImageView) findViewById(R.id.vr_contact_icon);
 		if( reminder.getContactIconBitmap() != null) {
 			ivContactIcon.setImageBitmap(reminder.getContactIconBitmap());
     	}
 
     	if( reminder.getDisplayName().length() > 0 ) {
-    		TextView tvName = (TextView) findViewById(R.id.cr_text_who);
+    		TextView tvName = (TextView) findViewById(R.id.vr_text_who);
     		tvName.setText(reminder.getDisplayName());
     		tvName.setTextColor(0xFFFFFFFF);
     	}

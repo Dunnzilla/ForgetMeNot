@@ -27,6 +27,12 @@ public class DB {
 		c = m_DB.query(DBConst.TABLE, null, null, null, null, null, null);
 		return c;
 	}
+	public Cursor selectID(long id) {
+		return m_DB.query(DBConst.TABLE, null, ("_id = " + id), null, null, null, null);
+	}
+	public Cursor selectDue() {
+		return m_DB.query(DBConst.TABLE, null, "datetime_next <= datetime('NOW')", null, null, null, null);
+	}
 	public void delete(Reminder r) {
 		delete(r.getID());
 	}

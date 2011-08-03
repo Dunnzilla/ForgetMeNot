@@ -6,7 +6,6 @@
     >
   
     
-	    <!--  android:background="#77000000"  -->
 	<ListView android:id="@android:id/list"
 	    android:textColor="#77ffffff"
 	    android:layout_weight="1"

@@ -32,6 +32,17 @@ public class About extends Activity {
 		}
 		TextView tvVersion = (TextView) findViewById(R.id.about_versionName);
 		tvVersion.setText("Version " + androidManifest_versionName);
+		
+		//
+		// LnH blog posts URL:
+		// http://www.leapsnhounds.com/blog/?json=1
+		// http://www.leapsnhounds.com/?json=get_recent_posts&count=3
+		//
+		// LnH Picasa Web Albums pics URL (JSON):
+		// https://picasaweb.google.com/data/feed/base/user/thefirehydrant/albumid/5235966506291221969?alt=json&kind=photo&hl=en_US
+		
+		RestClient.connect("https://picasaweb.google.com/data/feed/base/user/thefirehydrant/albumid/5235966506291221969?alt=json&kind=photo&hl=en_US");
+		
 		/*
 		 * FMN logo based on WC image
 		 * By Rude (Own work) [CC-BY-SA-3.0 (www.creativecommons.org/licenses/by-sa/3.0) or GFDL (www.gnu.org/copyleft/fdl.html)], via Wikimedia Commons

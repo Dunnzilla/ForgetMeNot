@@ -99,7 +99,7 @@ public class ForgetMeNot extends ListActivity {
 		}
         ListAdapter adapter;
     	adapter = new ReminderAdapter(this, reminders);
-        setListAdapter(adapter);	
+        setListAdapter(adapter);
 	}
 
 	@Override

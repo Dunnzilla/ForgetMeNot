@@ -9,7 +9,7 @@
 					    android:summary="Please provide some other value"
     ></EditTextPreference>
      <RingtonePreference android:showDefault="true"
-         android:key="Audio" android:title="Alarm Noise"
+         android:key="Audio" android:title="Reminder Tone"
          android:ringtoneType="notification">
       </RingtonePreference>
 </PreferenceScreen>

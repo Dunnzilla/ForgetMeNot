@@ -1,0 +1,88 @@
+--------------------------------------------------------------------------
+ForgetMeNot 0.4.4
+
+===================================
+FEATURES
+===================================
+1. Clicking a notification will now take you to a skeleton of the reminder
+   display for that notification.
+
+2. Notifications will fire once per hour (configurable).
+3. Reminders you do not take action on are repeated once per day as notifications.
+
+===================================
+NEW BUGS
+===================================
+1. Incomplete checkin!
+
+===================================
+FIXED BUGS
+===================================
+No explicit bug fixes.
+
+
+
+--------------------------------------------------------------------------
+ForgetMeNot 0.4.3
+===================================
+FEATURES
+===================================
+1. Notifications enabled (though currently they just take you to a stupid page)
+   (oh, and, you get a notification every 10 seconds)
+2. If a contact has multiple numbers, will prompt you to select one
+3. Requires additional permissions:
+   RECEIVE_BOOT_COMPLETED
+   GET_TASKS
+
+===================================
+NEW BUGS
+===================================
+1. Notifications are enabled but useless
+
+===================================
+FIXED BUGS
+===================================
+No explicit bug fixes.
+
+===================================
+DETAILS
+===================================
+* Runs a service on boot
+* Also starts the service when you load the app
+* Added delete functionality to DB class
+* Changed identity column name from 'ID' to '_id' as Android convention suggests (requires?)
+
+
+
+
+--------------------------------------------------------------------------
+
+ForgetMeNot 0.4.2
+===================================
+FEATURES
+===================================
+1. Will now initiate calls
+2. If a contact has multiple numbers, will prompt you to select one
+3. Requires additional permissions:
+   CALL_PHONE
+   PROCESS_OUTGOING_CALLS
+   INTERNET
+
+===================================
+NEW BUGS
+===================================
+1. Pop-up uses the string label, not the string contents as identified by that label.
+2. You have to select the Reminder picture (or default icon if contact has no pic) to initiate the call.  Eventually you should be able to just select anything on that row.
+
+===================================
+FIXED BUGS
+===================================
+No explicit bug fixes.
+
+===================================
+DETAILS
+===================================
+* PROCESS_OUTGOING_CALLS will be used to update a Reminder that you have called someone even if you did not initiate the call using this app.
+
+* ReminderAdapter
+- Several new imports to handle the functionality of a dialog box, Toast notifications, and placing calls.

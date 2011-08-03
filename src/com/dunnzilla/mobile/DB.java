@@ -27,6 +27,24 @@ public class DB {
 		c = m_DB.query(DBConst.TABLE, null, null, null, null, null, null);
 		return c;
 	}
+	public Cursor selectID(long id) {
+		return m_DB.query(DBConst.TABLE, null, ("_id = " + id), null, null, null, null);
+	}
+	public Cursor selectDue() {
+		return m_DB.query(DBConst.TABLE, null, "datetime_next <= datetime('NOW')", null, null, null, null);
+	}
+	public void delete(Reminder r) {
+		delete(r.getID());
+	}
+	public void delete(int _id) {
+		try {
+			open();
+			m_DB.delete(DBConst.TABLE, "_id=" + Integer.toString(_id), null);
+		} catch (SQLiteException e) {
+			Log.w(TAG, e.getMessage());
+		}
+	}
+	// TODO make an upsert()
 	public void insert(Reminder r) {
 		try {
 			open();
@@ -40,13 +58,12 @@ public class DB {
 			cv.put(DBConst.f_NOTE, r.getNote());
 			// TODO f_DATETIME_STOP
 
+
 			m_DB.insert(DBConst.TABLE, null, cv);
 
 		} catch (SQLiteException e) {
 			Log.w(TAG, e.getMessage());
 		}
-		
-
 	}
 	public void open() throws SQLiteException {
 		try {

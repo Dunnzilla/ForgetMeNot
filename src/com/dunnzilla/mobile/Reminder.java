@@ -1,12 +1,18 @@
 package com.dunnzilla.mobile;
 
+import java.io.InputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import android.content.ContentUris;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
+import android.provider.ContactsContract;
 import android.util.Log;
+import android.app.Activity;
 
 
 public class Reminder {
@@ -16,7 +22,8 @@ public class Reminder {
 	private String	displayName;
     private String	actionURI;
 	private String	note;
-    private Date	dateStart;
+    private Date	dateStart,
+    				dateStop;
     private int		period;
 	// --- App fields ---
     private Bitmap contactIconBitmap;
@@ -48,18 +55,36 @@ public class Reminder {
     	contactID = 0;
     	contactIconBitmap = null;
     }
-    public Reminder(Cursor cursor_reminder_db) {
-    	setContactID(cursor_reminder_db.getInt(cursor_reminder_db.getColumnIndex(DBConst.f_CONTACT_ID)));
-    	setNote(cursor_reminder_db.getString(cursor_reminder_db.getColumnIndex(DBConst.f_NOTE)));
-    	setPeriod(cursor_reminder_db.getInt(cursor_reminder_db.getColumnIndex(DBConst.f_PERIOD)));
-    	setActionURI(cursor_reminder_db.getString(cursor_reminder_db.getColumnIndex(DBConst.f_URI_ACTION)));
+    public Reminder(DBReminder db, long reminderID) {
+    	contactID = 0;
+    	contactIconBitmap = null;
+    	// TODO !! Should I store db in the Reminder class?  If so, does it matter that multiple classes
+    	// have a DB handle open at once (or can they share?)
+    	Cursor cu = db.selectID(reminderID);
+		if (cu.moveToFirst()) {
+			setFrom(cu);
+		}    	
+		cu.close();
+    }
+    public Reminder(Cursor c) {
+    	setFrom(c);
+    }
+    public void setFrom(Cursor c) {
+    	setID(c.getInt(c.getColumnIndex(DBConst.f_ID)));
+    	setContactID(c.getInt(c.getColumnIndex(DBConst.f_CONTACT_ID)));
+    	setNote(c.getString(c.getColumnIndex(DBConst.f_NOTE)));
+    	setPeriod(c.getInt(c.getColumnIndex(DBConst.f_PERIOD)));
+    	setActionURI(c.getString(c.getColumnIndex(DBConst.f_URI_ACTION)));
     	
-    	String ds = cursor_reminder_db.getString(cursor_reminder_db.getColumnIndex(DBConst.f_DATETIME_START));
+    	String dstart = c.getString(c.getColumnIndex(DBConst.f_DATETIME_START));
+    	String dstop = c.getString(c.getColumnIndex(DBConst.f_DATETIME_START));
 		SimpleDateFormat f = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		Date d;
 		try {
-			d = f.parse(ds);
+			d = f.parse(dstart);
 	    	setDateStart(d);
+			d = f.parse(dstop);
+	    	setDateStop(d);
 		} catch (ParseException e) {
 			Log.w(TAG, e.getMessage());
 		}
@@ -71,7 +96,35 @@ public class Reminder {
     	}
     	return true;
     }
-	// -----------------------------
+    
+    public Uri updateFromContactsContract(Activity a) { 
+		Uri uriPerson = ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI, getContactID());
+		Cursor cursorPerson = a.managedQuery(uriPerson, null, null, null, null);
+	
+	    if( cursorPerson.moveToFirst()) {
+	        do {
+				// TODO try/catch
+				/**
+				 * TODO Use LOOKUP_KEY instead of _ID? (LOOKUP_KEY is An opaque
+				 * value that contains hints on how to find the contact if its
+				 * row id changed as a result of a sync or aggregation.
+				 * http://developer.android.com/reference/android/provider/ContactsContract.Contacts.html
+				 **/
+	        	
+	     	   setContactID(cursorPerson.getInt(cursorPerson.getColumnIndex(ContactsContract.Contacts._ID)));
+	     	   setDisplayName(cursorPerson.getString(cursorPerson.getColumnIndexOrThrow(ContactsContract.Contacts.DISPLAY_NAME)));
+	     	   
+	           InputStream streamPhoto = ContactsContract.Contacts.openContactPhotoInputStream(a.getContentResolver(), uriPerson);
+	           if (streamPhoto != null) {
+	        	   setContactIconBitmap(BitmapFactory.decodeStream(streamPhoto));
+	           }
+	       }  while(cursorPerson.moveToNext());
+	    }
+	    cursorPerson.close();
+	    return uriPerson;
+    }
+
+    // -----------------------------
 	public int getContactID() {
 		return contactID;
 	}
@@ -101,5 +154,11 @@ public class Reminder {
 	}
 	public void setID(int _ID) {
 		ID = _ID;
+	}
+	public Date getDateStop() {
+		return dateStop;
+	}
+	public void setDateStop(Date dateStop) {
+		this.dateStop = dateStop;
 	}
 }

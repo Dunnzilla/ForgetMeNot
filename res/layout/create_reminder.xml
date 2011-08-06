@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+	android:id="@+id/cr_scrollview" android:layout_width="fill_parent"
+	android:layout_height="fill_parent" xmlns:android="http://schemas.android.com/apk/res/android"
+	>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_height="fill_parent" android:layout_width="fill_parent">
@@ -25,10 +29,10 @@
 	<!--  ======================================================================================== -->
 	
 	<TextView  
+	    android:id="@+id/cr_label_when"
+	    android:text="@string/cr_when"
 	    android:layout_width="fill_parent" 
 	    android:layout_height="wrap_content" 
-	    android:text="@string/cr_when"
-	    android:id="@+id/cr_label_when"
 	    android:layout_below="@id/hr2"
 	    />
 	
@@ -40,7 +44,23 @@
 		android:layout_below="@id/cr_label_when"
 		/>
 
-	<View android:id="@+id/hr3" android:layout_below="@id/cr_datepicker_start" android:background="#7777cc" android:layout_width = "fill_parent" android:layout_height="1dip" android:layout_marginTop="2dp" android:layout_marginBottom="2dp" />
+	<TextView  
+	    android:id="@+id/cr_tv_datepicker_stop"
+	    android:text="@string/cr_label_datepicker_stop"
+	    android:layout_width="fill_parent" 
+	    android:layout_height="wrap_content" 
+	    android:layout_below="@id/cr_datepicker_start"
+	    />
+
+	<DatePicker
+		android:id="@+id/cr_datepicker_stop"
+		android:layout_height="wrap_content"
+		android:layout_width="fill_parent"
+		android:layout_gravity="center_horizontal"
+		android:layout_below="@id/cr_tv_datepicker_stop"
+		/>
+
+	<View android:id="@+id/hr3" android:layout_below="@id/cr_datepicker_stop" android:background="#7777cc" android:layout_width = "fill_parent" android:layout_height="1dip" android:layout_marginTop="2dp" android:layout_marginBottom="2dp" />
 	<!--  ======================================================================================== -->
 	
 
@@ -108,3 +128,4 @@
 
 
 </RelativeLayout>
+</ScrollView>

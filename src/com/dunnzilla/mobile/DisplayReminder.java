@@ -24,25 +24,34 @@ import android.widget.Toast;
 public class DisplayReminder extends Activity {
     private static final String TAG = "DisplayReminder";
     
-    private DB		m_db;
-    Reminder		reminder;
+    private DBReminder	db;
+    Reminder			reminder;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.display_reminder);
         
-    	m_db = new DB(this);
-    	m_db.open();
-
-        // TODO how do I pass in the reminder # to view, and how to parse the Intent which describes it?
-        loadReminderFromID(1);
+    	db = new DBReminder(this);
+    	db.open();
+        
+        Bundle extras = this.getIntent().getExtras();
+        if(extras != null) {
+        	long idReminder = extras.getLong(ReminderService.INTENT_EXTRAS_KEY_REMINDER_ID);
+            loadReminderFromID(idReminder);
+        }
+    	// TODO handle no reminder ID passed in, or an invalid reminder ID
         Intent i = new Intent();
         updateLayout(i);
 	}
+    @Override
+    public void onStop() {    	
+    	db.close();
+    	super.onStop();
+    }
 
     protected void loadReminderFromID(long id) {
-		Cursor cu = m_db.selectID(id);
+		Cursor cu = db.selectID(id);
 		if(cu.moveToFirst()) {
 			reminder = new Reminder(cu);
 	    	Uri uriPerson = ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI, reminder.getContactID());
@@ -63,6 +72,7 @@ public class DisplayReminder extends Activity {
 	        }
 	        cursorPerson.close();
 		}
+		cu.close();
     }
     protected void updateLayout(Intent _intent) {
     	if( ! reminder.valid() ) {

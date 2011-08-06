@@ -3,7 +3,7 @@ package com.dunnzilla.mobile;
 public class DBConst {
 
 	public static final String DBNAME="forgetmenot.db";
-	public static final int    VERSION=1;
+	public static final int    VERSION=2;
 	public static final String TABLE = "reminders";
 	public static final String f_ID = "_id";
 	public static final String f_CONTACT_ID = "contact_id";

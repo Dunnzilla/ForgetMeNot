@@ -25,9 +25,9 @@ public class CreateReminder extends Activity {
 	static final int 			PICK_CONTACT = 1001;
     private static final String TAG = "CreateReminder";
     
-    private DB 	   m_db;
-    private String m_errorMessage;
-    Reminder		reminder;
+    private DBReminder		db;
+    private String			errorMessage;
+    Reminder				reminder;
 
 	@Override
     public void onCreate(Bundle savedInstanceState) {
@@ -41,8 +41,8 @@ public class CreateReminder extends Activity {
         	}
     	}; 
     	
-    	m_db = new DB(this);
-    	m_db.open();
+    	db = new DBReminder(this);
+    	db.open();
     	reminder = new Reminder();
 
         ImageButton ContactIcon  = (ImageButton) findViewById(R.id.cr_contact_icon);
@@ -72,10 +72,10 @@ public class CreateReminder extends Activity {
 	}
 	
 	public String getErrMessage() {
-		return m_errorMessage;
+		return errorMessage;
 	}
 	private void setErrMessage(String e) {
-		m_errorMessage = e;
+		errorMessage = e;
 	}
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
@@ -93,6 +93,8 @@ public class CreateReminder extends Activity {
     public void saveReminder() {
     	DatePicker dp = (DatePicker)findViewById(R.id.cr_datepicker_start);
     	Date d = new Date(dp.getYear() - 1900, dp.getMonth(), dp.getDayOfMonth());
+    	DatePicker dpStop = (DatePicker)findViewById(R.id.cr_datepicker_stop);
+    	Date dateStop = new Date(dpStop.getYear() - 1900, dpStop.getMonth(), dpStop.getDayOfMonth());
     	
     	TextView tvPeriod = (TextView) findViewById(R.id.cr_period);
     	TextView tvNote = (TextView) findViewById(R.id.cr_note);
@@ -102,10 +104,11 @@ public class CreateReminder extends Activity {
     	CreateReminder.this.reminder.setNote(tvNote.getText().toString().trim());
 
     	CreateReminder.this.reminder.setDateStart(d);
+    	CreateReminder.this.reminder.setDateStop(dateStop);
     	Log.v(TAG, "Saving " + CreateReminder.this.reminder.getDisplayName() + " starting date " + "");
     	
     	Intent intent = this.getIntent();
-    	CreateReminder.this.m_db.insert(reminder);
+    	CreateReminder.this.db.insert(reminder);
         if (getParent() == null) {
             setResult(Activity.RESULT_OK, intent);
         } else {
@@ -131,26 +134,27 @@ public class CreateReminder extends Activity {
     }
     protected void getContactInfo(Intent _intent)
     {
-    	/**
-    	 * TODO managedQuery() is deprecated in API 11, replaced by CursorLoader
-    	 */
-    	Uri u = _intent.getData(); 
-    	Cursor cursor = managedQuery(u, null, null, null, null);
-       if( ! cursor.moveToFirst()) {
-    	   cursor.close();
-    	   return;
-       }
-       do {
-    	   // TODO try/catch
-    	   reminder.setContactID(cursor.getInt(cursor.getColumnIndex(ContactsContract.Contacts._ID)));
-    	   reminder.setDisplayName(cursor.getString(cursor.getColumnIndexOrThrow(ContactsContract.Contacts.DISPLAY_NAME)));
-           Bitmap b = loadContactPhoto(reminder.getContactID());
-           if( b != null ) {
-        	   reminder.setContactIconBitmap(b);
-           }
-      }  while(cursor.moveToNext());
-       cursor.close();
-    }//getContactInfo
+		// TODO managedQuery() is deprecated in API 11, replaced by CursorLoader
+		Uri u = _intent.getData();
+		Cursor cursor = managedQuery(u, null, null, null, null);
+		if (!cursor.moveToFirst()) {
+			cursor.close();
+			return;
+		}
+		do {
+			// TODO try/catch
+			// TODO don't mix up getColumnIndex with getColumnIndexOrThrow
+			reminder.setContactID(cursor.getInt(cursor
+					.getColumnIndex(ContactsContract.Contacts._ID)));
+			reminder.setDisplayName(cursor.getString(cursor
+					.getColumnIndexOrThrow(ContactsContract.Contacts.DISPLAY_NAME)));
+			Bitmap b = loadContactPhoto(reminder.getContactID());
+			if (b != null) {
+				reminder.setContactIconBitmap(b);
+			}
+		} while (cursor.moveToNext());
+		cursor.close();
+	}// getContactInfo
     
     public Bitmap loadContactPhoto(long id) {
         Uri uri = ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI, id);

@@ -1,19 +1,14 @@
 package com.dunnzilla.mobile;
 
-import java.io.InputStream;
 import java.util.ArrayList;
 
 import android.app.ActivityManager;
 import android.app.ListActivity;
 import android.app.ActivityManager.RunningServiceInfo;
-import android.content.ContentUris;
 import android.content.Intent;
 import android.database.Cursor;
-import android.graphics.BitmapFactory;
 import android.graphics.PixelFormat;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -29,7 +24,7 @@ public class ForgetMeNot extends ListActivity {
 	//private static final String TAG = "ForgetMeNot";
 
 	private ArrayList<Reminder> reminders;
-	private DB					db;
+	private DBReminder			db;
 	
 	@Override
     public void onCreate(Bundle savedInstanceState) {
@@ -67,7 +62,8 @@ public class ForgetMeNot extends ListActivity {
         repopulate();
 	}
 	private void repopulate() {
-        db = new DB(ForgetMeNot.this);
+		// TODO shouldn't I be deleting db if it's set?
+		db = new DBReminder(ForgetMeNot.this);
         
         if(ForgetMeNot.this.reminders == null) {
         	ForgetMeNot.this.reminders = new ArrayList<Reminder>();
@@ -87,31 +83,8 @@ public class ForgetMeNot extends ListActivity {
 				// (There may be flaws in this method, but I'm new to Android so this
 				// seems like a decent way to decouple the Android data from the Reminder data)
 				
-		    	Uri uriPerson = ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI, r.getContactID());
-		    	// Then query for this specific record:
-		    	Cursor cursorPerson = managedQuery(uriPerson, null, null, null, null);
-
-		        if( cursorPerson.moveToFirst()) {
-			        do {
-			     	   // TODO try/catch
-			     	   r.setContactID(cursorPerson.getInt(cursorPerson.getColumnIndex(ContactsContract.Contacts._ID)));
-			     	   r.setDisplayName(cursorPerson.getString(cursorPerson.getColumnIndexOrThrow(ContactsContract.Contacts.DISPLAY_NAME)));
-			     	   
-			           InputStream streamPhoto = ContactsContract.Contacts.openContactPhotoInputStream(getContentResolver(), uriPerson);
-			           if (streamPhoto != null) {
-			        	   r.setContactIconBitmap(BitmapFactory.decodeStream(streamPhoto));
-			           }
-			       }  while(cursorPerson.moveToNext());
-		        }
-		        cursorPerson.close();
-/*				Log.v(TAG,
-						"ID " + r.getContactID()
-						+ " name " + r.getDisplayName()
-						+ " datestart " + r.getDateStart()
-						+ " period " + r.getPeriod()
-						+ " note " +  r.getNote()
-						);
-*/				reminders.add(r);
+				r.updateFromContactsContract(this);
+				reminders.add(r);
 			} while(cu.moveToNext());
 		}
         ListAdapter adapter;

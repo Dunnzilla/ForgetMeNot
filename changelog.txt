@@ -1,4 +1,37 @@
 --------------------------------------------------------------------------
+ForgetMeNot version 0.4.5 (versionCode 13)
+ForgetMeNot Database version 2
+
+===================================
+FEATURES
+===================================
+1. Notification text now shows the contact name and your note, if provided.
+2. Selecting a notification now takes you to a view for that Reminder.
+3. CreateReminder:
+   - will now scroll if the form is bigger than your display
+   - includes a Datepicker for Reminder end date
+
+===================================
+FIXED BUGS
+===================================
+- DisplayReminder was not closing the DB
+
+* class DBHelper
+- Now creates the datetime_next column
+
+* class Reminder
+- loadReminderFromID() now closes the cusor properly
+- Reminder(Cursor c) now sets reminder ID.
+- Some member variable renames
+
+
+===================================
+MISC
+===================================
+- New class, DBReminder, holds the Reminder-specific stuff.  DB is cleaner.
+- Upgrading the database is still not an option.
+
+--------------------------------------------------------------------------
 ForgetMeNot 0.4.4
 
 ===================================

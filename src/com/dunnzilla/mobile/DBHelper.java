@@ -22,7 +22,8 @@ public class DBHelper extends SQLiteOpenHelper {
 		+ DBConst.f_DATETIME_C + " datetime DEFAULT CURRENT_TIMESTAMP, " 
 		+ DBConst.f_DATETIME_M + " datetime DEFAULT CURRENT_TIMESTAMP, " 
 		+ DBConst.f_DATETIME_START + " datetime DEFAULT CURRENT_TIMESTAMP, "
-		+ DBConst.f_DATETIME_STOP + " datetime, " 
+		+ DBConst.f_DATETIME_STOP + " datetime, "
+		+ DBConst.f_DATETIME_NEXT + " datetime, "
 		+ DBConst.f_PERIOD + " integer NOT NULL, " 
 		+ DBConst.f_URI_ACTION + " text, "
 		+ DBConst.f_NOTE + " text "
@@ -39,10 +40,8 @@ public class DBHelper extends SQLiteOpenHelper {
 	}
 
 	@Override
-	public void onUpgrade(SQLiteDatabase arg0, int arg1, int arg2) {
-		/**
-		 * @todo Create upgrade plan so no data is lost.
-		 */
-		Log.w(TAG, "No need to upgrade database.");
-	}
+	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+		// TODO Create upgrade plan so no data is lost.
+		Log.w(TAG, "Upgrading DB from version " + oldVersion + " to version " + newVersion);
+	} 
 }

@@ -5,6 +5,7 @@
     <string name="cr_title">Create a New Reminder</string>
     <string name="cr_who">Select a Contact</string>
     <string name="cr_when">Start Date</string>
+    <string name="cr_label_datepicker_stop">Stop Date</string>
     <string name="cr_repeat_period">Every</string>
     <string name="vr_default_name">No Name</string>
     <string name="MSG_ERR_CONTACT_NO_PHONE">Contact has no phone numbers!</string>

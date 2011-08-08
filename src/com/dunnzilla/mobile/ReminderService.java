@@ -10,12 +10,14 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
+import android.preference.PreferenceManager;
 import android.provider.ContactsContract;
 import android.provider.ContactsContract.Data;
 import android.util.Log;
@@ -33,6 +35,7 @@ public class ReminderService extends Service {
 	private Timer 				timer;
 	private ArrayList<Reminder> reminders;
 	private DBReminder			db;
+	private long 				timerDelay_ms;
 
 	private TimerTask timerTask = new TimerTask() {
 		public void run() {
@@ -91,10 +94,9 @@ public class ReminderService extends Service {
 
 		String displayName = "";
 	    if( cu.moveToFirst()) {
-	        do {
-				// TODO Make more betters	        	
-	        	displayName = ", " + cu.getString(cu.getColumnIndexOrThrow(ContactsContract.Contacts.DISPLAY_NAME));
-	       }  while(cu.moveToNext());
+	        // do {
+	        displayName = cu.getString(cu.getColumnIndexOrThrow(ContactsContract.Contacts.DISPLAY_NAME));
+	        //}  while(cu.moveToNext());
 	    }
 	    cu.close();
 		
@@ -106,8 +108,10 @@ public class ReminderService extends Service {
 	    }
 		
 		// Why 'final' here, in the middle of a function?
-		final Notification n = new Notification(R.drawable.notify_icon_logo_24, notificationText, System.currentTimeMillis());
+		final Notification n = new Notification(
+				R.drawable.notify_icon_logo_24, notificationText, System.currentTimeMillis());
 
+		n.flags |= Notification.FLAG_AUTO_CANCEL;
 		// TODO get the contentTitle from strings
 		CharSequence contentTitle = "Forget Me Not";
 		n.setLatestEventInfo(getApplicationContext(), contentTitle, notificationText, pendintent);
@@ -130,16 +134,21 @@ public class ReminderService extends Service {
 		handler.sendMessage(m);
 	}
 
+	private void setDefaults() {
+		timerDelay_ms = 3600000;
+	}
 	@Override
 	public void onCreate() {
-		super.onCreate();
+		super.onCreate();		
         db = new DBReminder(this);
+        
+        setDefaults();
+        checkPrefs();
  
 		nm = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
 		timer = new Timer();
-		// TODO Check application preferences for setting the timer delay
-		Log.v(TAG, "Starting service");
-		timer.schedule(timerTask, 10000, 10000);
+		Log.v(TAG, "Starting service. Period is " + timerDelay_ms + "ms");
+		timer.schedule(timerTask, 2000, timerDelay_ms);
 	}
 	
 	@Override
@@ -151,4 +160,13 @@ public class ReminderService extends Service {
 	public IBinder onBind(Intent arg0) {
 		return null;
 	}
+
+    private void checkPrefs() {
+        SharedPreferences prefs = PreferenceManager
+                        .getDefaultSharedPreferences(getBaseContext());
+        String timerDelay = prefs.getString("pref_notify_delay", "3600");
+        Long L = new Long(timerDelay);
+        timerDelay_ms = L.longValue() * 1000;
+    }
 }
+

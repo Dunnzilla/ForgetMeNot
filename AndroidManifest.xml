@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
       package="com.dunnzilla.mobile"
-      android:versionCode="13"
-      android:versionName="0.4.5">
+      android:versionName="0.4.6" android:versionCode="14">
     <uses-sdk android:minSdkVersion="7" />
     
     <!--  To let you pick a contact: -->

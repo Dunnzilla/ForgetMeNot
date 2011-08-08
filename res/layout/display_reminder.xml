@@ -1,4 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+	android:id="@+id/disprem_scrollview" android:layout_width="fill_parent"
+	android:layout_height="fill_parent" xmlns:android="http://schemas.android.com/apk/res/android"
+	>
+
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_height="fill_parent" android:layout_width="fill_parent">
@@ -32,11 +37,109 @@
 		android:layout_toRightOf="@id/vr_contact_icon"
 		android:layout_below="@id/vr_text_who"
 	    />
-
-
-	<View android:id="@+id/hr2" android:layout_below="@id/vr_contact_icon" android:background="#7777cc" android:layout_width = "fill_parent" android:layout_height="1dip" android:layout_marginTop="2dp" android:layout_marginBottom="2dp" />
+	    
+	<View android:id="@+id/hr_top" android:layout_below="@id/vr_contact_icon" android:background="#7777cc" android:layout_width = "fill_parent" android:layout_height="1dip" android:layout_marginTop="2dp" android:layout_marginBottom="2dp" />
 	<!--  ======================================================================================== -->
 
+	<TextView
+	    android:id="@+id/vr_text_note"
+	    android:layout_width="fill_parent" 
+	    android:layout_height="wrap_content" 
+	    android:text="No note"
+	    android:gravity="center_vertical|center_horizontal"
+	    android:layout_marginBottom="10dp"
+		android:textSize="15dip"
+		android:textColor="#DDDDDD"
+		android:layout_marginLeft="2dip"
+		android:layout_marginTop="10dip"
+		android:layout_below="@id/hr_top"
+	    />
 
+	<Button
+		android:id="@+id/disprem_btn_done"
+		android:layout_below="@id/vr_text_note"
+		android:text="@string/disprem_button_complete"
+		 
+	    android:layout_width="120dp" 
+	    android:layout_height="wrap_content" 
+		android:layout_marginLeft="20dip"
+		android:layout_marginRight="20dip"
+		android:layout_marginTop="10dip"
+	    android:layout_marginBottom="10dp"
+		/>
+	<Button
+		android:id="@+id/disprem_btn_snooze"
+		android:layout_below="@id/vr_text_note"
+		android:layout_toRightOf="@id/disprem_btn_done"
+		android:text="@string/disprem_button_snooze"
+		 
+	    android:layout_width="120dp" 
+	    android:layout_height="wrap_content" 
+		android:layout_marginLeft="20dip"
+		android:layout_marginRight="20dip"
+		android:layout_marginTop="10dip"
+	    android:layout_marginBottom="10dp"
+		/>
+<!-- 
+	<ToggleButton
+		android:id="@+id/disprem_btn_activate"
+		android:text="Active"
+    	android:layout_width="wrap_content"
+    	android:layout_below="@id/disprem_btn_done"
+    	android:layout_height="wrap_content"
+    	android:layout_alignLeft="@id/vr_contact_icon"
+    	android:layout_alignRight="@id/vr_contact_icon"
+    	android:layout_marginTop="15dp"
+    	android:layout_marginBottom="15dp"
+		/>
+
+	<TextView
+	    android:id="@+id/disprem_text_activate"
+	    android:text="@string/disprem_text_activate_inactive"
+		android:layout_toRightOf="@id/disprem_btn_activate"
+		android:layout_alignTop="@id/disprem_btn_activate"
+
+	    android:layout_width="fill_parent" 
+	    android:layout_height="wrap_content" 
+		android:textSize="15dip"
+		android:textColor="#DDDDDD"
+		android:layout_marginLeft="2dip"
+	    />
+	<View android:id="@+id/hr_below_actions" android:layout_below="@id/disprem_btn_done" android:background="#7777cc" android:layout_width = "fill_parent" android:layout_height="1dip" android:layout_marginTop="2dp" android:layout_marginBottom="2dp" />
+ -->
+	<!--  ======================================================================================== -->
+
+	<View android:id="@+id/hr_bottom" android:layout_below="@id/disprem_btn_snooze"
+		android:background="#7777cc" android:layout_width="fill_parent"
+		android:layout_height="1dip" android:layout_marginTop="2dp"
+		android:layout_marginBottom="2dp" />
+	
+    <Button
+    	android:id="@+id/disprem_btn_delete"
+    	android:text="Delete"
+    	
+    	android:layout_below="@id/hr_bottom"
+    	
+	    android:layout_width="120dp" 
+	    android:layout_height="wrap_content" 
+		android:layout_marginLeft="20dip"
+		android:layout_marginRight="20dip"
+		android:layout_marginTop="10dip"
+	    android:layout_marginBottom="10dp"
+    	/>
+    <Button
+    	android:id="@+id/disprem_btn_edit"
+    	android:text="Edit"    	
+    	android:layout_toRightOf="@id/disprem_btn_delete"
+    	android:layout_below="@id/hr_bottom"
+
+	    android:layout_width="120dp" 
+	    android:layout_height="wrap_content" 
+		android:layout_marginLeft="20dip"
+		android:layout_marginRight="20dip"
+		android:layout_marginTop="10dip"
+	    android:layout_marginBottom="10dp"
+    	/>
 
 </RelativeLayout>
+</ScrollView>

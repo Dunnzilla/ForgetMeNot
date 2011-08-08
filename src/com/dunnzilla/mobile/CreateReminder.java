@@ -92,20 +92,24 @@ public class CreateReminder extends Activity {
 
     public void saveReminder() {
     	DatePicker dp = (DatePicker)findViewById(R.id.cr_datepicker_start);
-    	Date d = new Date(dp.getYear() - 1900, dp.getMonth(), dp.getDayOfMonth());
+    	Date dateStart = new Date(dp.getYear() - 1900, dp.getMonth(), dp.getDayOfMonth());
     	DatePicker dpStop = (DatePicker)findViewById(R.id.cr_datepicker_stop);
     	Date dateStop = new Date(dpStop.getYear() - 1900, dpStop.getMonth(), dpStop.getDayOfMonth());
     	
     	TextView tvPeriod = (TextView) findViewById(R.id.cr_period);
     	TextView tvNote = (TextView) findViewById(R.id.cr_note);
     	
-    	int i = Integer.parseInt(tvPeriod.getText().toString().trim());
+    	String sPeriod = tvPeriod.getText().toString().trim();
+    	int i = Integer.parseInt(sPeriod);
     	CreateReminder.this.reminder.setPeriod(i);
+
     	CreateReminder.this.reminder.setNote(tvNote.getText().toString().trim());
 
-    	CreateReminder.this.reminder.setDateStart(d);
+    	CreateReminder.this.reminder.setDateStart(dateStart);
+    	CreateReminder.this.reminder.setDateNext(dateStart);
     	CreateReminder.this.reminder.setDateStop(dateStop);
-    	Log.v(TAG, "Saving " + CreateReminder.this.reminder.getDisplayName() + " starting date " + "");
+    	
+    	Log.v(TAG, "New reminder for " + CreateReminder.this.reminder.getDisplayName() + ". Note: " + tvNote.getText().toString());
     	
     	Intent intent = this.getIntent();
     	CreateReminder.this.db.insert(reminder);
@@ -118,7 +122,7 @@ public class CreateReminder extends Activity {
     }
     protected void updateLayout(Intent _intent) {
     	if( ! reminder.valid() ) {
-    		/** @todo Do something to visually indicate the contact chosen is invalid, or is pending selection */
+    		// TODO Do something to visually indicate the contact chosen is invalid, or is pending selection
     		return;
     	}
 		ImageView ivContactIcon = (ImageView) findViewById(R.id.cr_contact_icon);

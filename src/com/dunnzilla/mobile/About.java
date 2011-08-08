@@ -41,7 +41,7 @@ public class About extends Activity {
 		// LnH Picasa Web Albums pics URL (JSON):
 		// https://picasaweb.google.com/data/feed/base/user/thefirehydrant/albumid/5235966506291221969?alt=json&kind=photo&hl=en_US
 		
-		RestClient.connect("https://picasaweb.google.com/data/feed/base/user/thefirehydrant/albumid/5235966506291221969?alt=json&kind=photo&hl=en_US");
+		//RestClient.connect("https://picasaweb.google.com/data/feed/base/user/thefirehydrant/albumid/5235966506291221969?alt=json&kind=photo&hl=en_US");
 		
 		/*
 		 * FMN logo based on WC image

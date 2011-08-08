@@ -1,4 +1,41 @@
 --------------------------------------------------------------------------
+ForgetMeNot version 0.4.6 (versionCode 14)
+ForgetMeNot Database version 2
+
+===================================
+FEATURES
+===================================
+1. Notifications now clear when selected
+2. Displaying a reminder has Completed, Snooze, Edit and Delete buttons.
+   (Only Complete does anything)
+3. Completing a reminder will schedule the next notification for today + N days.
+   (Actually there's a bug that I"m trying to figure out w/ SQLite and
+   datetime but once it's fixed the notification date will be set properly)
+4. Preferences will now let you specify the notification period (minutes, hours, days)
+
+===================================
+FIXED BUGS
+===================================
+- DisplayReminder supports scrolling
+- Creating a reminder now properly sets the next notification date (defaults
+  to Start date
+
+===================================
+NEW BUGS
+===================================
+1. datetime_next is not properly updated
+   http://stackoverflow.com/questions/6982663/android-database-sqlite-sqlitedatabase-rawquery-is-not-updating-a-datetime-colu
+
+===================================
+MISC
+===================================
+- The service is restarted if you change the notification period
+- Default notification period is 1 hour
+
+
+
+
+--------------------------------------------------------------------------
 ForgetMeNot version 0.4.5 (versionCode 13)
 ForgetMeNot Database version 2
 

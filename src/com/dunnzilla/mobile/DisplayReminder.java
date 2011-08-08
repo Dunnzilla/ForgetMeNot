@@ -1,7 +1,6 @@
 package com.dunnzilla.mobile;
 
 import java.io.InputStream;
-import java.util.Date;
 
 import android.app.Activity;
 import android.content.ContentUris;
@@ -15,8 +14,6 @@ import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.DatePicker;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -38,9 +35,27 @@ public class DisplayReminder extends Activity {
         Bundle extras = this.getIntent().getExtras();
         if(extras != null) {
         	long idReminder = extras.getLong(ReminderService.INTENT_EXTRAS_KEY_REMINDER_ID);
+        	Log.v(TAG, "Loading ID " + idReminder);
             loadReminderFromID(idReminder);
         }
+        getApplicationContext();
+
+        
     	// TODO handle no reminder ID passed in, or an invalid reminder ID
+        Button bCreate = (Button) findViewById(R.id.disprem_btn_done);
+        bCreate.setOnClickListener( new View.OnClickListener() {
+        	public void onClick(View view) {
+        		try {
+        			String strSummary = reminder.onEventComplete(db);
+        			Toast.makeText(DisplayReminder.this, strSummary, Toast.LENGTH_SHORT).show();
+        		}
+        		catch(Exception e) {
+        			Toast.makeText(DisplayReminder.this, e.getMessage(), Toast.LENGTH_SHORT).show();        			
+        		}
+      			DisplayReminder.this.finish();
+        	}
+        });
+        
         Intent i = new Intent();
         updateLayout(i);
 	}
@@ -83,11 +98,17 @@ public class DisplayReminder extends Activity {
 		if( reminder.getContactIconBitmap() != null) {
 			ivContactIcon.setImageBitmap(reminder.getContactIconBitmap());
     	}
-
+		
     	if( reminder.getDisplayName().length() > 0 ) {
     		TextView tvName = (TextView) findViewById(R.id.vr_text_who);
     		tvName.setText(reminder.getDisplayName());
     		tvName.setTextColor(0xFFFFFFFF);
+    	}
+
+    	if( reminder.getNote() != null && reminder.getNote().length() > 0 ) {
+    		TextView tv = (TextView) findViewById(R.id.vr_text_note);
+    		tv.setText(reminder.getNote());
+    		tv.setTextColor(0xFFFFFFFF);
     	}
     }
     protected void getContactInfo(Intent _intent)

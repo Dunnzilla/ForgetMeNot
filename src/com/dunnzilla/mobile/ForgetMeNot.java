@@ -21,6 +21,7 @@ public class ForgetMeNot extends ListActivity {
 	private static final int MENU_ITEM_SETTINGS = 1, MENU_ITEM_ABOUT = 2, MENU_ITEM_MESSAGE = 3;
 	private static final int MENU_GROUP_DEFAULT = 1;
 	private static final int CREATE_REMINDER = 1001;
+	private static final int PREFS_UPDATED = 1002;
 	//private static final String TAG = "ForgetMeNot";
 
 	private ArrayList<Reminder> reminders;
@@ -102,12 +103,17 @@ public class ForgetMeNot extends ListActivity {
 
 	@Override
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
-		if ( resultCode == RESULT_OK ) {
-	    	switch(requestCode) {
+    	switch(requestCode) {
 	    	case CREATE_REMINDER:
-	    		ForgetMeNot.this.repopulate();
+	    		if ( resultCode == RESULT_OK ) {
+	    			ForgetMeNot.this.repopulate();
+	    		}
 	       		break;
-	    	}
+	    	case PREFS_UPDATED:
+				Intent rsIntent = new Intent(getApplicationContext(), ReminderService.class);
+				getApplicationContext().stopService(rsIntent);
+				getApplicationContext().startService(rsIntent);
+	    		break;
 		}
     	super.onActivityResult(requestCode, resultCode, intent);
     }
@@ -149,7 +155,7 @@ public class ForgetMeNot extends ListActivity {
     }
     private void start_Prefs() {
     	Intent i = new Intent(this, Prefs.class);
-        startActivity(i);
+    	startActivityForResult(i, PREFS_UPDATED);
     }
     private void start_About() {
     	Intent i = new Intent(this, About.class);

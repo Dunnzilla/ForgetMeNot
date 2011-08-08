@@ -6,6 +6,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import android.content.ContentUris;
+import android.content.ContentValues;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -23,7 +24,8 @@ public class Reminder {
     private String	actionURI;
 	private String	note;
     private Date	dateStart,
-    				dateStop;
+    				dateStop,
+    				dateNext;
     private int		period;
 	// --- App fields ---
     private Bitmap contactIconBitmap;
@@ -51,15 +53,17 @@ public class Reminder {
 		this.dateStart = dateStart;
 	}
 	// -----------------------------
-    public Reminder() {
+	public void defaults() {
     	contactID = 0;
     	contactIconBitmap = null;
+    	period = 1;
+    	ID = 0;
+	}
+    public Reminder() {
+    	defaults();
     }
     public Reminder(DBReminder db, long reminderID) {
-    	contactID = 0;
-    	contactIconBitmap = null;
-    	// TODO !! Should I store db in the Reminder class?  If so, does it matter that multiple classes
-    	// have a DB handle open at once (or can they share?)
+    	defaults();
     	Cursor cu = db.selectID(reminderID);
 		if (cu.moveToFirst()) {
 			setFrom(cu);
@@ -69,7 +73,17 @@ public class Reminder {
     public Reminder(Cursor c) {
     	setFrom(c);
     }
-    public void setFrom(Cursor c) {
+    public String onEventComplete(DBReminder db) {
+    	String strNextDateTime = "datetime('now', '+" + getPeriod() + " days')";
+    	db.set_datetime_next(this, strNextDateTime);
+    	// TODO log the "Complete!" action in an audit / analysis DB
+    	
+    	String summary = "Contact again in " + getPeriod() + " days";
+    	Log.i(TAG, "Reminder ID " + getID() + "completed by user. " + summary);
+    	
+    	return summary;
+    }
+    public void setFrom(Cursor c) {    	
     	setID(c.getInt(c.getColumnIndex(DBConst.f_ID)));
     	setContactID(c.getInt(c.getColumnIndex(DBConst.f_CONTACT_ID)));
     	setNote(c.getString(c.getColumnIndex(DBConst.f_NOTE)));
@@ -78,13 +92,17 @@ public class Reminder {
     	
     	String dstart = c.getString(c.getColumnIndex(DBConst.f_DATETIME_START));
     	String dstop = c.getString(c.getColumnIndex(DBConst.f_DATETIME_START));
-		SimpleDateFormat f = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		Date d;
+    	String dnext = c.getString(c.getColumnIndex(DBConst.f_DATETIME_NEXT));
+    	
 		try {
+			SimpleDateFormat f = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			Date d;
 			d = f.parse(dstart);
 	    	setDateStart(d);
 			d = f.parse(dstop);
 	    	setDateStop(d);
+			d = f.parse(dnext);
+	    	setDateNext(d);
 		} catch (ParseException e) {
 			Log.w(TAG, e.getMessage());
 		}
@@ -160,5 +178,11 @@ public class Reminder {
 	}
 	public void setDateStop(Date dateStop) {
 		this.dateStop = dateStop;
+	}
+	public Date getDateNext() {
+		return dateNext;
+	}
+	public void setDateNext(Date dateNext) {
+		this.dateNext = dateNext;
 	}
 }

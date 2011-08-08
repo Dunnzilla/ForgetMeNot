@@ -12,4 +12,12 @@
          android:key="Audio" android:title="Reminder Tone"
          android:ringtoneType="notification">
       </RingtonePreference>
+      
+ 	<ListPreference
+  		android:title="Notify frequency"
+  		android:summary="How often to generate notifications for due Reminders"
+  		android:key="pref_notify_delay"
+  		android:entries="@array/pref_notify_delay_options"
+		android:entryValues="@array/pref_notify_delay_values"
+	/>      
 </PreferenceScreen>

@@ -4,6 +4,7 @@ import java.text.SimpleDateFormat;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteException;
 import android.util.Log;
 
@@ -29,7 +30,7 @@ public class DBReminder extends DB {
 			cv.put(DBConst.f_URI_ACTION, r.getActionURI());
 			cv.put(DBConst.f_NOTE, r.getNote());
 			cv.put(DBConst.f_DATETIME_STOP, dateFormat.format(r.getDateStop()));
-			// TODO DBConst.f_DATETIME_NEXT 
+			cv.put(DBConst.f_DATETIME_NEXT, dateFormat.format(r.getDateNext()));
 
 			db.insert(DBConst.TABLE, null, cv);
 
@@ -39,5 +40,20 @@ public class DBReminder extends DB {
 	}
 	public void delete(Reminder r) {
 		delete(r.getID());
+	}
+	public int update(Reminder r, ContentValues contentvals) {
+		String where = DBConst.f_ID + "=?";
+		String[] whereArgs = { Integer.toString(r.getID()) };
+		return db.update(DBConst.TABLE, contentvals, where, whereArgs);
+	}
+	
+	public Cursor set_datetime_next(Reminder r, String _newVal) {		
+		String[] args = { new Integer(r.getID()).toString() };
+		String query =
+			"UPDATE " + DBConst.TABLE
+		  + " SET "   + DBConst.f_DATETIME_NEXT + "=" + _newVal
+		  + " WHERE " + DBConst.f_ID +"=?";
+		Log.i(TAG, query);
+		return db.rawQuery(query, args);
 	}
 }

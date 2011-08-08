@@ -8,6 +8,14 @@
     <string name="cr_label_datepicker_stop">Stop Date</string>
     <string name="cr_repeat_period">Every</string>
     <string name="vr_default_name">No Name</string>
+    
+    <string name="disprem_button_complete">Complete!</string>
+    <string name="disprem_button_snooze">Snooze</string>
+ 
+    <string name="disprem_text_activate_active">This reminder creates notifications</string>
+    <string name="disprem_text_activate_inactive">This reminder does not create notifications.</string>
+
+    
     <string name="MSG_ERR_CONTACT_NO_PHONE">Contact has no phone numbers!</string>
     
     <string name="TITLE_PICK_PHONE">Select a phone number</string>

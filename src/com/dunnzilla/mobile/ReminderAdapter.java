@@ -13,12 +13,14 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -88,12 +90,16 @@ public class ReminderAdapter extends BaseAdapter implements ListAdapter {
 			tvName.setId(3);
 			tvNote = new TextView(context);
 			tvNote.setId(4);
+			ImageButton ibDoIt = new ImageButton(context);
+			ibDoIt.setId(5);
 
 			RelativeLayout.LayoutParams lp_tvName = new RelativeLayout.LayoutParams(
 					LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
 			RelativeLayout.LayoutParams lp_tvNote = new RelativeLayout.LayoutParams(
 					LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
 			RelativeLayout.LayoutParams lp_ibContactIcon = new RelativeLayout.LayoutParams(
+					LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+			RelativeLayout.LayoutParams lp_ibDoIt = new RelativeLayout.LayoutParams(
 					LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
 
 			Bitmap b = loadContactPhoto(r.getContactID());
@@ -102,6 +108,8 @@ public class ReminderAdapter extends BaseAdapter implements ListAdapter {
 			} else {
 				ib.setImageResource(R.drawable.ic_contact_picture);
 			}
+			
+			ibDoIt.setImageResource(R.drawable.ic_launcher_voicedial);
 	           
 			tvName.setText(r.getDisplayName());
 			tvName.setShadowLayer(4.0f, 4.0f, 4.0f, 0xFF000000);
@@ -122,13 +130,28 @@ public class ReminderAdapter extends BaseAdapter implements ListAdapter {
 			lp_tvNote.addRule(RelativeLayout.RIGHT_OF, ib.getId());
 			lp_tvNote.setMargins(5, 0, 0, 0);
 			
-			// Setup the OnClickListener which will be used for all the views in this listview entry
-			OnClickListener oc = new View.OnClickListener() {
+			lp_ibDoIt.addRule(RelativeLayout.ALIGN_PARENT_TOP);
+			lp_ibDoIt.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+			
+			// Most of the items in this ListView will simply DisplayReminder
+			OnClickListener ocDisplay = new View.OnClickListener() {
 	        	public void onClick(View view) {
-	        		ArrayList<String> arPhones = new ArrayList<String>();
 	        		Reminder r = (Reminder) view.getTag(R.string.TAG_ID_ReminderAdapter_Reminder);
 	        		final Context contextParent = (Context) view.getTag(R.string.TAG_ID_ReminderAdapter_Context);
-	        		
+					Intent intentDisplay = new Intent(context, DisplayReminder.class);
+					Bundle b = new Bundle();
+					b.putLong(DisplayReminder.INTENT_EXTRAS_KEY_REMINDER_ID, r.getID());  
+					intentDisplay.putExtras(b);					
+					contextParent.startActivity(intentDisplay);
+	        	}
+	        };
+
+			OnClickListener ocCall = new View.OnClickListener() {
+	        	public void onClick(View view) {
+	        		Reminder r = (Reminder) view.getTag(R.string.TAG_ID_ReminderAdapter_Reminder);
+	        		final Context contextParent = (Context) view.getTag(R.string.TAG_ID_ReminderAdapter_Context);					
+	        		ArrayList<String> arPhones = new ArrayList<String>();
+
 					Cursor phones = contextParent.getContentResolver().query(
 							ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
 							null,
@@ -160,7 +183,6 @@ public class ReminderAdapter extends BaseAdapter implements ListAdapter {
 											int which) {
 										String selectedPhone = phonesArr[which];
 										Uri uri = Uri.parse("tel://" + selectedPhone);
-										//editText.setText(selectedEmail);
 										Intent callIntent = new Intent(Intent.ACTION_CALL, uri); 
 										contextParent.startActivity(callIntent);
 										return;
@@ -176,6 +198,7 @@ public class ReminderAdapter extends BaseAdapter implements ListAdapter {
 					contextParent.startActivity(callIntent);
 	        	}
 	        };
+	        // TODO set up long click
 
 	        // TODO There has got to be a better way:
 			ib.setTag(R.string.TAG_ID_ReminderAdapter_Reminder, r);
@@ -186,17 +209,21 @@ public class ReminderAdapter extends BaseAdapter implements ListAdapter {
 			tvNote.setTag(R.string.TAG_ID_ReminderAdapter_Context, context);
 			v.setTag(R.string.TAG_ID_ReminderAdapter_Reminder, r);
 			v.setTag(R.string.TAG_ID_ReminderAdapter_Context, context);
+			ibDoIt.setTag(R.string.TAG_ID_ReminderAdapter_Reminder, r);
+			ibDoIt.setTag(R.string.TAG_ID_ReminderAdapter_Context, context);
 
 			
-			ib.setOnClickListener(oc);
-			tvName.setOnClickListener(oc);
-			tvNote.setOnClickListener(oc);
-			v.setOnClickListener(oc);
+			ib.setOnClickListener(ocDisplay);
+			tvName.setOnClickListener(ocDisplay);
+			tvNote.setOnClickListener(ocDisplay);
+			v.setOnClickListener(ocDisplay);			
+			ibDoIt.setOnClickListener(ocCall);
 
 			// Let's add them to the view!
 			v.addView(ib, lp_ibContactIcon);
 			v.addView(tvName, lp_tvName);
 			v.addView(tvNote, lp_tvNote);
+			v.addView(ibDoIt, lp_ibDoIt);
 		} else {
 			v = (RelativeLayout) oldView;
 		}

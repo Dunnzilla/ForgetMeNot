@@ -20,6 +20,7 @@ import android.widget.Toast;
 
 public class DisplayReminder extends Activity {
     private static final String TAG = "DisplayReminder";
+	public static final String INTENT_EXTRAS_KEY_REMINDER_ID = "REMINDER_ID";
     
     private DBReminder	db;
     Reminder			reminder;
@@ -34,7 +35,7 @@ public class DisplayReminder extends Activity {
         
         Bundle extras = this.getIntent().getExtras();
         if(extras != null) {
-        	long idReminder = extras.getLong(ReminderService.INTENT_EXTRAS_KEY_REMINDER_ID);
+        	long idReminder = extras.getLong(INTENT_EXTRAS_KEY_REMINDER_ID);
         	Log.v(TAG, "Loading ID " + idReminder);
             loadReminderFromID(idReminder);
         }
@@ -55,6 +56,35 @@ public class DisplayReminder extends Activity {
       			DisplayReminder.this.finish();
         	}
         });
+
+        Button bSnooze = (Button) findViewById(R.id.disprem_btn_snooze);
+        bSnooze.setOnClickListener( new View.OnClickListener() {
+        	public void onClick(View view) {
+        		try {
+        			String strSummary = reminder.onEventSnooze(db);
+        			Toast.makeText(DisplayReminder.this, strSummary, Toast.LENGTH_SHORT).show();
+        		}
+        		catch(Exception e) {
+        			Toast.makeText(DisplayReminder.this, e.getMessage(), Toast.LENGTH_SHORT).show();        			
+        		}
+      			DisplayReminder.this.finish();
+        	}
+        });
+
+        Button bDelete = (Button) findViewById(R.id.disprem_btn_delete);
+        bDelete.setOnClickListener( new View.OnClickListener() {
+        	public void onClick(View view) {
+        		try {
+        			String strSummary = reminder.onEventDelete(db);
+        			Toast.makeText(DisplayReminder.this, strSummary, Toast.LENGTH_SHORT).show();
+        		}
+        		catch(Exception e) {
+        			Toast.makeText(DisplayReminder.this, e.getMessage(), Toast.LENGTH_SHORT).show();        			
+        		}
+      			DisplayReminder.this.finish();
+        	}
+        });
+
         
         Intent i = new Intent();
         updateLayout(i);

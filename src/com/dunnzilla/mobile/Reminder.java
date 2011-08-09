@@ -6,7 +6,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import android.content.ContentUris;
-import android.content.ContentValues;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -73,16 +72,32 @@ public class Reminder {
     public Reminder(Cursor c) {
     	setFrom(c);
     }
-    public String onEventComplete(DBReminder db) {
+    public void calcAndSetNextDatetime(DBReminder db) {
     	String strNextDateTime = "datetime('now', '+" + getPeriod() + " days')";
-    	db.set_datetime_next(this, strNextDateTime);
+    	db.set_datetime_next(this, strNextDateTime);    	
+    }
+    public String onEventComplete(DBReminder db) {
     	// TODO log the "Complete!" action in an audit / analysis DB
-    	
+    	calcAndSetNextDatetime(db);
     	String summary = "Contact again in " + getPeriod() + " days";
     	Log.i(TAG, "Reminder ID " + getID() + "completed by user. " + summary);
-    	
     	return summary;
     }
+    public String onEventSnooze(DBReminder db) {
+    	// TODO log the "Snooze" action in an audit / analysis DB
+    	calcAndSetNextDatetime(db);
+    	String summary = "Snoozing " + getPeriod() + " days";
+    	Log.i(TAG, "Reminder ID " + getID() + " snoozed. " + summary);
+    	return summary;
+    }
+    public String onEventDelete(DBReminder db) {
+    	// TODO log the "Snooze" action in an audit / analysis DB
+    	db.delete(getID());
+    	String summary = "Reminder deleted";
+    	Log.i(TAG, "Reminder ID " + getID() + " deleted.");
+    	return summary;
+    }
+
     public void setFrom(Cursor c) {    	
     	setID(c.getInt(c.getColumnIndex(DBConst.f_ID)));
     	setContactID(c.getInt(c.getColumnIndex(DBConst.f_CONTACT_ID)));

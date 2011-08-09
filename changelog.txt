@@ -1,4 +1,33 @@
 --------------------------------------------------------------------------
+ForgetMeNot version 0.4.7 (versionCode 15)
+ForgetMeNot Database version 2
+
+===================================
+FEATURES
+===================================
+1. Reminder display buttons functional:
+   - Delete
+   - Snooze
+   - Complete (works properly)
+2. Main screen list:
+   - Will now by default Display a reminder
+   - A new button allows you to call the contact
+
+
+===================================
+FIXED BUGS
+===================================
+1. Notifications next reminder dates are set properly
+
+===================================
+MISC
+===================================
+1. Moved INTENT_EXTRAS_KEY_REMINDER_ID definition from ReminderService
+   to DisplayReminder since DR was the recipient of that value, and
+   now multiple Activities will be launching DisplayReminder.
+   
+
+--------------------------------------------------------------------------
 ForgetMeNot version 0.4.6 (versionCode 14)
 ForgetMeNot Database version 2
 

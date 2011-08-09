@@ -47,13 +47,15 @@ public class DBReminder extends DB {
 		return db.update(DBConst.TABLE, contentvals, where, whereArgs);
 	}
 	
-	public Cursor set_datetime_next(Reminder r, String _newVal) {		
+	public void set_datetime_next(Reminder r, String _newVal) {		
 		String[] args = { new Integer(r.getID()).toString() };
 		String query =
 			"UPDATE " + DBConst.TABLE
 		  + " SET "   + DBConst.f_DATETIME_NEXT + "=" + _newVal
 		  + " WHERE " + DBConst.f_ID +"=?";
 		Log.i(TAG, query);
-		return db.rawQuery(query, args);
+		Cursor cu = db.rawQuery(query, args);
+		cu.moveToFirst();
+		cu.close();		
 	}
 }

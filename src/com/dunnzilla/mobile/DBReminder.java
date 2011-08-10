@@ -58,4 +58,11 @@ public class DBReminder extends DB {
 		cu.moveToFirst();
 		cu.close();		
 	}
+	public Cursor selectAllActiveByDue() {
+		Cursor c;
+		String orderBy = DBConst.f_DATETIME_NEXT + " asc";
+		// My eyes, they bleed:
+		c = db.query(DBConst.TABLE, null, null, null, null, null, orderBy);
+		return c;
+	}
 }

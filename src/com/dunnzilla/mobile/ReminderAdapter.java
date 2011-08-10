@@ -92,6 +92,8 @@ public class ReminderAdapter extends BaseAdapter implements ListAdapter {
 			tvNote.setId(4);
 			ImageButton ibDoIt = new ImageButton(context);
 			ibDoIt.setId(5);
+			TextView tvSummary = new TextView(context);
+			tvSummary.setId(6);			
 
 			RelativeLayout.LayoutParams lp_tvName = new RelativeLayout.LayoutParams(
 					LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
@@ -101,7 +103,10 @@ public class ReminderAdapter extends BaseAdapter implements ListAdapter {
 					LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
 			RelativeLayout.LayoutParams lp_ibDoIt = new RelativeLayout.LayoutParams(
 					LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+			RelativeLayout.LayoutParams lp_tvSummary = new RelativeLayout.LayoutParams(
+					LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);			
 
+			
 			Bitmap b = loadContactPhoto(r.getContactID());
 			if (b != null) {
 				ib.setImageBitmap(b);
@@ -117,6 +122,7 @@ public class ReminderAdapter extends BaseAdapter implements ListAdapter {
 			tvName.setTextColor(0xFFFFFFFF);
 			tvName.setTextSize(android.util.TypedValue.COMPLEX_UNIT_PT, 8);
 			tvNote.setText(r.getNote());
+			tvSummary.setText("Due " + r.getDescrDue());
 
 			// Set up the relative positions
 			lp_ibContactIcon.addRule(RelativeLayout.ALIGN_PARENT_TOP);
@@ -130,8 +136,13 @@ public class ReminderAdapter extends BaseAdapter implements ListAdapter {
 			lp_tvNote.addRule(RelativeLayout.RIGHT_OF, ib.getId());
 			lp_tvNote.setMargins(5, 0, 0, 0);
 			
+			lp_tvSummary.addRule(RelativeLayout.BELOW, tvNote.getId());
+			lp_tvSummary.addRule(RelativeLayout.RIGHT_OF, ib.getId());
+			lp_tvSummary.setMargins(5, 0, 0, 0);
+			
 			lp_ibDoIt.addRule(RelativeLayout.ALIGN_PARENT_TOP);
 			lp_ibDoIt.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+			lp_ibDoIt.setMargins(5, 0, 0, 0);
 			
 			// Most of the items in this ListView will simply DisplayReminder
 			OnClickListener ocDisplay = new View.OnClickListener() {
@@ -216,13 +227,16 @@ public class ReminderAdapter extends BaseAdapter implements ListAdapter {
 			ib.setOnClickListener(ocDisplay);
 			tvName.setOnClickListener(ocDisplay);
 			tvNote.setOnClickListener(ocDisplay);
+			tvSummary.setOnClickListener(ocDisplay);
 			v.setOnClickListener(ocDisplay);			
 			ibDoIt.setOnClickListener(ocCall);
+			
 
 			// Let's add them to the view!
 			v.addView(ib, lp_ibContactIcon);
 			v.addView(tvName, lp_tvName);
 			v.addView(tvNote, lp_tvNote);
+			v.addView(tvSummary, lp_tvSummary);
 			v.addView(ibDoIt, lp_ibDoIt);
 		} else {
 			v = (RelativeLayout) oldView;

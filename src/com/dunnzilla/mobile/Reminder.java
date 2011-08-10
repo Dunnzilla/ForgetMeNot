@@ -156,6 +156,27 @@ public class Reminder {
 	    cursorPerson.close();
 	    return uriPerson;
     }
+    public String getDescrDue() {
+    	Date d = new Date();
+    	long diff_ms = getDateNext().getTime() - d.getTime();
+    	long daysUntilDue = diff_ms / 86400000L;
+    	if(daysUntilDue < -1) {
+    		return (new Long(daysUntilDue).toString() + " days ago"); 
+    	}
+    	if(daysUntilDue == -1) {
+    		return "yesterday";
+    	}
+    	if(daysUntilDue == 0) {
+    		return "today";
+    	}
+    	if(daysUntilDue == 1) {
+    		return "tomorrow"; 
+    	}
+    	if(daysUntilDue > 1) {
+    		return "in " + (new Long(daysUntilDue).toString()) + " days"; 
+    	}
+    	return "eventually";    	
+    }
 
     // -----------------------------
 	public int getContactID() {

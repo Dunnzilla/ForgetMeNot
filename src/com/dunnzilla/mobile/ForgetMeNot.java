@@ -72,7 +72,7 @@ public class ForgetMeNot extends ListActivity {
         	ForgetMeNot.this.reminders.clear();
         }
         
-		Cursor cu = db.selectAll();
+		Cursor cu = db.selectAllActiveByDue();
 		startManagingCursor(cu);
 		if(cu.moveToFirst()) {
 			do {
@@ -88,6 +88,8 @@ public class ForgetMeNot extends ListActivity {
 				reminders.add(r);
 			} while(cu.moveToNext());
 		}
+    	this.getListView().setCacheColorHint(0);  // Prevent the listview from going black when scrolling?
+    	
         ListAdapter adapter;
     	adapter = new ReminderAdapter(this, reminders);
         setListAdapter(adapter);

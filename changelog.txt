@@ -1,4 +1,23 @@
 --------------------------------------------------------------------------
+ForgetMeNot version 0.4.8 (versionCode 16)
+ForgetMeNot Database version 2
+
+===================================
+FEATURES
+===================================
+1. Main screen list:
+   - shows a summary of when they're due
+   - is sorted with most overdue at top
+   - should no longer turn black when scrolling
+
+===================================
+FIXED BUGS
+===================================
+1. Main screen list background turned black when scrolling
+
+
+
+--------------------------------------------------------------------------
 ForgetMeNot version 0.4.7 (versionCode 15)
 ForgetMeNot Database version 2
 

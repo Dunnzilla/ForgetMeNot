@@ -1,4 +1,20 @@
 --------------------------------------------------------------------------
+ForgetMeNot version 0.4.9 (versionCode 17)
+ForgetMeNot Database version 2
+
+===================================
+FEATURES
+===================================
+1. Bugfix-only release
+
+===================================
+FIXED BUGS
+===================================
+1. Main screen call icon is now vertically centered
+2. Due date shows "N days ago" for overdue tasks rather than "-N days ago".
+   (For 1 day overdue tasks it still shows 'yesterday')
+
+--------------------------------------------------------------------------
 ForgetMeNot version 0.4.8 (versionCode 16)
 ForgetMeNot Database version 2
 

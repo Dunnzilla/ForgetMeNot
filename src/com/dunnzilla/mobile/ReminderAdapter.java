@@ -140,7 +140,7 @@ public class ReminderAdapter extends BaseAdapter implements ListAdapter {
 			lp_tvSummary.addRule(RelativeLayout.RIGHT_OF, ib.getId());
 			lp_tvSummary.setMargins(5, 0, 0, 0);
 			
-			lp_ibDoIt.addRule(RelativeLayout.ALIGN_PARENT_TOP);
+			lp_ibDoIt.addRule(RelativeLayout.CENTER_VERTICAL);
 			lp_ibDoIt.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
 			lp_ibDoIt.setMargins(5, 0, 0, 0);
 			

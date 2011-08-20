@@ -161,7 +161,7 @@ public class Reminder {
     	long diff_ms = getDateNext().getTime() - d.getTime();
     	long daysUntilDue = diff_ms / 86400000L;
     	if(daysUntilDue < -1) {
-    		return (new Long(daysUntilDue).toString() + " days ago"); 
+    		return (new Long(java.lang.Math.abs(daysUntilDue)).toString() + " days ago"); 
     	}
     	if(daysUntilDue == -1) {
     		return "yesterday";

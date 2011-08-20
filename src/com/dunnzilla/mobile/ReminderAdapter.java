@@ -20,7 +20,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -78,21 +77,22 @@ public class ReminderAdapter extends BaseAdapter implements ListAdapter {
 	@Override
 	public View getView(int arg0, View oldView, ViewGroup vgParent) {
 		RelativeLayout v;
-		TextView tvName, tvNote;
+		TextView tvName, tvNote, tvSummary;
+		ImageButton ib, ibDoIt; 
+		Reminder r = reminders.get(arg0);
 		if (oldView == null) {		 
-			Reminder r = reminders.get(arg0);
 			v = new RelativeLayout(context);
 
 			v.setId(1);
-			ImageButton ib = new ImageButton(context);
+			ib = new ImageButton(context);
 			ib.setId(2);
 			tvName = new TextView(context);
 			tvName.setId(3);
 			tvNote = new TextView(context);
 			tvNote.setId(4);
-			ImageButton ibDoIt = new ImageButton(context);
+			ibDoIt = new ImageButton(context);
 			ibDoIt.setId(5);
-			TextView tvSummary = new TextView(context);
+			tvSummary = new TextView(context);
 			tvSummary.setId(6);			
 
 			RelativeLayout.LayoutParams lp_tvName = new RelativeLayout.LayoutParams(
@@ -106,27 +106,8 @@ public class ReminderAdapter extends BaseAdapter implements ListAdapter {
 			RelativeLayout.LayoutParams lp_tvSummary = new RelativeLayout.LayoutParams(
 					LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);			
 
-			
-			Bitmap b = loadContactPhoto(r.getContactID());
-			if (b != null) {
-				ib.setImageBitmap(b);
-			} else {
-				ib.setImageResource(R.drawable.ic_contact_picture);
-			}
-			
-			ibDoIt.setImageResource(R.drawable.ic_launcher_voicedial);
-	           
-			tvName.setText(r.getDisplayName());
-			tvName.setShadowLayer(4.0f, 4.0f, 4.0f, 0xFF000000);
-			// TODO change color based on whatever silliness the user wants.
-			tvName.setTextColor(0xFFFFFFFF);
-			tvName.setTextSize(android.util.TypedValue.COMPLEX_UNIT_PT, 8);
-			tvNote.setText(r.getNote());
-			tvSummary.setText("Due " + r.getDescrDue());
-
 			// Set up the relative positions
 			lp_ibContactIcon.addRule(RelativeLayout.ALIGN_PARENT_TOP);
-
 			
 			lp_tvName.addRule(RelativeLayout.ALIGN_PARENT_TOP);
 			lp_tvName.addRule(RelativeLayout.RIGHT_OF, ib.getId());
@@ -144,93 +125,6 @@ public class ReminderAdapter extends BaseAdapter implements ListAdapter {
 			lp_ibDoIt.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
 			lp_ibDoIt.setMargins(5, 0, 0, 0);
 			
-			// Most of the items in this ListView will simply DisplayReminder
-			OnClickListener ocDisplay = new View.OnClickListener() {
-	        	public void onClick(View view) {
-	        		Reminder r = (Reminder) view.getTag(R.string.TAG_ID_ReminderAdapter_Reminder);
-	        		final Context contextParent = (Context) view.getTag(R.string.TAG_ID_ReminderAdapter_Context);
-					Intent intentDisplay = new Intent(context, DisplayReminder.class);
-					Bundle b = new Bundle();
-					b.putLong(DisplayReminder.INTENT_EXTRAS_KEY_REMINDER_ID, r.getID());  
-					intentDisplay.putExtras(b);					
-					contextParent.startActivity(intentDisplay);
-	        	}
-	        };
-
-			OnClickListener ocCall = new View.OnClickListener() {
-	        	public void onClick(View view) {
-	        		Reminder r = (Reminder) view.getTag(R.string.TAG_ID_ReminderAdapter_Reminder);
-	        		final Context contextParent = (Context) view.getTag(R.string.TAG_ID_ReminderAdapter_Context);					
-	        		ArrayList<String> arPhones = new ArrayList<String>();
-
-					Cursor phones = contextParent.getContentResolver().query(
-							ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
-							null,
-							ContactsContract.CommonDataKinds.Phone.CONTACT_ID
-									+ " = " + r.getContactID(), null, null);
-					while (phones.moveToNext()) {
-						String phoneNumber = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
-						Log.v(TAG, "Phone # is " + phoneNumber);
-						arPhones.add(phoneNumber);
-					}
-
-					phones.close();
-					Uri uri;
-					if(arPhones.size() == 0) {
-						Toast.makeText(contextParent, R.string.MSG_ERR_CONTACT_NO_PHONE, Toast.LENGTH_SHORT).show();
-						return;
-					} else if(arPhones.size() > 1) {
-						
-						final String[] phonesArr = new String[arPhones.size()];
-						for (int i = 0; i < arPhones.size(); i++) {
-							phonesArr[i] = arPhones.get(i);
-						}
-
-						AlertDialog.Builder dialog = new AlertDialog.Builder(contextParent);
-						dialog.setTitle(R.string.TITLE_PICK_PHONE);
-						((Builder) dialog).setItems(phonesArr,
-								new DialogInterface.OnClickListener() {
-									public void onClick(DialogInterface dialog,
-											int which) {
-										String selectedPhone = phonesArr[which];
-										Uri uri = Uri.parse("tel://" + selectedPhone);
-										Intent callIntent = new Intent(Intent.ACTION_CALL, uri); 
-										contextParent.startActivity(callIntent);
-										return;
-									}
-								}).create();
-						dialog.show();
-                        return;             
-					} else {
-						uri = Uri.parse("tel://" + arPhones.get(0));
-					}
-
-					Intent callIntent = new Intent(Intent.ACTION_CALL, uri); 
-					contextParent.startActivity(callIntent);
-	        	}
-	        };
-	        // TODO set up long click
-
-	        // TODO There has got to be a better way:
-			ib.setTag(R.string.TAG_ID_ReminderAdapter_Reminder, r);
-			ib.setTag(R.string.TAG_ID_ReminderAdapter_Context, context);
-			tvName.setTag(R.string.TAG_ID_ReminderAdapter_Reminder, r);
-			tvName.setTag(R.string.TAG_ID_ReminderAdapter_Context, context);
-			tvNote.setTag(R.string.TAG_ID_ReminderAdapter_Reminder, r);
-			tvNote.setTag(R.string.TAG_ID_ReminderAdapter_Context, context);
-			v.setTag(R.string.TAG_ID_ReminderAdapter_Reminder, r);
-			v.setTag(R.string.TAG_ID_ReminderAdapter_Context, context);
-			ibDoIt.setTag(R.string.TAG_ID_ReminderAdapter_Reminder, r);
-			ibDoIt.setTag(R.string.TAG_ID_ReminderAdapter_Context, context);
-
-			
-			ib.setOnClickListener(ocDisplay);
-			tvName.setOnClickListener(ocDisplay);
-			tvNote.setOnClickListener(ocDisplay);
-			tvSummary.setOnClickListener(ocDisplay);
-			v.setOnClickListener(ocDisplay);			
-			ibDoIt.setOnClickListener(ocCall);
-			
 
 			// Let's add them to the view!
 			v.addView(ib, lp_ibContactIcon);
@@ -240,7 +134,117 @@ public class ReminderAdapter extends BaseAdapter implements ListAdapter {
 			v.addView(ibDoIt, lp_ibDoIt);
 		} else {
 			v = (RelativeLayout) oldView;
+
+			ib =  (ImageButton) v.findViewById(2);
+			tvName = (TextView) v.findViewById(3);
+			tvNote = (TextView) v.findViewById(4);
+			ibDoIt = (ImageButton) v.findViewById(5);
+			tvSummary = (TextView) v.findViewById(6);
+			
 		}
+		Bitmap b = loadContactPhoto(r.getContactID());
+		if (b != null) {
+			ib.setImageBitmap(b);
+		} else {
+			ib.setImageResource(R.drawable.ic_contact_picture);
+		}
+		
+		ibDoIt.setImageResource(R.drawable.ic_launcher_voicedial);
+           
+		tvName.setText(r.getDisplayName());
+		tvName.setShadowLayer(4.0f, 4.0f, 4.0f, 0xFF000000);
+		// TODO change color based on whatever silliness the user wants.
+		tvName.setTextColor(0xFFFFFFFF);
+		tvName.setTextSize(android.util.TypedValue.COMPLEX_UNIT_PT, 8);
+		tvNote.setText(r.getNote());
+		tvSummary.setText("Due " + r.getDescrDue());
+		// Most of the items in this ListView will simply DisplayReminder
+		OnClickListener ocDisplay = new View.OnClickListener() {
+        	public void onClick(View view) {
+        		Reminder r = (Reminder) view.getTag(R.string.TAG_ID_ReminderAdapter_Reminder);
+        		final Context contextParent = (Context) view.getTag(R.string.TAG_ID_ReminderAdapter_Context);
+				Intent intentDisplay = new Intent(context, DisplayReminder.class);
+				Bundle b = new Bundle();
+				b.putLong(DisplayReminder.INTENT_EXTRAS_KEY_REMINDER_ID, r.getID());  
+				intentDisplay.putExtras(b);					
+				contextParent.startActivity(intentDisplay);
+        	}
+        };
+
+		OnClickListener ocCall = new View.OnClickListener() {
+        	public void onClick(View view) {
+        		Reminder r = (Reminder) view.getTag(R.string.TAG_ID_ReminderAdapter_Reminder);
+        		final Context contextParent = (Context) view.getTag(R.string.TAG_ID_ReminderAdapter_Context);					
+        		ArrayList<String> arPhones = new ArrayList<String>();
+
+				Cursor phones = contextParent.getContentResolver().query(
+						ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
+						null,
+						ContactsContract.CommonDataKinds.Phone.CONTACT_ID
+								+ " = " + r.getContactID(), null, null);
+				while (phones.moveToNext()) {
+					String phoneNumber = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+					Log.v(TAG, "Phone # is " + phoneNumber);
+					arPhones.add(phoneNumber);
+				}
+
+				phones.close();
+				Uri uri;
+				if(arPhones.size() == 0) {
+					Toast.makeText(contextParent, R.string.MSG_ERR_CONTACT_NO_PHONE, Toast.LENGTH_SHORT).show();
+					return;
+				} else if(arPhones.size() > 1) {
+					
+					final String[] phonesArr = new String[arPhones.size()];
+					for (int i = 0; i < arPhones.size(); i++) {
+						phonesArr[i] = arPhones.get(i);
+					}
+
+					AlertDialog.Builder dialog = new AlertDialog.Builder(contextParent);
+					dialog.setTitle(R.string.TITLE_PICK_PHONE);
+					((Builder) dialog).setItems(phonesArr,
+							new DialogInterface.OnClickListener() {
+								public void onClick(DialogInterface dialog,
+										int which) {
+									String selectedPhone = phonesArr[which];
+									Uri uri = Uri.parse("tel://" + selectedPhone);
+									Intent callIntent = new Intent(Intent.ACTION_CALL, uri); 
+									contextParent.startActivity(callIntent);
+									return;
+								}
+							}).create();
+					dialog.show();
+                    return;             
+				} else {
+					uri = Uri.parse("tel://" + arPhones.get(0));
+				}
+
+				Intent callIntent = new Intent(Intent.ACTION_CALL, uri); 
+				contextParent.startActivity(callIntent);
+        	}
+        };
+        // TODO set up long click
+
+        // TODO There has got to be a better way:
+		ib.setTag(R.string.TAG_ID_ReminderAdapter_Reminder, r);
+		ib.setTag(R.string.TAG_ID_ReminderAdapter_Context, context);
+		tvName.setTag(R.string.TAG_ID_ReminderAdapter_Reminder, r);
+		tvName.setTag(R.string.TAG_ID_ReminderAdapter_Context, context);
+		tvNote.setTag(R.string.TAG_ID_ReminderAdapter_Reminder, r);
+		tvNote.setTag(R.string.TAG_ID_ReminderAdapter_Context, context);
+		v.setTag(R.string.TAG_ID_ReminderAdapter_Reminder, r);
+		v.setTag(R.string.TAG_ID_ReminderAdapter_Context, context);
+		ibDoIt.setTag(R.string.TAG_ID_ReminderAdapter_Reminder, r);
+		ibDoIt.setTag(R.string.TAG_ID_ReminderAdapter_Context, context);
+
+		
+		ib.setOnClickListener(ocDisplay);
+		tvName.setOnClickListener(ocDisplay);
+		tvNote.setOnClickListener(ocDisplay);
+		tvSummary.setOnClickListener(ocDisplay);
+		v.setOnClickListener(ocDisplay);			
+		ibDoIt.setOnClickListener(ocCall);
+		
 		return v;
 	}
     public Bitmap loadContactPhoto(long id) {

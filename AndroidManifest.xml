@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
       package="com.dunnzilla.mobile"
-      android:versionName="0.4.11" android:versionCode="19">
+      android:versionName="0.4.12" android:versionCode="20">
     <uses-sdk android:minSdkVersion="7" />
     
     <!--  To let you pick a contact: -->
@@ -52,7 +52,7 @@
 		<!--  ================================================== -->
 		<service android:name="ReminderService" />
 		<receiver
-			android:name=".service.ReminderServiceReceiver"
+			android:name=".ReminderServiceReceiver"
 			>
 			<intent-filter>
 				<action android:name="android.intent.action.BOOT_COMPLETED" />

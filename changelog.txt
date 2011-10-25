@@ -1,6 +1,20 @@
 --------------------------------------------------------------------------
-ForgetMeNot version 0.4.11 (versionCode 19)
-ForgetMeNot Database version 2
+SPA-6 Fix crash on system boot
+
+ForgetMeNot v0.4.12 (versionCode 20, DB v2)
+
+===================================
+DETAILS
+===================================
+AndroidManifest.xml should have been referring to ".ReminderServiceReceiver"
+not ".service.ReminderServiceReceiver".  Or I should have had the Java
+package for the service actually match the manifest. :\
+
+
+--------------------------------------------------------------------------
+Reminders now completed by outbound call monitor
+
+ForgetMeNot v0.4.11 (versionCode 19, DB v2)
 
 ===================================
 FEATURES
@@ -17,11 +31,25 @@ FIXED BUGS
 ===================================
 DETAILS
 ===================================
+* Changed my commit message format.  No reason to put version in first 50
+  chars.  More useful to summarize changes in size of 1/3rd a tweet.
+* AndroidManifest.xml
+- Has a receiver for android.intent.action.NEW_OUTGOING_CALL
+- Starting a provider.  Don't rely on it yet.  :)
+
+* src/com/dunnzilla/mobile/DBReminder.java
+- New functions:
+  Cursor getAllRemindersForContactID(int id)
+  Cursor selectAllContactsForPhoneNumber(Context ctx, String phoneNumber) 
+  void getContactsWhere(Intent _intent, String _where) <-- WIP
+
+* src/com/dunnzilla/mobile/OutboundCallReceiver.java
+- void onReceive(Context context, Intent intent) does something useful now.
+
 * src/com/dunnzilla/mobile/ReminderAdapter.java
 - Call icon now scales
 - tvSummary now makes necessary setTag calls (the onClick receiver expects them)
 - the View.OnClickListener I set up is now hardened against stupid callers (me)
-
 
 --------------------------------------------------------------------------
 ForgetMeNot version 0.4.10 (versionCode 18)

@@ -41,31 +41,32 @@ public class ReminderService extends Service {
 			repopulate();
 
 			Log.v(TAG, "Checking for reminders . . . ");
-			if( ! reminders.isEmpty() ) {
+			if( reminders != null && ! reminders.isEmpty() ) {
 				Log.v(TAG, "Found " + reminders.size() + " reminders ready to create notifications.");
 				for(Reminder r : reminders) {
 					sendNotification(r);					
 				}
 			}
-			else {
-				Log.v(TAG, "No notifications necessary.");
-			}
 		}
 	};
 
 	private void repopulate() {
-        if(reminders == null) {
-        	reminders = new ArrayList<Reminder>();
-        } else {
-        	reminders.clear();
-        }
-		Cursor cu = db.selectDue();
-		if (cu.moveToFirst()) {
-			do {
-				reminders.add( new Reminder(cu) );
-			} while (cu.moveToNext());
+		try {
+	        if(reminders == null) {
+	        	reminders = new ArrayList<Reminder>();
+	        } else {
+	        	reminders.clear();
+	        }
+			Cursor cu = db.selectDue();
+			if (cu.moveToFirst()) {
+				do {
+					reminders.add( new Reminder(cu) );
+				} while (cu.moveToNext());
+			}
+			cu.close();
+		} catch(Exception e) {
+			Log.e(TAG, e.getMessage());
 		}
-		cu.close();
 	}
 	private void notifyFromHandler(Message msg) {
 		Bundle	msgData = msg.getData();		

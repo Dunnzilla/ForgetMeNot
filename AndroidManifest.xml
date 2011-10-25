@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
       package="com.dunnzilla.mobile"
-      android:versionName="0.4.10" android:versionCode="18">
+      android:versionName="0.4.11" android:versionCode="19">
     <uses-sdk android:minSdkVersion="7" />
     
     <!--  To let you pick a contact: -->
@@ -59,6 +59,13 @@
 			</intent-filter>
 		</receiver>
 		<!--  ================================================== -->
+		<receiver android:name="OutboundCallReceiver" android:exported="true"> 
+            <intent-filter android:priority="0"> 
+                <action android:name="android.intent.action.NEW_OUTGOING_CALL" /> 
+                <category android:name="android.intent.category.DEFAULT" /> 
+            </intent-filter> 
+        </receiver> 
+		<!--  ================================================== -->
 		<activity android:name=".DisplayReminder" android:label="Reminder">
 			<intent-filter>
 				<action android:name="android.intent.action.VIEW" />
@@ -74,5 +81,9 @@
 			</intent-filter>
 		</activity>
 		<!--  ================================================== -->
+		<provider android:name="com.dunnzilla.mobile.ReminderProvider"
+          android:authorities="com.example.autos.reminderprovider" 
+          />
+        <!--  ================================================== -->
 	</application>
 </manifest>

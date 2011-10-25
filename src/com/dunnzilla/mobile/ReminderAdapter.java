@@ -16,6 +16,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.util.Log;
+import android.widget.ImageView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
@@ -83,17 +84,23 @@ public class ReminderAdapter extends BaseAdapter implements ListAdapter {
 		if (oldView == null) {		 
 			v = new RelativeLayout(context);
 
-			v.setId(1);
+			v.setId( 1 );
 			ib = new ImageButton(context);
-			ib.setId(2);
+			ib.setPadding(2, 2, 2, 2);
+			ib.setId( 2 );  // TODO use defined values instead of incrementing
 			tvName = new TextView(context);
-			tvName.setId(3);
+			tvName.setId( 3 );
 			tvNote = new TextView(context);
-			tvNote.setId(4);
+			tvNote.setId( 4 );
 			ibDoIt = new ImageButton(context);
-			ibDoIt.setId(5);
+			ibDoIt.setId( 5 );
+			ibDoIt.setAdjustViewBounds(true);
+			ibDoIt.setMaxHeight(108);
+			ibDoIt.setMaxWidth(108);
+			ibDoIt.setScaleType(ImageView.ScaleType.FIT_XY);
+			ibDoIt.setPadding(1, 1, 1, 1);
 			tvSummary = new TextView(context);
-			tvSummary.setId(6);			
+			tvSummary.setId( 6 );			
 
 			RelativeLayout.LayoutParams lp_tvName = new RelativeLayout.LayoutParams(
 					LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
@@ -161,6 +168,18 @@ public class ReminderAdapter extends BaseAdapter implements ListAdapter {
 		// Most of the items in this ListView will simply DisplayReminder
 		OnClickListener ocDisplay = new View.OnClickListener() {
         	public void onClick(View view) {
+        		// Early exit if caller was a goofball and forgot to set tags.
+        		// This is a bit of overkill for a simple onClick but I was experimenting with Java error trapping
+        		// and detection of stupid callers (or stupid devs :P )
+        		for(int requiredTagID : new int[] { R.string.TAG_ID_ReminderAdapter_Reminder, R.string.TAG_ID_ReminderAdapter_Context}) {
+            		if( null == view.getTag(requiredTagID) ) {
+            			// If we were certain there was a good context passed in, we could use the context to get the resources to
+            			// get the string for this id, but we're not, so we can't.  You'll just have to make do with the ID:
+            			Log.w(TAG, "Required tag '" + requiredTagID + "' not set!");
+            			return;
+            		}        			
+        		}
+
         		Reminder r = (Reminder) view.getTag(R.string.TAG_ID_ReminderAdapter_Reminder);
         		final Context contextParent = (Context) view.getTag(R.string.TAG_ID_ReminderAdapter_Context);
 				Intent intentDisplay = new Intent(context, DisplayReminder.class);
@@ -184,7 +203,6 @@ public class ReminderAdapter extends BaseAdapter implements ListAdapter {
 								+ " = " + r.getContactID(), null, null);
 				while (phones.moveToNext()) {
 					String phoneNumber = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
-					Log.v(TAG, "Phone # is " + phoneNumber);
 					arPhones.add(phoneNumber);
 				}
 
@@ -232,6 +250,8 @@ public class ReminderAdapter extends BaseAdapter implements ListAdapter {
 		tvName.setTag(R.string.TAG_ID_ReminderAdapter_Context, context);
 		tvNote.setTag(R.string.TAG_ID_ReminderAdapter_Reminder, r);
 		tvNote.setTag(R.string.TAG_ID_ReminderAdapter_Context, context);
+		tvSummary.setTag(R.string.TAG_ID_ReminderAdapter_Reminder, r);
+		tvSummary.setTag(R.string.TAG_ID_ReminderAdapter_Context, context);
 		v.setTag(R.string.TAG_ID_ReminderAdapter_Reminder, r);
 		v.setTag(R.string.TAG_ID_ReminderAdapter_Context, context);
 		ibDoIt.setTag(R.string.TAG_ID_ReminderAdapter_Reminder, r);

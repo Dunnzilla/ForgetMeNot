@@ -1,4 +1,29 @@
 --------------------------------------------------------------------------
+ForgetMeNot version 0.4.11 (versionCode 19)
+ForgetMeNot Database version 2
+
+===================================
+FEATURES
+===================================
+1. Monitors outbound calls and marks items as complete.
+2. Call icon changed
+
+===================================
+FIXED BUGS
+===================================
+1. Main screen list now properly paints rows beyond the scroll range.
+2. Selecting the due summary text no longer crashes
+
+===================================
+DETAILS
+===================================
+* src/com/dunnzilla/mobile/ReminderAdapter.java
+- Call icon now scales
+- tvSummary now makes necessary setTag calls (the onClick receiver expects them)
+- the View.OnClickListener I set up is now hardened against stupid callers (me)
+
+
+--------------------------------------------------------------------------
 ForgetMeNot version 0.4.10 (versionCode 18)
 ForgetMeNot Database version 2
 

@@ -4,8 +4,11 @@ import java.text.SimpleDateFormat;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteException;
+import android.net.Uri;
+import android.provider.ContactsContract.PhoneLookup;
 import android.util.Log;
 
 public class DBReminder extends DB {
@@ -58,6 +61,54 @@ public class DBReminder extends DB {
 		cu.moveToFirst();
 		cu.close();		
 	}
+	public Cursor getAllRemindersForContactID(int id) {
+		return db.query(DBConst.TABLE, null, (DBConst.f_CONTACT_ID + " = " + id), null, null, null, null);
+	}
+	public Cursor selectAllContactsForPhoneNumber(Context ctx, String phoneNumber) {
+		// What do we want?
+		String []queryColumns = new String[] {
+				PhoneLookup._ID,
+				PhoneLookup.DISPLAY_NAME,
+				PhoneLookup.NUMBER
+		};
+		// When do we want it?
+		Uri uri = Uri.withAppendedPath(PhoneLookup.CONTENT_FILTER_URI, Uri.encode(phoneNumber));
+		Cursor cursorContactResults = ctx.getContentResolver().query(
+				uri,
+				queryColumns,
+				null, null,
+				null);
+
+		// RAaaaaAAaaaH!!
+		if( ! cursorContactResults.moveToFirst() ) {
+			cursorContactResults.close();
+			return null;
+		}
+		// Iterate over them just to log it.
+		while (cursorContactResults.moveToNext()) {
+			String contactID = cursorContactResults.getString(cursorContactResults.getColumnIndex(PhoneLookup._ID));
+			Log.v(TAG, "Contact for Phone #'" + phoneNumber + "' is " + contactID + " (" + cursorContactResults.getString(cursorContactResults.getColumnIndex(PhoneLookup._ID)) + ")");
+		}
+		cursorContactResults.moveToFirst();
+		return cursorContactResults;		
+	}
+
+    protected void getContactsWhere(Intent _intent, String _where)
+    {
+    	/*
+    	Cursor people = getContentResolver().query(ContactsContract.Contacts.CONTENT_URI, null, null, null, null);
+
+    	while(people.moveToNext()) {
+    	   int nameFieldColumnIndex = people.getColumnIndex(PhoneLookup.DISPLAY_NAME);
+    	   String contact = people.getString(nameFieldColumnIndex);
+    	   int numberFieldColumnIndex = people.getColumnIndex(PhoneLookup.NUMBER);
+    	   String number = people.getString(numberFieldColumnIndex);
+    	}
+
+    	people.close();
+    	*/
+    }// getContactInfo
+    
 	public Cursor selectAllActiveByDue() {
 		Cursor c;
 		String orderBy = DBConst.f_DATETIME_NEXT + " asc";

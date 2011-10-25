@@ -43,7 +43,6 @@ public class Reminder {
 	public void setNote(String note) {
 		this.note = note;
 	}
-
     
     public Date getDateStart() {
 		return dateStart;

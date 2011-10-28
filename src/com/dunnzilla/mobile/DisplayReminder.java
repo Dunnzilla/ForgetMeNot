@@ -1,16 +1,9 @@
 package com.dunnzilla.mobile;
 
-import java.io.InputStream;
-
 import android.app.Activity;
-import android.content.ContentUris;
+import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -37,10 +30,9 @@ public class DisplayReminder extends Activity {
         if(extras != null) {
         	long idReminder = extras.getLong(INTENT_EXTRAS_KEY_REMINDER_ID);
         	Log.v(TAG, "Loading ID " + idReminder);
-            loadReminderFromID(idReminder);
+        	reminder = AndroidReminderUtils.loadReminderFromID(this, db, idReminder);
         }
         getApplicationContext();
-
         
     	// TODO handle no reminder ID passed in, or an invalid reminder ID
         Button bCreate = (Button) findViewById(R.id.disprem_btn_done);
@@ -84,7 +76,31 @@ public class DisplayReminder extends Activity {
       			DisplayReminder.this.finish();
         	}
         });
+        
+        Button bEdit = (Button) findViewById(R.id.disprem_btn_edit);
+        bEdit.setOnClickListener( new View.OnClickListener() {
+        	public void onClick(View view) {
+        		// Early exit if caller was a goofball and forgot to set tags.
+        		// This is a bit of overkill for a simple onClick but I was experimenting with Java error trapping
+        		// and detection of stupid callers (or stupid devs :P )
+        		for(int requiredTagID : new int[] { R.string.TAG_ID_ReminderAdapter_Reminder, R.string.TAG_ID_ReminderAdapter_Context}) {
+            		if( null == view.getTag(requiredTagID) ) {
+            			// If we were certain there was a good context passed in, we could use the context to get the resources to
+            			// get the string for this id, but we're not, so we can't.  You'll just have to make do with the ID:
+            			Log.w(TAG, "Required tag '" + requiredTagID + "' not set!");
+            			return;
+            		}        			
+        		}
 
+        		Reminder r = (Reminder) view.getTag(R.string.TAG_ID_ReminderAdapter_Reminder);
+        		final Context contextParent = (Context) view.getTag(R.string.TAG_ID_ReminderAdapter_Context);
+				Intent intentEdit = new Intent(contextParent, EditReminder.class);
+				Bundle b = new Bundle();
+				b.putLong(DisplayReminder.INTENT_EXTRAS_KEY_REMINDER_ID, r.getID());  
+				intentEdit.putExtras(b);					
+				contextParent.startActivity(intentEdit);
+        	}
+        });
         
         Intent i = new Intent();
         updateLayout(i);
@@ -95,31 +111,10 @@ public class DisplayReminder extends Activity {
     	super.onStop();
     }
 
-    protected void loadReminderFromID(long id) {
-		Cursor cu = db.selectID(id);
-		if(cu.moveToFirst()) {
-			reminder = new Reminder(cu);
-	    	Uri uriPerson = ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI, reminder.getContactID());
-	    	// Then query for this specific record:
-	    	Cursor cursorPerson = managedQuery(uriPerson, null, null, null, null);
-
-	        if( cursorPerson.moveToFirst()) {
-		        do {
-		     	   // TODO try/catch
-		     	   reminder.setContactID(cursorPerson.getInt(cursorPerson.getColumnIndex(ContactsContract.Contacts._ID)));
-		     	   reminder.setDisplayName(cursorPerson.getString(cursorPerson.getColumnIndexOrThrow(ContactsContract.Contacts.DISPLAY_NAME)));
-		     	   
-		           InputStream streamPhoto = ContactsContract.Contacts.openContactPhotoInputStream(getContentResolver(), uriPerson);
-		           if (streamPhoto != null) {
-		        	   reminder.setContactIconBitmap(BitmapFactory.decodeStream(streamPhoto));
-		           }
-		       }  while(cursorPerson.moveToNext());
-	        }
-	        cursorPerson.close();
-		}
-		cu.close();
-    }
     protected void updateLayout(Intent _intent) {
+    	if( reminder == null) {
+    		return;
+    	}
     	if( ! reminder.valid() ) {
     		// TODO Do something to visually indicate the contact chosen is invalid, or is pending selection
     		return;
@@ -140,35 +135,5 @@ public class DisplayReminder extends Activity {
     		tv.setText(reminder.getNote());
     		tv.setTextColor(0xFFFFFFFF);
     	}
-    }
-    protected void getContactInfo(Intent _intent)
-    {
-    	// TODO managedQuery() is deprecated in API 11, replaced by CursorLoader
-    	Uri u = _intent.getData(); 
-    	Cursor cursor = managedQuery(u, null, null, null, null);
-       if( ! cursor.moveToFirst()) {
-    	   cursor.close();
-    	   return;
-       }
-       // TODO why am I potentially overwriting the reminder contact ID and other values multiple times? 
-       do {
-    	   // TODO try/catch
-    	   reminder.setContactID(cursor.getInt(cursor.getColumnIndex(ContactsContract.Contacts._ID)));
-    	   reminder.setDisplayName(cursor.getString(cursor.getColumnIndexOrThrow(ContactsContract.Contacts.DISPLAY_NAME)));
-           Bitmap b = loadContactPhoto(reminder.getContactID());
-           if( b != null ) {
-        	   reminder.setContactIconBitmap(b);
-           }
-      }  while(cursor.moveToNext());
-       cursor.close();
-    }//getContactInfo
-    
-    public Bitmap loadContactPhoto(long id) {
-        Uri uri = ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI, id);
-        InputStream input = ContactsContract.Contacts.openContactPhotoInputStream(getContentResolver(), uri);
-        if (input == null) {
-            return null;
-        }
-        return BitmapFactory.decodeStream(input);
     }
 }

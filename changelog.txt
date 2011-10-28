@@ -1,4 +1,28 @@
 --------------------------------------------------------------------------
+Code cleanup & slight UI change.
+
+ForgetMeNot v0.4.13 (versionCode 21, DB v2)
+
+===================================
+DETAILS
+===================================
+* res/layout/about.xml
+- Logo wasn't centering
+
+* src/com/dunnzilla/mobile/CreateReminder.java
+- getContactInfo() moved to AndroidReminderUtils
+
+* src/com/dunnzilla/mobile/DisplayReminder.java
+- loadReminderFromID() moved to AndroidReminderUtils
+- Clicking edit is supposed to launch intent EditReminder but doesn't :(
+
+* src/com/dunnzilla/mobile/ReminderAdapter.java
+- loadContactPhoto() moved into AndroidReminderUtils
+- Replaced hardcoded #s with defines (RA_VIEWID_LAYOUT, etc)
+- ImageButton now has a max width, and scales.
+- Scaled down the call icon, aligned it below name.
+
+--------------------------------------------------------------------------
 SPA-6 Fix crash on system boot
 
 ForgetMeNot v0.4.12 (versionCode 20, DB v2)

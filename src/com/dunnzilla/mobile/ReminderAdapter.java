@@ -1,35 +1,38 @@
 package com.dunnzilla.mobile;
 
-import java.io.InputStream;
 import java.util.ArrayList;
 
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
-import android.content.ContentUris;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.util.Log;
-import android.widget.ImageView;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.LinearLayout.LayoutParams;
+import android.widget.ListAdapter;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.ListAdapter;
 import android.widget.Toast;
-import android.widget.LinearLayout.LayoutParams;
 
 public class ReminderAdapter extends BaseAdapter implements ListAdapter {
-
+	public static final int RA_VIEWID_LAYOUT = 1;	
+	public static final int RA_VIEWID_IMAGEBUTTON = 2;
+	public static final int RA_VIEWID_NAME = 3;
+	public static final int RA_VIEWID_NOTE = 4;
+	public static final int RA_VIEWID_ACTION = 5;
+	public static final int RA_VIEWID_SUMMARY = 6;
+	
 	private static final String TAG = "ReminderAdapter";
 	private ArrayList<Reminder> reminders;
 	private Context context;
@@ -84,23 +87,27 @@ public class ReminderAdapter extends BaseAdapter implements ListAdapter {
 		if (oldView == null) {		 
 			v = new RelativeLayout(context);
 
-			v.setId( 1 );
+			v.setId( RA_VIEWID_LAYOUT );
 			ib = new ImageButton(context);
 			ib.setPadding(2, 2, 2, 2);
-			ib.setId( 2 );  // TODO use defined values instead of incrementing
+			ib.setAdjustViewBounds(true);
+			ib.setScaleType(ImageView.ScaleType.FIT_XY);
+			ib.setId( RA_VIEWID_IMAGEBUTTON );
+			ib.setMaxHeight(108);
+			ib.setMaxWidth(108);
 			tvName = new TextView(context);
-			tvName.setId( 3 );
+			tvName.setId( RA_VIEWID_NAME );
 			tvNote = new TextView(context);
-			tvNote.setId( 4 );
+			tvNote.setId( RA_VIEWID_NOTE );
 			ibDoIt = new ImageButton(context);
-			ibDoIt.setId( 5 );
+			ibDoIt.setId( RA_VIEWID_ACTION );
 			ibDoIt.setAdjustViewBounds(true);
-			ibDoIt.setMaxHeight(108);
-			ibDoIt.setMaxWidth(108);
+			ibDoIt.setMaxHeight(54);
+			ibDoIt.setMaxWidth(54);
 			ibDoIt.setScaleType(ImageView.ScaleType.FIT_XY);
 			ibDoIt.setPadding(1, 1, 1, 1);
 			tvSummary = new TextView(context);
-			tvSummary.setId( 6 );			
+			tvSummary.setId( RA_VIEWID_SUMMARY );			
 
 			RelativeLayout.LayoutParams lp_tvName = new RelativeLayout.LayoutParams(
 					LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
@@ -128,7 +135,8 @@ public class ReminderAdapter extends BaseAdapter implements ListAdapter {
 			lp_tvSummary.addRule(RelativeLayout.RIGHT_OF, ib.getId());
 			lp_tvSummary.setMargins(5, 0, 0, 0);
 			
-			lp_ibDoIt.addRule(RelativeLayout.CENTER_VERTICAL);
+			lp_ibDoIt.addRule(RelativeLayout.BELOW, tvName.getId());
+//			lp_ibDoIt.addRule(RelativeLayout.CENTER_VERTICAL);
 			lp_ibDoIt.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
 			lp_ibDoIt.setMargins(5, 0, 0, 0);
 			
@@ -142,14 +150,14 @@ public class ReminderAdapter extends BaseAdapter implements ListAdapter {
 		} else {
 			v = (RelativeLayout) oldView;
 
-			ib =  (ImageButton) v.findViewById(2);
-			tvName = (TextView) v.findViewById(3);
-			tvNote = (TextView) v.findViewById(4);
-			ibDoIt = (ImageButton) v.findViewById(5);
-			tvSummary = (TextView) v.findViewById(6);
+			ib =  (ImageButton) v.findViewById(RA_VIEWID_IMAGEBUTTON);
+			tvName = (TextView) v.findViewById(RA_VIEWID_NAME);
+			tvNote = (TextView) v.findViewById(RA_VIEWID_NOTE);
+			ibDoIt = (ImageButton) v.findViewById(RA_VIEWID_ACTION);
+			tvSummary = (TextView) v.findViewById(RA_VIEWID_SUMMARY);
 			
 		}
-		Bitmap b = loadContactPhoto(r.getContactID());
+		Bitmap b = AndroidReminderUtils.loadContactPhoto(context, r.getContactID());
 		if (b != null) {
 			ib.setImageBitmap(b);
 		} else {
@@ -162,8 +170,9 @@ public class ReminderAdapter extends BaseAdapter implements ListAdapter {
 		tvName.setShadowLayer(4.0f, 4.0f, 4.0f, 0xFF000000);
 		// TODO change color based on whatever silliness the user wants.
 		tvName.setTextColor(0xFFFFFFFF);
-		tvName.setTextSize(android.util.TypedValue.COMPLEX_UNIT_PT, 8);
+		tvName.setTextSize(android.util.TypedValue.COMPLEX_UNIT_PT, 12);
 		tvNote.setText(r.getNote());
+		tvNote.setTextColor(0xFFCCCCFF);
 		tvSummary.setText("Due " + r.getDescrDue());
 		// Most of the items in this ListView will simply DisplayReminder
 		OnClickListener ocDisplay = new View.OnClickListener() {
@@ -267,12 +276,5 @@ public class ReminderAdapter extends BaseAdapter implements ListAdapter {
 		
 		return v;
 	}
-    public Bitmap loadContactPhoto(long id) {
-        Uri uri = ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI, id);
-        InputStream input = ContactsContract.Contacts.openContactPhotoInputStream(context.getContentResolver(), uri);
-        if (input == null) {
-            return null;
-        }
-        return BitmapFactory.decodeStream(input);
-    }
+
 }

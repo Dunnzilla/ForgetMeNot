@@ -8,7 +8,7 @@
 		android:layout_height="wrap_content"
 		android:layout_width="wrap_content"
 		android:scaleType="fitStart"
-		android:src="@drawable/logo" />
+		android:src="@drawable/logo" android:layout_centerHorizontal="true"/>
 
 	<TextView android:text="Forget Me Not"
 		android:id="@+id/about_product_title"

@@ -1,23 +1,25 @@
 package com.dunnzilla.mobile;
 
+import java.io.InputStream;
 import java.util.Date;
 
 import android.app.Activity;
+import android.content.ContentUris;
 import android.content.Intent;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.util.Log;
-import android.view.View;
-import android.widget.Button;
 import android.widget.DatePicker;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-public class CreateReminder extends Activity {
+public class EditReminder extends DisplayReminder {
 	static final int 			PICK_CONTACT = 1001;
-    private static final String TAG = "CreateReminder";
+    private static final String TAG = "EditReminder";
     
     private DBReminder		db;
     private String			errorMessage;
@@ -26,7 +28,23 @@ public class CreateReminder extends Activity {
 	@Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.screen_under_construction);
+    	
+
+        return;
+        /*
         setContentView(R.layout.create_reminder);
+        
+    	db = new DBReminder(this);
+    	db.open();
+    
+        Bundle extras = this.getIntent().getExtras();
+        if(extras != null) {
+        	long idReminder = extras.getLong(DisplayReminder.INTENT_EXTRAS_KEY_REMINDER_ID);
+        	Log.v(TAG, "Loading ID " + idReminder);
+            loadReminderFromID(idReminder);
+        }
+        // TODO Probably need to shuffle pieces around before 
         
         View.OnClickListener vocl_pickContact = new View.OnClickListener() {
         	public void onClick(View view) {
@@ -34,10 +52,6 @@ public class CreateReminder extends Activity {
         		startActivityForResult(i, PICK_CONTACT);
         	}
     	}; 
-    	
-    	db = new DBReminder(this);
-    	db.open();
-    	reminder = new Reminder();
 
         ImageButton ContactIcon  = (ImageButton) findViewById(R.id.cr_contact_icon);
         TextView tvContactName = (TextView) findViewById(R.id.cr_text_who);
@@ -47,19 +61,20 @@ public class CreateReminder extends Activity {
         tvContactName.setOnClickListener( vocl_pickContact );
         bSave.setOnClickListener( new View.OnClickListener() {
         	public void onClick(View view) {
-        		if( CreateReminder.this.validateSettings() ) {
-        			CreateReminder.this.saveReminder();  // TODO Possibly move into a smarter class when adding the Edit ability (v0.6?)
-        			CreateReminder.this.finish();
+        		if( EditReminder.this.validateSettings() ) {
+        			EditReminder.this.saveReminder();  // TODO Possibly move into a smarter class when adding the Edit ability (v0.6?)
+        			EditReminder.this.finish();
         		} else {
-        			Toast.makeText(CreateReminder.this, CreateReminder.this.getErrMessage(), Toast.LENGTH_SHORT).show();
+        			Toast.makeText(EditReminder.this, EditReminder.this.getErrMessage(), Toast.LENGTH_SHORT).show();
         		}
         	}
         });
+        */
 	}
 	
 	public boolean validateSettings() {
-		if( CreateReminder.this.reminder.getContactID() <= 0) {
-			CreateReminder.this.setErrMessage("Choose a contact.");
+		if( EditReminder.this.reminder.getContactID() <= 0) {
+			EditReminder.this.setErrMessage("Choose a contact.");
 			return false;
 		}
 		return true;
@@ -76,7 +91,7 @@ public class CreateReminder extends Activity {
 		if ( resultCode == RESULT_OK ) {
 	    	switch(requestCode) {
 	    	case PICK_CONTACT:
-	    		AndroidReminderUtils.getContactInfo(this, reminder, intent);
+	    		getContactInfo(intent);
 	    		updateLayout(intent);
 	       		break;
 	    	}
@@ -95,18 +110,18 @@ public class CreateReminder extends Activity {
     	
     	String sPeriod = tvPeriod.getText().toString().trim();
     	int i = Integer.parseInt(sPeriod);
-    	CreateReminder.this.reminder.setPeriod(i);
+    	EditReminder.this.reminder.setPeriod(i);
 
-    	CreateReminder.this.reminder.setNote(tvNote.getText().toString().trim());
+    	EditReminder.this.reminder.setNote(tvNote.getText().toString().trim());
 
-    	CreateReminder.this.reminder.setDateStart(dateStart);
-    	CreateReminder.this.reminder.setDateNext(dateStart);
-    	CreateReminder.this.reminder.setDateStop(dateStop);
+    	EditReminder.this.reminder.setDateStart(dateStart);
+    	EditReminder.this.reminder.setDateNext(dateStart);
+    	EditReminder.this.reminder.setDateStop(dateStop);
     	
-    	Log.v(TAG, "New reminder for " + CreateReminder.this.reminder.getDisplayName() + ". Note: " + tvNote.getText().toString());
+    	Log.v(TAG, "New reminder for " + EditReminder.this.reminder.getDisplayName() + ". Note: " + tvNote.getText().toString());
     	
     	Intent intent = this.getIntent();
-    	CreateReminder.this.db.insert(reminder);
+    	EditReminder.this.db.insert(reminder);
         if (getParent() == null) {
             setResult(Activity.RESULT_OK, intent);
         } else {
@@ -129,5 +144,37 @@ public class CreateReminder extends Activity {
     		tvName.setText(reminder.getDisplayName());
     		tvName.setTextColor(0xFFFFFFFF);
     	}
+    }
+    protected void getContactInfo(Intent _intent)
+    {
+		// TODO managedQuery() is deprecated in API 11, replaced by CursorLoader
+		Uri u = _intent.getData();
+		Cursor cursor = managedQuery(u, null, null, null, null);
+		if (!cursor.moveToFirst()) {
+			cursor.close();
+			return;
+		}
+		do {
+			// TODO try/catch
+			// TODO don't mix up getColumnIndex with getColumnIndexOrThrow
+			reminder.setContactID(cursor.getInt(cursor
+					.getColumnIndex(ContactsContract.Contacts._ID)));
+			reminder.setDisplayName(cursor.getString(cursor
+					.getColumnIndexOrThrow(ContactsContract.Contacts.DISPLAY_NAME)));
+			Bitmap b = loadContactPhoto(reminder.getContactID());
+			if (b != null) {
+				reminder.setContactIconBitmap(b);
+			}
+		} while (cursor.moveToNext());
+		cursor.close();
+	}// getContactInfo
+    
+    public Bitmap loadContactPhoto(long id) {
+        Uri uri = ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI, id);
+        InputStream input = ContactsContract.Contacts.openContactPhotoInputStream(getContentResolver(), uri);
+        if (input == null) {
+            return null;
+        }
+        return BitmapFactory.decodeStream(input);
     }
 }

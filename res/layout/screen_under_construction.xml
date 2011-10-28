@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:orientation="vertical"
+  android:layout_width="fill_parent"
+  android:layout_height="fill_parent">
+    <TextView android:id="@+id/textView1" android:textAppearance="?android:attr/textAppearanceLarge" android:layout_height="wrap_content" android:text="Still working on this!" android:layout_width="wrap_content" android:gravity="center_horizontal" android:layout_gravity="center_horizontal"></TextView>
+  
+	<ImageView
+		android:id="@+id/screen_under_construction_logo"
+		android:layout_height="wrap_content"
+		android:layout_width="wrap_content"
+		android:scaleType="fitXY"
+		android:src="@drawable/wombat" android:layout_gravity="center_horizontal"/>
+</LinearLayout>

@@ -2,6 +2,7 @@
 <resources>
     <string name="app_name">Forget Me Not</string>
     <string name="about_title">About</string>
+    <string name="er_title">Edit Reminder</string>
     <string name="cr_title">Create a New Reminder</string>
     <string name="cr_who">Select a Contact</string>
     <string name="cr_when">Start Date</string>

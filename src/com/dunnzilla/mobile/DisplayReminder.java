@@ -1,7 +1,6 @@
 package com.dunnzilla.mobile;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -80,25 +79,12 @@ public class DisplayReminder extends Activity {
         Button bEdit = (Button) findViewById(R.id.disprem_btn_edit);
         bEdit.setOnClickListener( new View.OnClickListener() {
         	public void onClick(View view) {
-        		// Early exit if caller was a goofball and forgot to set tags.
-        		// This is a bit of overkill for a simple onClick but I was experimenting with Java error trapping
-        		// and detection of stupid callers (or stupid devs :P )
-        		for(int requiredTagID : new int[] { R.string.TAG_ID_ReminderAdapter_Reminder, R.string.TAG_ID_ReminderAdapter_Context}) {
-            		if( null == view.getTag(requiredTagID) ) {
-            			// If we were certain there was a good context passed in, we could use the context to get the resources to
-            			// get the string for this id, but we're not, so we can't.  You'll just have to make do with the ID:
-            			Log.w(TAG, "Required tag '" + requiredTagID + "' not set!");
-            			return;
-            		}        			
-        		}
-
-        		Reminder r = (Reminder) view.getTag(R.string.TAG_ID_ReminderAdapter_Reminder);
-        		final Context contextParent = (Context) view.getTag(R.string.TAG_ID_ReminderAdapter_Context);
-				Intent intentEdit = new Intent(contextParent, EditReminder.class);
 				Bundle b = new Bundle();
-				b.putLong(DisplayReminder.INTENT_EXTRAS_KEY_REMINDER_ID, r.getID());  
+				b.putLong(DisplayReminder.INTENT_EXTRAS_KEY_REMINDER_ID, reminder.getID());
+
+				Intent intentEdit = new Intent(DisplayReminder.this, EditReminder.class);
 				intentEdit.putExtras(b);					
-				contextParent.startActivity(intentEdit);
+				startActivity(intentEdit);
         	}
         });
         

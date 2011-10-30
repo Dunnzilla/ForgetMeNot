@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
       package="com.dunnzilla.mobile"
-      android:versionName="0.4.14" android:versionCode="22">
+      android:versionName="0.4.15" android:versionCode="23">
     <uses-sdk android:minSdkVersion="7" />
     
     <!--  To let you pick a contact: -->
@@ -36,6 +36,13 @@
 		</activity>
 		<!--  ================================================== -->
 		<activity android:name=".CreateReminder" android:label="@string/cr_title">
+			<intent-filter>
+				<action android:name="android.intent.action.VIEW" />
+				<category android:name="android.intent.category.DEFAULT" />
+			</intent-filter>
+		</activity>
+		<!--  ================================================== -->
+		<activity android:name=".EditReminder" android:label="@string/er_title">
 			<intent-filter>
 				<action android:name="android.intent.action.VIEW" />
 				<category android:name="android.intent.category.DEFAULT" />

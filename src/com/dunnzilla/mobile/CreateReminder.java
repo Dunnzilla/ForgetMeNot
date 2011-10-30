@@ -124,10 +124,14 @@ public class CreateReminder extends Activity {
 			ivContactIcon.setImageBitmap(reminder.getContactIconBitmap());
     	}
 
-    	if( reminder.getDisplayName().length() > 0 ) {
-    		TextView tvName = (TextView) findViewById(R.id.cr_text_who);
-    		tvName.setText(reminder.getDisplayName());
+		String displayName = reminder.getDisplayName();
+		TextView tvName = (TextView) findViewById(R.id.cr_text_who);
+    	if( displayName != null && displayName.length() > 0 ) {
+    		tvName.setText(displayName);
     		tvName.setTextColor(0xFFFFFFFF);
+    	} else {
+    		tvName.setText(R.string.vr_default_name);
+    		tvName.setTextColor(0xFFFFFFFF);    		
     	}
     }
 }

@@ -1,4 +1,27 @@
 --------------------------------------------------------------------------
+Crash fix & working on tablet layout support 
+
+ForgetMeNot v0.4.14 (versionCode 22, DB v2)
+
+===================================
+DETAILS
+===================================
+* src/com/dunnzilla/mobile/CreateReminder.java
+- No longer calls length() on a null String.  :-&
+
+* src/com/dunnzilla/mobile/About.java
+- If version is below 11, loads default layout.  Otherwise loads the tablet layout.
+
+* res/values/strings.xml
+- Eclipse auto-updated the XML tag for me. Doesn't seem to break anything.
+
+* src/com/dunnzilla/mobile/ForgetMeNot.java
+- Cleaned up imports
+
+* src/com/dunnzilla/mobile/Reminder.java
+- Silly Eclipse autoformatting.
+
+--------------------------------------------------------------------------
 Code cleanup & slight UI change.
 
 ForgetMeNot v0.4.13 (versionCode 21, DB v2)

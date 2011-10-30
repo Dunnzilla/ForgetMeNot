@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
 <resources>
     <string name="app_name">Forget Me Not</string>
     <string name="about_title">About</string>
@@ -8,18 +8,12 @@
     <string name="cr_label_datepicker_stop">Stop Date</string>
     <string name="cr_repeat_period">Every</string>
     <string name="vr_default_name">No Name</string>
-    
     <string name="disprem_button_complete">Complete!</string>
     <string name="disprem_button_snooze">Snooze</string>
- 
     <string name="disprem_text_activate_active">This reminder creates notifications</string>
     <string name="disprem_text_activate_inactive">This reminder does not create notifications.</string>
-
-    
     <string name="MSG_ERR_CONTACT_NO_PHONE">Contact has no phone numbers!</string>
-    
     <string name="TITLE_PICK_PHONE">Select a phone number</string>
-    
     <string name="TAG_ID_ReminderAdapter_Reminder">TAG_ID_ReminderAdapter_Reminder</string>
     <string name="TAG_ID_ReminderAdapter_Context">TAG_ID_ReminderAdapter_Context</string>
 </resources>

@@ -5,6 +5,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import android.app.Activity;
 import android.content.ContentUris;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -12,7 +13,6 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.provider.ContactsContract;
 import android.util.Log;
-import android.app.Activity;
 
 
 public class Reminder {
@@ -129,7 +129,7 @@ public class Reminder {
     	return true;
     }
     
-    public Uri updateFromContactsContract(Activity a) { 
+    public Uri updateFromContactsContract(Activity a) {
 		Uri uriPerson = ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI, getContactID());
 		Cursor cursorPerson = a.managedQuery(uriPerson, null, null, null, null);
 	

@@ -1,11 +1,11 @@
 package com.dunnzilla.mobile;
 
 import android.app.Activity;
+import android.content.pm.PackageManager.NameNotFoundException;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.TextView;
-
-import android.content.pm.PackageManager.NameNotFoundException;
 
 /**
  * @author Jason Dunn <attnjd@gmail.com>
@@ -20,8 +20,13 @@ public class About extends Activity {
 	public void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.about);
 		
+        if(Build.VERSION.SDK_INT < 11) {
+    		setContentView(R.layout.about);            
+        } else {
+    		setContentView(R.layout.tablet_about);        	
+        }
+	
 		try
 		{
 			androidManifest_versionName = getPackageManager().getPackageInfo(getApplicationInfo().packageName, 0).versionName;

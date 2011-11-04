@@ -1,58 +1,76 @@
 package com.dunnzilla.mobile;
 
-import android.os.Bundle;
+import java.util.HashMap;
 
-public class EditReminder extends DisplayReminder {
+import android.app.Activity;
+import android.content.Intent;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.Toast;
+
+public class EditReminder extends CreateReminder {
 	static final int 			PICK_CONTACT = 1001;
     private static final String TAG = "EditReminder";
     
-    private DBReminder		db;
-    private String			errorMessage;
-    Reminder				reminder;
+    @Override
+	protected void mapDBFieldsToResourceIDs() {
+        idMap = new HashMap<String,Integer>();    	
+    	idMap.put(DBConst.f_DATETIME_START, R.id.cr_datepicker_start);
+    	idMap.put(DBConst.f_DATETIME_STOP, R.id.cr_datepicker_stop);
+    	idMap.put(DBConst.f_PERIOD, R.id.cr_period);
+    	idMap.put(DBConst.f_NOTE, R.id.cr_note);
+    	idMap.put("__contact_icon", R.id.cr_contact_icon);
+    	idMap.put("__contact_name", R.id.cr_text_who);
+    	idMap.put("__button_save_or_update", R.id.cr_save);
+	}
+    
+    @Override
+	public boolean validateSettings() {
+		if( ! super.validateSettings()) {
+			return false;
+		}
+		if( reminder.getID() <= 0 ) {
+			setErrMessage("Invalid reminder ID.  Maybe you meant to create one?");
+			return false;
+		}
+
+		return true;
+	}
 
 	@Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.screen_under_construction);
-    	
-
-        return;
-        /*        
-    	db = new DBReminder(this);
-    	db.open();
-    
-        Bundle extras = this.getIntent().getExtras();
-        if(extras != null) {
-        	long idReminder = extras.getLong(DisplayReminder.INTENT_EXTRAS_KEY_REMINDER_ID);
-        	Log.v(TAG, "Loading ID " + idReminder);
-            loadReminderFromID(idReminder);
-        }
-        // TODO Probably need to shuffle pieces around before 
         
-        View.OnClickListener vocl_pickContact = new View.OnClickListener() {
-        	public void onClick(View view) {
-        		Intent i = new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI);
-        		startActivityForResult(i, PICK_CONTACT);
-        	}
-    	}; 
+        reminderViewInit();
 
-        ImageButton ContactIcon  = (ImageButton) findViewById(R.id.cr_contact_icon);
-        TextView tvContactName = (TextView) findViewById(R.id.cr_text_who);
-        Button bSave = (Button) findViewById(R.id.cr_save);
-        
-        ContactIcon.setOnClickListener( vocl_pickContact );
-        tvContactName.setOnClickListener( vocl_pickContact );
+        Button bSave = (Button) findViewById( idMap.get("__button_save_or_update") );        
         bSave.setOnClickListener( new View.OnClickListener() {
         	public void onClick(View view) {
         		if( EditReminder.this.validateSettings() ) {
-        			EditReminder.this.saveReminder();  // TODO Possibly move into a smarter class when adding the Edit ability (v0.6?)
+        			EditReminder.this.saveReminder();
         			EditReminder.this.finish();
         		} else {
         			Toast.makeText(EditReminder.this, EditReminder.this.getErrMessage(), Toast.LENGTH_SHORT).show();
         		}
         	}
         });
-        */
-	}
 
+		updateLayout();
+	}
+	
+    public void saveReminder() {
+    	setReminderFromLayout();
+    	Log.v(TAG, "Updating reminder #" + reminder.getID() + ", for " + reminder.getDisplayName() + ". Note: " + reminder.getNote());
+    	
+    	Intent intent = getIntent();
+    	db.update(reminder);
+        if (getParent() == null) {
+            setResult(Activity.RESULT_OK, intent);
+        } else {
+            getParent().setResult(Activity.RESULT_OK, intent);
+        }        
+        finish();
+    }
 }

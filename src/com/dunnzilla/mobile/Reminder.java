@@ -135,7 +135,7 @@ public class Reminder {
 	
 	    if( cursorPerson.moveToFirst()) {
 	        do {
-				// TODO try/catch
+				// SPA-12 TODO try/catch
 				/**
 				 * TODO Use LOOKUP_KEY instead of _ID? (LOOKUP_KEY is An opaque
 				 * value that contains hints on how to find the contact if its

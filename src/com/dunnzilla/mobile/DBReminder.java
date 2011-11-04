@@ -21,6 +21,7 @@ public class DBReminder extends DB {
 	// ======================================================================
 	// Reminder-specific
 	// ======================================================================
+	
 	public void insert(Reminder r) {
 		try {
 			open();
@@ -43,6 +44,20 @@ public class DBReminder extends DB {
 	}
 	public void delete(Reminder r) {
 		delete(r.getID());
+	}
+	public int update(Reminder r) {
+		ContentValues cv = new ContentValues();
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"); 
+
+		cv.put(DBConst.f_CONTACT_ID, r.getContactID());
+		cv.put(DBConst.f_DATETIME_START, dateFormat.format(r.getDateStart()));
+		cv.put(DBConst.f_PERIOD, r.getPeriod());
+		cv.put(DBConst.f_URI_ACTION, r.getActionURI());
+		cv.put(DBConst.f_NOTE, r.getNote());
+		cv.put(DBConst.f_DATETIME_STOP, dateFormat.format(r.getDateStop()));
+		cv.put(DBConst.f_DATETIME_NEXT, dateFormat.format(r.getDateNext()));
+
+		return update(r, cv);
 	}
 	public int update(Reminder r, ContentValues contentvals) {
 		String where = DBConst.f_ID + "=?";

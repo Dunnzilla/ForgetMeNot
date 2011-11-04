@@ -25,7 +25,7 @@ public class AndroidReminderUtils {
 
 	        if( cursorPerson.moveToFirst()) {
 		        do {
-		     	   // TODO try/catch
+		     	   // TODO SPA-12 try/catch
 		        	newReminder.setContactID(cursorPerson.getInt(cursorPerson.getColumnIndex(ContactsContract.Contacts._ID)));
 		        	newReminder.setDisplayName(cursorPerson.getString(cursorPerson.getColumnIndexOrThrow(ContactsContract.Contacts.DISPLAY_NAME)));
 		     	   
@@ -51,7 +51,7 @@ public class AndroidReminderUtils {
        }
        // TODO why am I potentially overwriting the reminder contact ID and other values multiple times? 
        do {
-    	   // TODO try/catch
+    	   // TODO SPA-12 try/catch
     	   // TODO don't mix up getColumnIndex with getColumnIndexOrThrow
     	   r.setContactID(cursor.getInt(cursor.getColumnIndex(ContactsContract.Contacts._ID)));
     	   r.setDisplayName(cursor.getString(cursor.getColumnIndexOrThrow(ContactsContract.Contacts.DISPLAY_NAME)));

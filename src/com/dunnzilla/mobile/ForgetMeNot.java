@@ -38,7 +38,7 @@ public class ForgetMeNot extends ListActivity {
         boolean startReminderService = true;
 	    ActivityManager manager = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
 	    for (RunningServiceInfo s : manager.getRunningServices(Integer.MAX_VALUE)) {
-	    	// TODO get service name based on class name
+	    	// TODO SPA-10 Determine service name from manifest or reflection. Don't hardcode.
 	        if ( "com.dunnzilla.mobile.ReminderService".equals(s.service.getClassName())) {
 	        	startReminderService = false;
 	        }
@@ -63,7 +63,6 @@ public class ForgetMeNot extends ListActivity {
         repopulate();
 	}
 	private void repopulate() {
-		// TODO shouldn't I be deleting db if it's set?
 		db = new DBReminder(ForgetMeNot.this);
         
         if(ForgetMeNot.this.reminders == null) {

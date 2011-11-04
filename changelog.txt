@@ -1,4 +1,16 @@
 --------------------------------------------------------------------------
+Interim submit working on Edit feature.
+(Not done yet)
+
+ForgetMeNot v0.4.15 (versionCode 23, DB v2)
+
+- Tagging some todo items with their Jira ticket #s
+- EditReminder inherits from CreateReminder
+- Combined some code down
+- Set up a map between db fields and Resource IDs
+
+
+--------------------------------------------------------------------------
 Crash fix & working on tablet layout support 
 
 ForgetMeNot v0.4.14 (versionCode 22, DB v2)

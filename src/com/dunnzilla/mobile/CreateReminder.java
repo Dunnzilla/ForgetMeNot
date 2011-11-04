@@ -1,6 +1,8 @@
 package com.dunnzilla.mobile;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -19,36 +21,64 @@ public class CreateReminder extends Activity {
 	static final int 			PICK_CONTACT = 1001;
     private static final String TAG = "CreateReminder";
     
-    private DBReminder		db;
-    private String			errorMessage;
-    Reminder				reminder;
+    public Reminder						reminder;
+    protected DBReminder				db;
+    protected String					errorMessage;
+	protected Map<String,Integer>		idMap;
 
-	@Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.create_reminder);
+	protected void mapDBFieldsToResourceIDs() {
+        idMap = new HashMap<String,Integer>(20);    	
+    	idMap.put(DBConst.f_DATETIME_START, R.id.cr_datepicker_start);
+    	idMap.put(DBConst.f_DATETIME_STOP, R.id.cr_datepicker_stop);
+    	idMap.put(DBConst.f_PERIOD, R.id.cr_period);
+    	idMap.put(DBConst.f_NOTE, R.id.cr_note);
+    	idMap.put("__contact_icon", R.id.cr_contact_icon);
+    	idMap.put("__contact_name", R.id.cr_text_who);
+    	idMap.put("__button_save_or_update", R.id.cr_save);
+    	idMap.put("__layout", R.layout.create_reminder);
+	}
+
+	protected void reminderViewInit() {		 
+        mapDBFieldsToResourceIDs();
+        Integer i = idMap.get("__layout");
+        int lid;
+        if(i == null) {
+        	lid = R.layout.create_reminder;
+        } else {
+        	lid = i.intValue();
+        }
+        setContentView( lid );
         
+    	db = new DBReminder(this);
+    	db.open();
+    	reminder = new Reminder();
+
         View.OnClickListener vocl_pickContact = new View.OnClickListener() {
         	public void onClick(View view) {
         		Intent i = new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI);
         		startActivityForResult(i, PICK_CONTACT);
         	}
-    	}; 
-    	
-    	db = new DBReminder(this);
-    	db.open();
-    	reminder = new Reminder();
+    	};    	
 
-        ImageButton ContactIcon  = (ImageButton) findViewById(R.id.cr_contact_icon);
-        TextView tvContactName = (TextView) findViewById(R.id.cr_text_who);
-        Button bSave = (Button) findViewById(R.id.cr_save);
+        ImageButton ContactIcon  = (ImageButton) findViewById( idMap.get("__contact_icon") );
+        TextView tvContactName = (TextView) findViewById( idMap.get("__contact_name") );
         
         ContactIcon.setOnClickListener( vocl_pickContact );
         tvContactName.setOnClickListener( vocl_pickContact );
+		
+	}
+
+	@Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        
+        reminderViewInit();
+
+        Button bSave = (Button) findViewById( idMap.get("__button_save_or_update") );
         bSave.setOnClickListener( new View.OnClickListener() {
         	public void onClick(View view) {
         		if( CreateReminder.this.validateSettings() ) {
-        			CreateReminder.this.saveReminder();  // TODO Possibly move into a smarter class when adding the Edit ability (v0.6?)
+        			CreateReminder.this.saveReminder();
         			CreateReminder.this.finish();
         		} else {
         			Toast.makeText(CreateReminder.this, CreateReminder.this.getErrMessage(), Toast.LENGTH_SHORT).show();
@@ -58,8 +88,8 @@ public class CreateReminder extends Activity {
 	}
 	
 	public boolean validateSettings() {
-		if( CreateReminder.this.reminder.getContactID() <= 0) {
-			CreateReminder.this.setErrMessage("Choose a contact.");
+		if( reminder.getContactID() <= 0) {
+			setErrMessage("Choose a contact.");
 			return false;
 		}
 		return true;
@@ -68,7 +98,7 @@ public class CreateReminder extends Activity {
 	public String getErrMessage() {
 		return errorMessage;
 	}
-	private void setErrMessage(String e) {
+	protected void setErrMessage(String e) {
 		errorMessage = e;
 	}
     @Override
@@ -77,36 +107,39 @@ public class CreateReminder extends Activity {
 	    	switch(requestCode) {
 	    	case PICK_CONTACT:
 	    		AndroidReminderUtils.getContactInfo(this, reminder, intent);
-	    		updateLayout(intent);
+	    		updateLayout();
 	       		break;
 	    	}
 		}
     	super.onActivityResult(requestCode, resultCode, intent);
     }
 
-    public void saveReminder() {
-    	DatePicker dp = (DatePicker)findViewById(R.id.cr_datepicker_start);
+    public void setReminderFromLayout()
+    {
+    	DatePicker dp = (DatePicker)findViewById( idMap.get(DBConst.f_DATETIME_START) );
     	Date dateStart = new Date(dp.getYear() - 1900, dp.getMonth(), dp.getDayOfMonth());
-    	DatePicker dpStop = (DatePicker)findViewById(R.id.cr_datepicker_stop);
+    	DatePicker dpStop = (DatePicker)findViewById( idMap.get(DBConst.f_DATETIME_STOP) );
     	Date dateStop = new Date(dpStop.getYear() - 1900, dpStop.getMonth(), dpStop.getDayOfMonth());
     	
-    	TextView tvPeriod = (TextView) findViewById(R.id.cr_period);
-    	TextView tvNote = (TextView) findViewById(R.id.cr_note);
+    	TextView tvPeriod = (TextView) findViewById( idMap.get(DBConst.f_PERIOD) );
+    	TextView tvNote = (TextView) findViewById( idMap.get(DBConst.f_NOTE) );
     	
     	String sPeriod = tvPeriod.getText().toString().trim();
     	int i = Integer.parseInt(sPeriod);
-    	CreateReminder.this.reminder.setPeriod(i);
+  
+    	reminder.setPeriod(i);
+    	reminder.setNote(tvNote.getText().toString().trim());
+    	reminder.setDateStart(dateStart);
+    	reminder.setDateNext(dateStart);
+    	reminder.setDateStop(dateStop);
+    }
 
-    	CreateReminder.this.reminder.setNote(tvNote.getText().toString().trim());
-
-    	CreateReminder.this.reminder.setDateStart(dateStart);
-    	CreateReminder.this.reminder.setDateNext(dateStart);
-    	CreateReminder.this.reminder.setDateStop(dateStop);
+    public void saveReminder() {
+    	setReminderFromLayout();
+    	Log.v(TAG, "New reminder for " + reminder.getDisplayName() + ". Note: " + reminder.getNote());
     	
-    	Log.v(TAG, "New reminder for " + CreateReminder.this.reminder.getDisplayName() + ". Note: " + tvNote.getText().toString());
-    	
-    	Intent intent = this.getIntent();
-    	CreateReminder.this.db.insert(reminder);
+    	Intent intent = getIntent();
+    	db.insert(reminder);
         if (getParent() == null) {
             setResult(Activity.RESULT_OK, intent);
         } else {
@@ -114,18 +147,19 @@ public class CreateReminder extends Activity {
         }        
         finish();
     }
-    protected void updateLayout(Intent _intent) {
+
+    protected void updateLayout() {
     	if( ! reminder.valid() ) {
     		// TODO Do something to visually indicate the contact chosen is invalid, or is pending selection
     		return;
     	}
-		ImageView ivContactIcon = (ImageView) findViewById(R.id.cr_contact_icon);
+		ImageView ivContactIcon = (ImageView) findViewById( idMap.get("__contact_icon") );
 		if( reminder.getContactIconBitmap() != null) {
 			ivContactIcon.setImageBitmap(reminder.getContactIconBitmap());
     	}
 
 		String displayName = reminder.getDisplayName();
-		TextView tvName = (TextView) findViewById(R.id.cr_text_who);
+		TextView tvName = (TextView) findViewById( idMap.get("__contact_name") );
     	if( displayName != null && displayName.length() > 0 ) {
     		tvName.setText(displayName);
     		tvName.setTextColor(0xFFFFFFFF);

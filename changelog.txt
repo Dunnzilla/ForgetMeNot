@@ -1,6 +1,16 @@
 --------------------------------------------------------------------------
 Interim submit working on Edit feature.
-(Not done yet)
+
+ForgetMeNot v0.4.16 (versionCode 24, DB v2)
+
+- Moved INTENT_EXTRAS_KEY_REMINDER_ID to AndroidReminderUtils
+- loadReminderFromID() wrapped main guts around a try.
+- EditReminder
+-- updates the note field if a note is present
+-- Loads the reminder from the ID passed in via extras (if any was)
+
+--------------------------------------------------------------------------
+Interim submit working on Edit feature.
 
 ForgetMeNot v0.4.15 (versionCode 23, DB v2)
 

@@ -56,6 +56,13 @@ public class EditReminder extends CreateReminder {
         		}
         	}
         });
+        
+        Bundle extras = this.getIntent().getExtras();
+        if(extras != null) {
+        	long idReminder = extras.getLong(AndroidReminderUtils.INTENT_EXTRAS_KEY_REMINDER_ID);
+        	Log.v(TAG, "Loading ID " + idReminder);
+        	reminder = AndroidReminderUtils.loadReminderFromID(this, db, idReminder);
+        }
 
 		updateLayout();
 	}

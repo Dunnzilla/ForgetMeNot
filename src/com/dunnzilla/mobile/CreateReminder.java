@@ -50,7 +50,6 @@ public class CreateReminder extends Activity {
         setContentView( lid );
         
     	db = new DBReminder(this);
-    	db.open();
     	reminder = new Reminder();
 
         View.OnClickListener vocl_pickContact = new View.OnClickListener() {
@@ -166,6 +165,12 @@ public class CreateReminder extends Activity {
     	} else {
     		tvName.setText(R.string.vr_default_name);
     		tvName.setTextColor(0xFFFFFFFF);    		
+    	}
+
+    	String note = reminder.getNote();
+    	if(note != null && note.length() > 0) {
+    		TextView tvNote = (TextView) findViewById( idMap.get(DBConst.f_NOTE) );
+    		tvNote.setText(note);
     	}
     }
 }

@@ -12,7 +12,6 @@ import android.widget.Toast;
 
 public class DisplayReminder extends Activity {
     private static final String TAG = "DisplayReminder";
-	public static final String INTENT_EXTRAS_KEY_REMINDER_ID = "REMINDER_ID";
     
     private DBReminder	db;
     Reminder			reminder;
@@ -27,7 +26,7 @@ public class DisplayReminder extends Activity {
         
         Bundle extras = this.getIntent().getExtras();
         if(extras != null) {
-        	long idReminder = extras.getLong(INTENT_EXTRAS_KEY_REMINDER_ID);
+        	long idReminder = extras.getLong(AndroidReminderUtils.INTENT_EXTRAS_KEY_REMINDER_ID);
         	Log.v(TAG, "Loading ID " + idReminder);
         	reminder = AndroidReminderUtils.loadReminderFromID(this, db, idReminder);
         }
@@ -80,7 +79,7 @@ public class DisplayReminder extends Activity {
         bEdit.setOnClickListener( new View.OnClickListener() {
         	public void onClick(View view) {
 				Bundle b = new Bundle();
-				b.putLong(DisplayReminder.INTENT_EXTRAS_KEY_REMINDER_ID, reminder.getID());
+				b.putLong(AndroidReminderUtils.INTENT_EXTRAS_KEY_REMINDER_ID, reminder.getID());
 
 				Intent intentEdit = new Intent(DisplayReminder.this, EditReminder.class);
 				intentEdit.putExtras(b);					

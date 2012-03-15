@@ -13,29 +13,35 @@ import android.net.Uri;
 import android.provider.ContactsContract;
 
 public class AndroidReminderUtils {
+	public static final String INTENT_EXTRAS_KEY_REMINDER_ID = "REMINDER_ID";
+
 
     public static Reminder loadReminderFromID(Activity a, DBReminder db, long id) {
 		Cursor cu = db.selectID(id);
 		Reminder newReminder = null;
-		if(cu.moveToFirst()) {
-			newReminder = new Reminder(cu);
-	    	Uri uriPerson = ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI, newReminder.getContactID());
-	    	// Then query for this specific record:
-	    	Cursor cursorPerson = a.managedQuery(uriPerson, null, null, null, null);
-
-	        if( cursorPerson.moveToFirst()) {
-		        do {
-		     	   // TODO SPA-12 try/catch
-		        	newReminder.setContactID(cursorPerson.getInt(cursorPerson.getColumnIndex(ContactsContract.Contacts._ID)));
-		        	newReminder.setDisplayName(cursorPerson.getString(cursorPerson.getColumnIndexOrThrow(ContactsContract.Contacts.DISPLAY_NAME)));
-		     	   
-		           InputStream streamPhoto = ContactsContract.Contacts.openContactPhotoInputStream(a.getContentResolver(), uriPerson);
-		           if (streamPhoto != null) {
-		        	   newReminder.setContactIconBitmap(BitmapFactory.decodeStream(streamPhoto));
-		           }
-		       }  while(cursorPerson.moveToNext());
-	        }
-	        cursorPerson.close();
+		try {
+			if(cu.moveToFirst()) {
+				newReminder = new Reminder(cu);
+		    	Uri uriPerson = ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI, newReminder.getContactID());
+		    	// Then query for this specific record:
+		    	Cursor cursorPerson = a.managedQuery(uriPerson, null, null, null, null);
+	
+		        if( cursorPerson.moveToFirst()) {
+			        do {
+			     	   // TODO SPA-12 try/catch
+			        	newReminder.setContactID(cursorPerson.getInt(cursorPerson.getColumnIndex(ContactsContract.Contacts._ID)));
+			        	newReminder.setDisplayName(cursorPerson.getString(cursorPerson.getColumnIndexOrThrow(ContactsContract.Contacts.DISPLAY_NAME)));
+			     	   
+			           InputStream streamPhoto = ContactsContract.Contacts.openContactPhotoInputStream(a.getContentResolver(), uriPerson);
+			           if (streamPhoto != null) {
+			        	   newReminder.setContactIconBitmap(BitmapFactory.decodeStream(streamPhoto));
+			           }
+			       }  while(cursorPerson.moveToNext());
+		        }
+		        cursorPerson.close();
+			}
+		} catch(Exception e) {
+			// TODO
 		}
 		cu.close();
 		return newReminder;

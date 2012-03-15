@@ -193,7 +193,7 @@ public class ReminderAdapter extends BaseAdapter implements ListAdapter {
         		final Context contextParent = (Context) view.getTag(R.string.TAG_ID_ReminderAdapter_Context);
 				Intent intentDisplay = new Intent(context, DisplayReminder.class);
 				Bundle b = new Bundle();
-				b.putLong(DisplayReminder.INTENT_EXTRAS_KEY_REMINDER_ID, r.getID());  
+				b.putLong(AndroidReminderUtils.INTENT_EXTRAS_KEY_REMINDER_ID, r.getID());  
 				intentDisplay.putExtras(b);					
 				contextParent.startActivity(intentDisplay);
         	}

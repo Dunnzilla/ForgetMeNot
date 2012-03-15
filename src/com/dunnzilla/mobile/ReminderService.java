@@ -70,14 +70,14 @@ public class ReminderService extends Service {
 	}
 	private void notifyFromHandler(Message msg) {
 		Bundle	msgData = msg.getData();		
-		long	reminderID = ((Long)msgData.get(DisplayReminder.INTENT_EXTRAS_KEY_REMINDER_ID)).longValue();
+		long	reminderID = ((Long)msgData.get(AndroidReminderUtils.INTENT_EXTRAS_KEY_REMINDER_ID)).longValue();
 		Reminder r = new Reminder(db, reminderID); 
 		//String strReminderID = Long.toString(reminderID); 
 		Uri uri = Uri.parse("reminder://com.dunnzilla.mobile/view?id=" + r.getID());
 		
 		Intent intent = new Intent(Intent.ACTION_VIEW, uri);
 		Bundle b = new Bundle();
-		b.putLong(DisplayReminder.INTENT_EXTRAS_KEY_REMINDER_ID, r.getID());  
+		b.putLong(AndroidReminderUtils.INTENT_EXTRAS_KEY_REMINDER_ID, r.getID());  
 		intent.putExtras(b);		
 		PendingIntent pendintent = PendingIntent.getActivity(this, Intent.FLAG_ACTIVITY_NEW_TASK, intent, PendingIntent.FLAG_ONE_SHOT);
 
@@ -128,7 +128,7 @@ public class ReminderService extends Service {
 		long reminderID = r.getID();
 		Message m = Message.obtain();
 		Bundle b = new Bundle();
-		b.putLong(DisplayReminder.INTENT_EXTRAS_KEY_REMINDER_ID, reminderID);
+		b.putLong(AndroidReminderUtils.INTENT_EXTRAS_KEY_REMINDER_ID, reminderID);
 		Log.v(TAG, "sendNotification(" + reminderID + ")");
 		m.setData(b);
 		handler.sendMessage(m);

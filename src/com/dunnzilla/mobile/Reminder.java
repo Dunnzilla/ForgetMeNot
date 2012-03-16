@@ -176,6 +176,18 @@ public class Reminder {
     	}
     	return "eventually";    	
     }
+    public String getDescrPeriod() {
+    	if(period == 0) {
+    		return "never";
+    	}
+    	if(period == 1) {
+    		return "every day";
+    	}
+    	if(period == 2) {
+    		return "every other day";
+    	}
+    	return ("every " + period + " days");
+    }
 
     // -----------------------------
 	public int getContactID() {

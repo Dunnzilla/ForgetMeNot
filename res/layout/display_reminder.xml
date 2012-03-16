@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
-	android:id="@+id/disprem_scrollview" android:layout_width="fill_parent"
-	android:layout_height="fill_parent" xmlns:android="http://schemas.android.com/apk/res/android"
-	>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/disprem_scrollview"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content" >
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
@@ -140,6 +140,18 @@
 		android:layout_marginTop="10dip"
 	    android:layout_marginBottom="10dp"
     	/>
+
+    <TextView
+        android:id="@+id/vr_period_descr"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/vr_text_who_summary"
+        android:layout_alignBottom="@+id/vr_text_who_summary"
+        android:layout_alignParentRight="true"
+        android:gravity="center_vertical|center_horizontal"
+        android:text=""
+        android:textColor="#DDDDDD"
+        android:textSize="15dip" />
 
 </RelativeLayout>
 </ScrollView>

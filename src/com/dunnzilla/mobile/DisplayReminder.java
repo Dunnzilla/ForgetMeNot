@@ -120,5 +120,10 @@ public class DisplayReminder extends Activity {
     		tv.setText(reminder.getNote());
     		tv.setTextColor(0xFFFFFFFF);
     	}
+    	
+    	TextView tvPeriod = (TextView) findViewById(R.id.vr_text_who_summary);
+
+    	tvPeriod.setText("Contact " + reminder.getDescrPeriod());
+
     }
 }

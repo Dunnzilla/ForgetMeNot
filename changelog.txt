@@ -1,4 +1,21 @@
 --------------------------------------------------------------------------
+Add "Contact every day", "Contact every 3 days" to display
+
+ForgetMeNot v0.4.17 (versionCode 25, DB v2)
+
+* res/layout/display_reminder.xml
+- Add TextView "@+id/vr_period_descr"
+
+* src/com/dunnzilla/mobile/DisplayReminder.java
+- Sets text of vr_text_who_summary to getDescrPeriod() result
+
+* src/com/dunnzilla/mobile/EditReminder.java
+- Simple log change
+
+* src/com/dunnzilla/mobile/Reminder.java
+- getDescrPeriod() returns a descriptive string
+
+--------------------------------------------------------------------------
 Interim submit working on Edit feature.
 
 ForgetMeNot v0.4.16 (versionCode 24, DB v2)

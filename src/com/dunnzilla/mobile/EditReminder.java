@@ -69,7 +69,7 @@ public class EditReminder extends CreateReminder {
 	
     public void saveReminder() {
     	setReminderFromLayout();
-    	Log.v(TAG, "Updating reminder #" + reminder.getID() + ", for " + reminder.getDisplayName() + ". Note: " + reminder.getNote());
+    	Log.v(TAG, "Updating reminder #" + reminder.getID() + ", for " + reminder.getDisplayName() + ". Note: " + reminder.getNote() + ", period" + reminder.getPeriod());
     	
     	Intent intent = getIntent();
     	db.update(reminder);

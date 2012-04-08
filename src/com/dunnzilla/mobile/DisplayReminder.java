@@ -30,6 +30,9 @@ public class DisplayReminder extends Activity {
         	Log.v(TAG, "Loading ID " + idReminder);
         	reminder = AndroidReminderUtils.loadReminderFromID(this, db, idReminder);
         }
+        if(reminder == null) {
+        	return;
+        }
         getApplicationContext();
         
     	// TODO handle no reminder ID passed in, or an invalid reminder ID
@@ -104,6 +107,8 @@ public class DisplayReminder extends Activity {
     }
 
     protected void updateLayout(Intent _intent) {
+    	reminder = AndroidReminderUtils.loadReminderFromID(this, db, reminder.getID());
+
     	if( reminder == null) {
     		return;
     	}
@@ -112,14 +117,14 @@ public class DisplayReminder extends Activity {
     		return;
     	}
 
-    	reminder = AndroidReminderUtils.loadReminderFromID(this, db, reminder.getID());
 
 		ImageView ivContactIcon = (ImageView) findViewById(R.id.vr_contact_icon);
 		if( reminder.getContactIconBitmap() != null) {
 			ivContactIcon.setImageBitmap(reminder.getContactIconBitmap());
     	}
 		
-    	if( reminder.getDisplayName().length() > 0 ) {
+		String displayName = reminder.getDisplayName();
+    	if( displayName != null && displayName.length() > 0 ) {
     		TextView tvName = (TextView) findViewById(R.id.vr_text_who);
     		tvName.setText(reminder.getDisplayName());
     		tvName.setTextColor(0xFFFFFFFF);

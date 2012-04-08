@@ -92,15 +92,17 @@ public class ReminderService extends Service {
 		          Data.CONTACT_ID + "=?",
 		          new String[] {String.valueOf(id)}, null);
 
-		String displayName = "";
+		String displayName = null;
 	    if( cu.moveToFirst()) {
-	        // do {
 	        displayName = cu.getString(cu.getColumnIndexOrThrow(ContactsContract.Contacts.DISPLAY_NAME));
-	        //}  while(cu.moveToNext());
 	    }
 	    cu.close();
 		
+	    if(displayName == null) {
+	    	return;
+	    }
 		String notificationText = "Remember " + displayName;
+		
 		String note = r.getNote();
 		// TODO write or import some decent string utils
 	    if( note != null && note.length() > 0) {

@@ -136,7 +136,6 @@ public class ReminderAdapter extends BaseAdapter implements ListAdapter {
 			lp_tvSummary.setMargins(5, 0, 0, 0);
 			
 			lp_ibDoIt.addRule(RelativeLayout.BELOW, tvName.getId());
-//			lp_ibDoIt.addRule(RelativeLayout.CENTER_VERTICAL);
 			lp_ibDoIt.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
 			lp_ibDoIt.setMargins(5, 0, 0, 0);
 			
@@ -165,8 +164,12 @@ public class ReminderAdapter extends BaseAdapter implements ListAdapter {
 		}
 		
 		ibDoIt.setImageResource(R.drawable.ic_launcher_voicedial);
-           
-		tvName.setText(r.getDisplayName());
+		String displayName = r.getDisplayName();
+		if(displayName == null || displayName.equals("")) {
+			displayName = "Unknown Contact";
+		}
+
+		tvName.setText(displayName);
 		tvName.setShadowLayer(4.0f, 4.0f, 4.0f, 0xFF000000);
 		// TODO change color based on whatever silliness the user wants.
 		tvName.setTextColor(0xFFFFFFFF);

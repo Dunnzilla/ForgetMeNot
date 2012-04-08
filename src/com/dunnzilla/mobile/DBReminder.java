@@ -47,7 +47,8 @@ public class DBReminder extends DB {
 	}
 	public int update(Reminder r) {
 		ContentValues cv = new ContentValues();
-		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"); 
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		Log.v(TAG, "update reminder for contact ID " + r.getContactID() + ", date start/stop == " + dateFormat.format(r.getDateStart()) + " - " + dateFormat.format(r.getDateStop()));
 
 		cv.put(DBConst.f_CONTACT_ID, r.getContactID());
 		cv.put(DBConst.f_DATETIME_START, dateFormat.format(r.getDateStart()));
@@ -62,7 +63,10 @@ public class DBReminder extends DB {
 	public int update(Reminder r, ContentValues contentvals) {
 		String where = DBConst.f_ID + "=?";
 		String[] whereArgs = { Integer.toString(r.getID()) };
-		return db.update(DBConst.TABLE, contentvals, where, whereArgs);
+		int rows_affected = db.update(DBConst.TABLE, contentvals, where, whereArgs);
+		db.close();
+		Log.v(TAG, rows_affected + " rows affected.");
+		return rows_affected;
 	}
 	
 	public void set_datetime_next(Reminder r, String _newVal) {		

@@ -35,6 +35,9 @@ public class DB {
 		}
 	}
 	public void close() {
+		if( ! db.isOpen() ) {
+			return;
+		}
 		db.close();
 	}
 	public void delete(int _id) {
@@ -46,10 +49,8 @@ public class DB {
 		}
 	}
 	public Cursor selectAll() {
-		Cursor c;
 		// My eyes, they bleed:
-		c = db.query(DBConst.TABLE, null, null, null, null, null, null);
-		return c;
+		return db.query(DBConst.TABLE, null, null, null, null, null, null);
 	}
 	public Cursor selectID(long id) {
 		return db.query(DBConst.TABLE, null, ("_id = " + id), null, null, null, null);

@@ -105,7 +105,7 @@ public class Reminder {
     	setActionURI(c.getString(c.getColumnIndex(DBConst.f_URI_ACTION)));
     	
     	String dstart = c.getString(c.getColumnIndex(DBConst.f_DATETIME_START));
-    	String dstop = c.getString(c.getColumnIndex(DBConst.f_DATETIME_START));
+    	String dstop = c.getString(c.getColumnIndex(DBConst.f_DATETIME_STOP));
     	String dnext = c.getString(c.getColumnIndex(DBConst.f_DATETIME_NEXT));
     	
 		try {
@@ -223,13 +223,13 @@ public class Reminder {
 	public Date getDateStop() {
 		return dateStop;
 	}
-	public void setDateStop(Date dateStop) {
-		this.dateStop = dateStop;
+	public void setDateStop(Date _dateStop) {
+		this.dateStop = _dateStop;
 	}
 	public Date getDateNext() {
 		return dateNext;
 	}
-	public void setDateNext(Date dateNext) {
-		this.dateNext = dateNext;
+	public void setDateNext(Date _dateNext) {
+		this.dateNext = _dateNext;
 	}
 }

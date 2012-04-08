@@ -42,6 +42,8 @@ public class CreateReminder extends Activity {
         mapDBFieldsToResourceIDs();
         Integer i = idMap.get("__layout");
         int lid;
+        // Default to the create_reminder layout if no __layout key is specified in the ID map.
+        // This way you can use a different layout if you wish.
         if(i == null) {
         	lid = R.layout.create_reminder;
         } else {
@@ -64,7 +66,7 @@ public class CreateReminder extends Activity {
         
         ContactIcon.setOnClickListener( vocl_pickContact );
         tvContactName.setOnClickListener( vocl_pickContact );
-		
+        db.close();
 	}
 
 	@Override
@@ -115,11 +117,12 @@ public class CreateReminder extends Activity {
 
     public void setReminderFromLayout()
     {
+    	// TODO also set the contact?
     	DatePicker dp = (DatePicker)findViewById( idMap.get(DBConst.f_DATETIME_START) );
     	Date dateStart = new Date(dp.getYear() - 1900, dp.getMonth(), dp.getDayOfMonth());
     	DatePicker dpStop = (DatePicker)findViewById( idMap.get(DBConst.f_DATETIME_STOP) );
     	Date dateStop = new Date(dpStop.getYear() - 1900, dpStop.getMonth(), dpStop.getDayOfMonth());
-    	
+    	  	
     	TextView tvPeriod = (TextView) findViewById( idMap.get(DBConst.f_PERIOD) );
     	TextView tvNote = (TextView) findViewById( idMap.get(DBConst.f_NOTE) );
     	
@@ -129,7 +132,7 @@ public class CreateReminder extends Activity {
     	reminder.setPeriod(i);
     	reminder.setNote(tvNote.getText().toString().trim());
     	reminder.setDateStart(dateStart);
-    	reminder.setDateNext(dateStart);
+    	reminder.setDateNext(dateStart);//TODO get the actual next date
     	reminder.setDateStop(dateStop);
     }
 
@@ -172,5 +175,17 @@ public class CreateReminder extends Activity {
     		TextView tvNote = (TextView) findViewById( idMap.get(DBConst.f_NOTE) );
     		tvNote.setText(note);
     	}
+    	
+    	DatePicker dpStart = (DatePicker) findViewById( idMap.get(DBConst.f_DATETIME_START) );
+    	Date d = reminder.getDateStart();
+    	dpStart.updateDate(1900 + d.getYear(), d.getMonth(), d.getDate());
+    	
+    	DatePicker dpStop = (DatePicker) findViewById( idMap.get(DBConst.f_DATETIME_STOP) );
+    	d = reminder.getDateStop();
+    	dpStop.updateDate(1900 + d.getYear(), d.getMonth(), d.getDate());
+    	
+    	TextView tvPeriod = (TextView) findViewById( idMap.get(DBConst.f_PERIOD) );
+    	tvPeriod.setText(Integer.toString(reminder.getPeriod()));
+
     }
 }

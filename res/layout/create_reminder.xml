@@ -5,13 +5,16 @@
 	>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
-    android:layout_height="fill_parent" android:layout_width="fill_parent">
+    android:layout_height="wrap_content"
+    android:layout_width="fill_parent">
 
     <ImageButton
         android:id="@+id/cr_contact_icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/cr_contact_icon" />
+        android:src="@drawable/cr_contact_icon"
+        android:contentDescription="@string/cdesc_image_icon"
+        />
 
 	<TextView
 	    android:id="@+id/cr_text_who"
@@ -76,7 +79,8 @@
 
 	<EditText
 		android:id="@+id/cr_period" 
-		android:text="7"
+		android:inputType="numberDecimal"
+		android:text="@string/default_period"
 		android:layout_width="75sp" android:layout_height="wrap_content"
 		android:maxLength="3"
 		android:layout_toRightOf="@id/cr_label_repeat_period"
@@ -89,7 +93,7 @@
 	    android:layout_width="fill_parent" 
 	    android:layout_height="wrap_content"
 	    android:layout_marginLeft="5dp" 
-	    android:text="days"
+	    android:text="@string/days"
 	    android:layout_toRightOf="@id/cr_period"
 	    android:layout_below="@id/hr3"
 	    android:layout_alignTop="@id/cr_label_repeat_period"
@@ -102,13 +106,14 @@
 	    android:id="@+id/cr_label_note"
 	    android:layout_width="fill_parent" 
 	    android:layout_height="wrap_content" 
-	    android:text="Note"
+	    android:text="@string/note"
 	    android:layout_below="@id/hr4"
 	    />
 	    
 	<EditText
 		android:id="@+id/cr_note" 
 		android:text=""
+		android:inputType="text"
 		android:layout_width="fill_parent"
 		android:layout_height="60dp"
 		android:layout_below="@id/cr_label_note"
@@ -120,7 +125,7 @@
 	<Button android:layout_height="wrap_content"
 			android:id="@+id/cr_save"
 			android:layout_width="fill_parent"
-			android:text="Save"
+			android:text="@string/button_save"
 			android:layout_centerHorizontal="true"
 			android:layout_gravity="center"
 			android:layout_below="@id/hr5"

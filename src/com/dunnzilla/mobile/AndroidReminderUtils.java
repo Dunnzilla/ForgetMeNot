@@ -1,6 +1,7 @@
 package com.dunnzilla.mobile;
 
 import java.io.InputStream;
+import java.util.Date;
 
 import android.app.Activity;
 import android.content.ContentUris;
@@ -17,6 +18,7 @@ public class AndroidReminderUtils {
 
 
     public static Reminder loadReminderFromID(Activity a, DBReminder db, long id) {
+    	db.open();
 		Cursor cu = db.selectID(id);
 		Reminder newReminder = null;
 		try {
@@ -44,6 +46,7 @@ public class AndroidReminderUtils {
 			// TODO
 		}
 		cu.close();
+		db.close();
 		return newReminder;
     }
     public static void getContactInfo(Activity a, Reminder r, Intent _intent)
@@ -67,6 +70,12 @@ public class AndroidReminderUtils {
            }
       }  while(cursor.moveToNext());
        cursor.close();
+    }
+    
+    public static String formatDate(Date d) {
+    	// TODO let user pick date format preferences ( - or - consult system settings? )
+    	String s = (1900 + d.getYear()) + "/" + (d.getMonth() + 1) + "/" + (d.getDate());
+    	return s;
     }
  
     public static Bitmap loadContactPhoto(Context c, long id) {

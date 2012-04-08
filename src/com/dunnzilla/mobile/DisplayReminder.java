@@ -95,6 +95,13 @@ public class DisplayReminder extends Activity {
     	db.close();
     	super.onStop();
     }
+    
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+        updateLayout(this.getIntent());
+    }
 
     protected void updateLayout(Intent _intent) {
     	if( reminder == null) {
@@ -104,6 +111,9 @@ public class DisplayReminder extends Activity {
     		// TODO Do something to visually indicate the contact chosen is invalid, or is pending selection
     		return;
     	}
+
+    	reminder = AndroidReminderUtils.loadReminderFromID(this, db, reminder.getID());
+
 		ImageView ivContactIcon = (ImageView) findViewById(R.id.vr_contact_icon);
 		if( reminder.getContactIconBitmap() != null) {
 			ivContactIcon.setImageBitmap(reminder.getContactIconBitmap());
@@ -122,8 +132,12 @@ public class DisplayReminder extends Activity {
     	}
     	
     	TextView tvPeriod = (TextView) findViewById(R.id.vr_text_who_summary);
-
     	tvPeriod.setText("Contact " + reminder.getDescrPeriod());
-
+    	
+    	TextView tvDateRange = (TextView) findViewById(R.id.vr_date_range);
+    	Log.v(TAG, "Using Android utils to format dates from " + reminder.getDateStart() + " to " + reminder.getDateStop());
+    	String dateRange = AndroidReminderUtils.formatDate(reminder.getDateStart()) + " - " + AndroidReminderUtils.formatDate(reminder.getDateStop());
+    	tvDateRange.setText(dateRange);
+    	
     }
 }

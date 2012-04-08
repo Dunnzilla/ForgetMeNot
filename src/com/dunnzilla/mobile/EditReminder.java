@@ -42,7 +42,7 @@ public class EditReminder extends CreateReminder {
 	@Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        
+
         reminderViewInit();
 
         Button bSave = (Button) findViewById( idMap.get("__button_save_or_update") );        
@@ -63,13 +63,15 @@ public class EditReminder extends CreateReminder {
         	Log.v(TAG, "Loading ID " + idReminder);
         	reminder = AndroidReminderUtils.loadReminderFromID(this, db, idReminder);
         }
-
 		updateLayout();
 	}
 	
     public void saveReminder() {
+    	db.open();
     	setReminderFromLayout();
-    	Log.v(TAG, "Updating reminder #" + reminder.getID() + ", for " + reminder.getDisplayName() + ". Note: " + reminder.getNote() + ", period" + reminder.getPeriod());
+    	
+    	String dateRange = AndroidReminderUtils.formatDate(reminder.getDateStart()) + " - " + AndroidReminderUtils.formatDate(reminder.getDateStop());
+    	Log.v(TAG, "Updating reminder #" + reminder.getID() + ", for " + reminder.getDisplayName() + ". Note: " + reminder.getNote() + ", period " + reminder.getPeriod() + ", daterange " + dateRange);
     	
     	Intent intent = getIntent();
     	db.update(reminder);
@@ -77,7 +79,8 @@ public class EditReminder extends CreateReminder {
             setResult(Activity.RESULT_OK, intent);
         } else {
             getParent().setResult(Activity.RESULT_OK, intent);
-        }        
+        }
+        db.close();
         finish();
     }
 }

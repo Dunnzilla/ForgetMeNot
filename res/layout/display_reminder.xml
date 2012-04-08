@@ -2,85 +2,104 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/disprem_scrollview"
     android:layout_width="fill_parent"
-    android:layout_height="wrap_content" >
+    android:layout_height="fill_parent" >
 
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:layout_height="fill_parent" android:layout_width="fill_parent">
-
-    <ImageButton
-        android:id="@+id/vr_contact_icon"
+    <RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/cr_contact_icon" />
+        android:orientation="vertical" >
 
-	<TextView
-	    android:id="@+id/vr_text_who"
-	    android:layout_width="fill_parent" 
-	    android:layout_height="wrap_content" 
-	    android:text="@string/vr_default_name"
-		android:textSize="25dip"
-		android:textColor="#999999"
-		android:layout_marginLeft="2dip"
-		android:layout_marginTop="10dip"
-		android:layout_toRightOf="@id/vr_contact_icon"
-	    />
-	<TextView
-	    android:id="@+id/vr_text_who_summary"
-	    android:layout_width="fill_parent" 
-	    android:layout_height="wrap_content" 
-	    android:text=""
-		android:textSize="15dip"
-		android:textColor="#DDDDDD"
-		android:layout_marginLeft="2dip"
-		android:layout_marginTop="10dip"
-		android:layout_toRightOf="@id/vr_contact_icon"
-		android:layout_below="@id/vr_text_who"
-	    />
-	    
-	<View android:id="@+id/hr_top" android:layout_below="@id/vr_contact_icon" android:background="#7777cc" android:layout_width = "fill_parent" android:layout_height="1dip" android:layout_marginTop="2dp" android:layout_marginBottom="2dp" />
-	<!--  ======================================================================================== -->
+        <ImageButton
+            android:id="@+id/vr_contact_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/cdesc_image_icon"
+            android:src="@drawable/cr_contact_icon" />
 
-	<TextView
-	    android:id="@+id/vr_text_note"
-	    android:layout_width="fill_parent" 
-	    android:layout_height="wrap_content" 
-	    android:text="No note"
-	    android:gravity="center_vertical|center_horizontal"
-	    android:layout_marginBottom="10dp"
-		android:textSize="15dip"
-		android:textColor="#DDDDDD"
-		android:layout_marginLeft="2dip"
-		android:layout_marginTop="10dip"
-		android:layout_below="@id/hr_top"
-	    />
+        <TextView
+            android:id="@+id/vr_text_who"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="2dip"
+            android:layout_marginTop="10dip"
+            android:layout_toRightOf="@+id/vr_contact_icon"
+            android:text="@string/vr_default_name"
+            android:textColor="#999999"
+            android:textSize="25dip" />
 
-	<Button
-		android:id="@+id/disprem_btn_done"
-		android:layout_below="@id/vr_text_note"
-		android:text="@string/disprem_button_complete"
-		 
-	    android:layout_width="120dp" 
-	    android:layout_height="wrap_content" 
-		android:layout_marginLeft="20dip"
-		android:layout_marginRight="20dip"
-		android:layout_marginTop="10dip"
-	    android:layout_marginBottom="10dp"
-		/>
-	<Button
-		android:id="@+id/disprem_btn_snooze"
-		android:layout_below="@id/vr_text_note"
-		android:layout_toRightOf="@id/disprem_btn_done"
-		android:text="@string/disprem_button_snooze"
-		 
-	    android:layout_width="120dp" 
-	    android:layout_height="wrap_content" 
-		android:layout_marginLeft="20dip"
-		android:layout_marginRight="20dip"
-		android:layout_marginTop="10dip"
-	    android:layout_marginBottom="10dp"
-		/>
-<!-- 
+        <TextView
+            android:id="@+id/vr_text_who_summary"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/vr_text_who"
+            android:layout_marginLeft="2dip"
+            android:layout_marginTop="10dip"
+            android:layout_toRightOf="@id/vr_contact_icon"
+            android:text="@string/empty"
+            android:textColor="#DDDDDD"
+            android:textSize="15dip" />
+
+        <TextView
+            android:id="@+id/vr_date_range"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/vr_text_who_summary"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="2dip"
+            android:layout_marginTop="10dip"
+            android:gravity="center_vertical|center_horizontal"
+            android:text="@string/vr_default_date_summary"
+            android:textColor="#DDDDDD"
+            android:textSize="15dip"
+            />
+        
+        <View
+            android:id="@+id/hr_top"
+            android:layout_width="fill_parent"
+            android:layout_height="1dip"
+            android:layout_below="@id/vr_date_range"
+            android:layout_marginBottom="2dp"
+            android:layout_marginTop="2dp"
+            android:background="#7777cc" />
+        <!-- ======================================================================================== -->
+
+        <TextView
+            android:id="@+id/vr_text_note"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/hr_top"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="2dip"
+            android:layout_marginTop="10dip"
+            android:gravity="center_vertical|center_horizontal"
+            android:text="@string/vr_default_note"
+            android:textColor="#DDDDDD"
+            android:textSize="15dip" />
+
+        <Button
+            android:id="@+id/disprem_btn_done"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/vr_text_note"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="20dip"
+            android:layout_marginRight="20dip"
+            android:layout_marginTop="10dip"
+            android:text="@string/disprem_button_complete" />
+
+        <Button
+            android:id="@+id/disprem_btn_snooze"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/vr_text_note"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="20dip"
+            android:layout_marginRight="20dip"
+            android:layout_marginTop="10dip"
+            android:layout_toRightOf="@id/disprem_btn_done"
+            android:text="@string/disprem_button_snooze" />
+        <!--
 	<ToggleButton
 		android:id="@+id/disprem_btn_activate"
 		android:text="Active"
@@ -106,52 +125,53 @@
 		android:layout_marginLeft="2dip"
 	    />
 	<View android:id="@+id/hr_below_actions" android:layout_below="@id/disprem_btn_done" android:background="#7777cc" android:layout_width = "fill_parent" android:layout_height="1dip" android:layout_marginTop="2dp" android:layout_marginBottom="2dp" />
- -->
-	<!--  ======================================================================================== -->
+        -->
+        <!-- ======================================================================================== -->
 
-	<View android:id="@+id/hr_bottom" android:layout_below="@id/disprem_btn_snooze"
-		android:background="#7777cc" android:layout_width="fill_parent"
-		android:layout_height="1dip" android:layout_marginTop="2dp"
-		android:layout_marginBottom="2dp" />
-	
-    <Button
-    	android:id="@+id/disprem_btn_delete"
-    	android:text="Delete"
-    	
-    	android:layout_below="@id/hr_bottom"
-    	
-	    android:layout_width="120dp" 
-	    android:layout_height="wrap_content" 
-		android:layout_marginLeft="20dip"
-		android:layout_marginRight="20dip"
-		android:layout_marginTop="10dip"
-	    android:layout_marginBottom="10dp"
-    	/>
-    <Button
-    	android:id="@+id/disprem_btn_edit"
-    	android:text="Edit"    	
-    	android:layout_toRightOf="@id/disprem_btn_delete"
-    	android:layout_below="@id/hr_bottom"
+        <View
+            android:id="@+id/hr_bottom"
+            android:layout_width="fill_parent"
+            android:layout_height="1dip"
+            android:layout_below="@id/disprem_btn_snooze"
+            android:layout_marginBottom="2dp"
+            android:layout_marginTop="2dp"
+            android:background="#7777cc" />
 
-	    android:layout_width="120dp" 
-	    android:layout_height="wrap_content" 
-		android:layout_marginLeft="20dip"
-		android:layout_marginRight="20dip"
-		android:layout_marginTop="10dip"
-	    android:layout_marginBottom="10dp"
-    	/>
+        <Button
+            android:id="@+id/disprem_btn_delete"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/hr_bottom"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="20dip"
+            android:layout_marginRight="20dip"
+            android:layout_marginTop="10dip"
+            android:text="@string/button_delete" />
 
-    <TextView
-        android:id="@+id/vr_period_descr"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/vr_text_who_summary"
-        android:layout_alignBottom="@+id/vr_text_who_summary"
-        android:layout_alignParentRight="true"
-        android:gravity="center_vertical|center_horizontal"
-        android:text=""
-        android:textColor="#DDDDDD"
-        android:textSize="15dip" />
+        <Button
+            android:id="@+id/disprem_btn_edit"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/hr_bottom"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="20dip"
+            android:layout_marginRight="20dip"
+            android:layout_marginTop="10dip"
+            android:layout_toRightOf="@id/disprem_btn_delete"
+            android:text="@string/button_edit" />
 
-</RelativeLayout>
+        <TextView
+            android:id="@+id/vr_period_descr"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/vr_text_who_summary"
+            android:layout_alignBottom="@+id/vr_text_who_summary"
+            android:layout_alignParentRight="true"
+            android:gravity="center_vertical|center_horizontal"
+            android:text=""
+            android:textColor="#DDDDDD"
+            android:textSize="15dip" />
+        
+    </RelativeLayout>
+
 </ScrollView>

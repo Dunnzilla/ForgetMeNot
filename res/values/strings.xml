@@ -7,9 +7,20 @@
     <string name="cr_who">Select a Contact</string>
     <string name="cr_when">Start Date</string>
     <string name="cr_label_datepicker_stop">Stop Date</string>
+    <string name="str_todo">TODO</string>
+    <string name="str_version">Version</string>
     <string name="cr_repeat_period">Every</string>
     <string name="vr_default_name">No Name</string>
+    <string name="vr_default_note">No note</string>
+    <string name="vr_default_date_summary">Set a start and stop date</string>
     <string name="disprem_button_complete">Complete!</string>
+    <string name="button_delete">Delete</string>
+    <string name="button_edit">Edit</string>
+    <string name="button_save">Save</string>
+    <string name="note">Note</string>
+    <string name="empty"> </string>
+    <string name="default_period">7</string>
+    <string name="days">days</string>
     <string name="disprem_button_snooze">Snooze</string>
     <string name="disprem_text_activate_active">This reminder creates notifications</string>
     <string name="disprem_text_activate_inactive">This reminder does not create notifications.</string>
@@ -17,4 +28,5 @@
     <string name="TITLE_PICK_PHONE">Select a phone number</string>
     <string name="TAG_ID_ReminderAdapter_Reminder">TAG_ID_ReminderAdapter_Reminder</string>
     <string name="TAG_ID_ReminderAdapter_Context">TAG_ID_ReminderAdapter_Context</string>
+    <string name="cdesc_image_icon">Icon for this person</string>
 </resources>

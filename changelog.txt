@@ -1,4 +1,63 @@
 --------------------------------------------------------------------------
+EditReminder functionality and some bug fixes
+
+ForgetMeNot v0.4.18 (versionCode 26, DB v2)
+
+*FIXES*
+- FMN-7 After editing, the DisplayReminder now shows the most up-to-date info
+- FMN-10 EditReminder now displays all the fields properly!
+
+*IMPROVEMENTS*
+- FMN-8 DisplayReminder now shows the start and stop dates
+
+*FILE DETAILS*
+XML files have had some best practices tweaks; I added contentDescription, text, and other fields per the suggestion of Eclipse.
+
+* res/layout/about.xml
+* res/layout/create_reminder.xml
+- inputType hints
+- Move English inline strings into strings.xml
+
+* res/layout/display_reminder.xml
+- Add "date range" text field ("yyyy/mm/dd to yyyy/mm/dd")
+- Slight reordering
+
+
+* res/values/strings.xml
+- Several entries added
+
+* src/com/dunnzilla/mobile/AndroidReminderUtils.java
+- Add formatDate() utility function
+- db open/close calls added
+
+* src/com/dunnzilla/mobile/CreateReminder.java
+- Closes DB
+- Support added for setting the date range TextView
+
+* src/com/dunnzilla/mobile/DB.java
+- close() short-circuit if the db is not open.
+
+
+* src/com/dunnzilla/mobile/DBReminder.java
+- Some logging - should probably remove before 1.0 :)
+
+
+* src/com/dunnzilla/mobile/DisplayReminder.java
+- Add onResume() and make it updateLayout()
+- 1-line fix for display not showing most recent data. It wasn't calling loadReminderFromID().
+- Add support for vr_date_range
+
+
+* src/com/dunnzilla/mobile/EditReminder.java
+- saveReminder() opens and closes the database
+- logging
+
+
+* src/com/dunnzilla/mobile/Reminder.java
+- Fix for FMN-10. f_DATETIME_START should have been f_DATETIME_STOP for dstop.  That's what you get for copy-pasting code!
+
+
+--------------------------------------------------------------------------
 Add "Contact every day", "Contact every 3 days" to display
 
 ForgetMeNot v0.4.17 (versionCode 25, DB v2)

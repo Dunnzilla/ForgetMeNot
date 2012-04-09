@@ -1,4 +1,30 @@
 --------------------------------------------------------------------------
+Crash fixes!
+
+ForgetMeNot v0.4.20 (versionCode 28, DB v2)
+
+*FIXES*
+- FMN-14 No more force close on clicking Complete (yow!)
+- FMN-13 No more force close on entering DisplayReminder (yow!)
+
+*MISC*
+- Trying to get long clicks set up but it seems I'm missing something conceptual about building a context menu in a ListAdapter (versus a simple list view)
+
+*FILE DETAILS*
+
+* res/layout/main.xml
+- Best practices (?) fixes as prompted by Eclipse
+
+* res/values/arrays.xml
+- Adding context menu items
+
+* res/values/strings.xml
+- New button string
+
+* src/com/dunnzilla/mobile/CreateReminder.java
+- Wrap 
+
+--------------------------------------------------------------------------
 Fix cases where user deletes contacts but not reminders
 
 ForgetMeNot v0.4.19 (versionCode 27, DB v2)
@@ -16,10 +42,11 @@ ForgetMeNot v0.4.19 (versionCode 27, DB v2)
 - :-X is the "I'm so embarassed" face.
 
 * src/com/dunnzilla/mobile/ReminderAdapter.java
-- FMN-12 fix
+- FMN-14 fix
+- Spamming setFocusable() on all views in a desperate attempt to not interfere with the context menu.  Witchcraft.
 
 * src/com/dunnzilla/mobile/ReminderService.java
-- FMN-1 fix
+- FMN-13 fix
 
 --------------------------------------------------------------------------
 EditReminder functionality and some bug fixes

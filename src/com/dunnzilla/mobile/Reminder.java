@@ -77,23 +77,29 @@ public class Reminder {
     }
     public String onEventComplete(DBReminder db) {
     	// TODO log the "Complete!" action in an audit / analysis DB
+    	db.open();
     	calcAndSetNextDatetime(db);
     	String summary = "Contact again in " + getPeriod() + " days";
     	Log.i(TAG, "Reminder ID " + getID() + "completed by user. " + summary);
+    	db.close();
     	return summary;
     }
     public String onEventSnooze(DBReminder db) {
+    	db.open();
     	// TODO log the "Snooze" action in an audit / analysis DB
     	calcAndSetNextDatetime(db);
     	String summary = "Snoozing " + getPeriod() + " days";
     	Log.i(TAG, "Reminder ID " + getID() + " snoozed. " + summary);
+    	db.close();
     	return summary;
     }
     public String onEventDelete(DBReminder db) {
     	// TODO log the "Snooze" action in an audit / analysis DB
+    	db.open();
     	db.delete(getID());
     	String summary = "Reminder deleted";
     	Log.i(TAG, "Reminder ID " + getID() + " deleted.");
+    	db.close();
     	return summary;
     }
 

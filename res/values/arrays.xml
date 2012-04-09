@@ -1,5 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <resources>
+<string-array name="contextmenu_reminder_options">
+    <item>Complete!</item>
+    <item>Edit</item>
+    <item>Snooze</item>
+    <item>Delete</item>
+</string-array>
+<string-array name="contextmenu_reminder_values">
+    <item>complete</item>
+    <item>edit</item>
+    <item>snooze</item>
+    <item>delete</item>
+</string-array>
 <string-array name="pref_notify_delay_options">
  <item>15 Minutes</item>
  <item>30 Minutes</item>

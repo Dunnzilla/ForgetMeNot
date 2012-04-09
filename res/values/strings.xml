@@ -17,6 +17,7 @@
     <string name="button_delete">Delete</string>
     <string name="button_edit">Edit</string>
     <string name="button_save">Save</string>
+    <string name="button_remember">Remember Someone</string>
     <string name="note">Note</string>
     <string name="empty"> </string>
     <string name="default_period">7</string>

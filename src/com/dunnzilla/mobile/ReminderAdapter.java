@@ -88,6 +88,7 @@ public class ReminderAdapter extends BaseAdapter implements ListAdapter {
 			v = new RelativeLayout(context);
 
 			v.setId( RA_VIEWID_LAYOUT );
+
 			ib = new ImageButton(context);
 			ib.setPadding(2, 2, 2, 2);
 			ib.setAdjustViewBounds(true);
@@ -95,10 +96,13 @@ public class ReminderAdapter extends BaseAdapter implements ListAdapter {
 			ib.setId( RA_VIEWID_IMAGEBUTTON );
 			ib.setMaxHeight(108);
 			ib.setMaxWidth(108);
+			ib.setFocusable(false);
 			tvName = new TextView(context);
 			tvName.setId( RA_VIEWID_NAME );
+			tvName.setFocusable(false);
 			tvNote = new TextView(context);
 			tvNote.setId( RA_VIEWID_NOTE );
+			tvNote.setFocusable(false);
 			ibDoIt = new ImageButton(context);
 			ibDoIt.setId( RA_VIEWID_ACTION );
 			ibDoIt.setAdjustViewBounds(true);
@@ -106,8 +110,10 @@ public class ReminderAdapter extends BaseAdapter implements ListAdapter {
 			ibDoIt.setMaxWidth(54);
 			ibDoIt.setScaleType(ImageView.ScaleType.FIT_XY);
 			ibDoIt.setPadding(1, 1, 1, 1);
+			ibDoIt.setFocusable(false);
 			tvSummary = new TextView(context);
-			tvSummary.setId( RA_VIEWID_SUMMARY );			
+			tvSummary.setId( RA_VIEWID_SUMMARY );
+			tvSummary.setFocusable(false);
 
 			RelativeLayout.LayoutParams lp_tvName = new RelativeLayout.LayoutParams(
 					LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
@@ -253,7 +259,7 @@ public class ReminderAdapter extends BaseAdapter implements ListAdapter {
 				contextParent.startActivity(callIntent);
         	}
         };
-        // TODO set up long click
+
 
         // TODO There has got to be a better way:
 		ib.setTag(R.string.TAG_ID_ReminderAdapter_Reminder, r);
@@ -279,5 +285,4 @@ public class ReminderAdapter extends BaseAdapter implements ListAdapter {
 		
 		return v;
 	}
-
 }

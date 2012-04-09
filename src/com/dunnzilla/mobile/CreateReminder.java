@@ -146,7 +146,7 @@ public class CreateReminder extends Activity {
             setResult(Activity.RESULT_OK, intent);
         } else {
             getParent().setResult(Activity.RESULT_OK, intent);
-        }        
+        }
         finish();
     }
 
@@ -178,11 +178,15 @@ public class CreateReminder extends Activity {
     	
     	DatePicker dpStart = (DatePicker) findViewById( idMap.get(DBConst.f_DATETIME_START) );
     	Date d = reminder.getDateStart();
-    	dpStart.updateDate(1900 + d.getYear(), d.getMonth(), d.getDate());
+    	if(d != null) {
+    		dpStart.updateDate(1900 + d.getYear(), d.getMonth(), d.getDate());
+    	}
     	
     	DatePicker dpStop = (DatePicker) findViewById( idMap.get(DBConst.f_DATETIME_STOP) );
     	d = reminder.getDateStop();
-    	dpStop.updateDate(1900 + d.getYear(), d.getMonth(), d.getDate());
+    	if(d != null) {
+    		dpStop.updateDate(1900 + d.getYear(), d.getMonth(), d.getDate());
+    	}
     	
     	TextView tvPeriod = (TextView) findViewById( idMap.get(DBConst.f_PERIOD) );
     	tvPeriod.setText(Integer.toString(reminder.getPeriod()));

@@ -9,10 +9,13 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.PixelFormat;
 import android.os.Bundle;
+import android.view.ContextMenu;
+import android.view.ContextMenu.ContextMenuInfo;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListAdapter;
 
@@ -32,8 +35,8 @@ public class ForgetMeNot extends ListActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
 
-        // TODO I think there's a better way to do this
         repopulate();
+
 
         boolean startReminderService = true;
 	    ActivityManager manager = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
@@ -87,11 +90,13 @@ public class ForgetMeNot extends ListActivity {
 				reminders.add(r);
 			} while(cu.moveToNext());
 		}
-    	this.getListView().setCacheColorHint(0);  // Prevent the listview from going black when scrolling?
+    	getListView().setCacheColorHint(0);  // This prevents fancy gradient listviews from going black when scrolling
     	
         ListAdapter adapter;
     	adapter = new ReminderAdapter(this, reminders);
         setListAdapter(adapter);
+        registerForContextMenu( getListView() );
+
 	}
 
 	@Override
@@ -101,6 +106,19 @@ public class ForgetMeNot extends ListActivity {
 		//menu.add(MENU_GROUP_DEFAULT, MENU_ITEM_MESSAGE, 0, "Random");
 		return super.onCreateOptionsMenu(menu);
 	}
+
+	@Override
+	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
+	    AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)menuInfo;
+	    menu.setHeaderTitle("Do stuff");
+	    String[] menuItems = getResources().getStringArray(R.array.contextmenu_reminder_options);
+	    for (int i = 0; i<menuItems.length; i++) {
+	      menu.add(Menu.NONE, i, i, menuItems[i]);
+	    }
+	    long id = getListAdapter().getItemId(info.position);
+	    // TODO whatver w/ the id
+	}
+
 
 	@Override
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {

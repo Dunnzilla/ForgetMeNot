@@ -10,7 +10,7 @@
 	    android:textColor="#77ffffff"
 	    android:layout_weight="1"
 	    android:layout_width="wrap_content"
-	    android:layout_height="wrap_content"
+	    android:layout_height="0dip"
 	    android:drawSelectorOnTop="false"
 	    android:longClickable="true"
 	    android:clickable="false"
@@ -19,12 +19,12 @@
 
                
 	<Button
-		android:text="Remember Someone"
+		android:text="@string/button_remember"
 		android:id="@+id/btn_create_fmn"
 		android:layout_width="fill_parent"
-		android:layout_alignParentBottom="true"
 		android:layout_height="wrap_content"
 		android:layout_marginBottom="10dp"
+		android:focusable="false"
 		/>
 
 </LinearLayout>

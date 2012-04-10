@@ -1,0 +1,8 @@
+.DS_Store
+gen/*
+*.diff
+bin/classes.dex
+bin/classes/*
+bin/res/*
+bin/resources.ap_
+

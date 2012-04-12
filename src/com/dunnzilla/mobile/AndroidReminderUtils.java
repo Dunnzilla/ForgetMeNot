@@ -71,7 +71,8 @@ public class AndroidReminderUtils {
 					uri = Uri.parse("tel://" + arPhones.get(0));
 				}
 
-				Intent callIntent = new Intent(Intent.ACTION_CALL, uri); 
+				Intent callIntent = new Intent(Intent.ACTION_CALL, uri);
+				callIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 				contextParent.startActivity(callIntent);
         	}
         };

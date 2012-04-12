@@ -1,6 +1,29 @@
 --------------------------------------------------------------------------
 DisplayReminder and About page improvements
 
+ForgetMeNot v0.5.0 (versionCode 30, DB v2)
+
+*IMPROVEMENTS*
+- FMN-19 DisplayReminder now shows a huge voicedial button
+
+*FILE DETAILS*
+
+* AndroidManifest.xml
+- Update version
+
+* res/layout/display_reminder.xml
+- Add voicedial button
+- Move other things around to make room for it
+
+* src/com/dunnzilla/mobile/AndroidReminderUtils.java
+- Fix: Starting the dialer from outside an activity requires the Intent to have FLAG_ACTIVITY_NEW_TASK
+
+* src/com/dunnzilla/mobile/DisplayReminder.java
+- Add OnClickListener for the voice dial button
+
+--------------------------------------------------------------------------
+DisplayReminder and About page improvements
+
 ForgetMeNot v0.4.21 (versionCode 29, DB v2)
 
 *IMPROVEMENTS*

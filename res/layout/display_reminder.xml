@@ -8,6 +8,7 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
         android:orientation="vertical" >
 
         <ImageButton
@@ -76,12 +77,24 @@
             android:text="@string/vr_default_note"
             android:textColor="#DDDDDD"
             android:textSize="15dip" />
+        <ImageView
+            android:id="@+id/vr_voicedial"
+            android:layout_width="128dp"
+            android:layout_height="128dp"
+            android:layout_below="@id/vr_text_note"
+            android:contentDescription="@string/disprem_text_activate_inactive"
+        	android:layout_gravity="center_horizontal"
+        	android:layout_centerHorizontal="true"
+            android:src="@drawable/ic_launcher_voicedial"
+            />
+        
+        
 
         <Button
             android:id="@+id/disprem_btn_done"
             android:layout_width="120dp"
             android:layout_height="wrap_content"
-            android:layout_below="@id/vr_text_note"
+            android:layout_below="@id/vr_voicedial"
             android:layout_marginBottom="10dp"
             android:layout_marginLeft="20dip"
             android:layout_marginRight="20dip"
@@ -92,7 +105,7 @@
             android:id="@+id/disprem_btn_snooze"
             android:layout_width="120dp"
             android:layout_height="wrap_content"
-            android:layout_below="@id/vr_text_note"
+            android:layout_below="@id/vr_voicedial"
             android:layout_marginBottom="10dp"
             android:layout_marginLeft="20dip"
             android:layout_marginRight="20dip"
@@ -171,7 +184,7 @@
             android:text=""
             android:textColor="#DDDDDD"
             android:textSize="15dip" />
-        
+
     </RelativeLayout>
 
 </ScrollView>

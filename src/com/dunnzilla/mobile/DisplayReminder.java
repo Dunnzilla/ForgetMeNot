@@ -1,6 +1,7 @@
 package com.dunnzilla.mobile;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -35,7 +36,7 @@ public class DisplayReminder extends Activity {
         if(reminder == null) {
         	return;
         }
-        getApplicationContext();
+        Context context = getApplicationContext();
         
         View.OnClickListener vocl_openContact = new View.OnClickListener() {
 			@Override
@@ -49,9 +50,14 @@ public class DisplayReminder extends Activity {
 
 		ImageView ivContactIcon = (ImageView) findViewById(R.id.vr_contact_icon);
 		TextView tvName = (TextView) findViewById(R.id.vr_text_who);
+		ImageView ivDoVoiceDial = (ImageView) findViewById(R.id.vr_voicedial);
 
         ivContactIcon.setOnClickListener( vocl_openContact );
         tvName.setOnClickListener( vocl_openContact );
+
+        ivDoVoiceDial.setTag(R.string.TAG_ID_ReminderAdapter_Reminder, reminder);
+        ivDoVoiceDial.setTag(R.string.TAG_ID_ReminderAdapter_Context, context);
+        ivDoVoiceDial.setOnClickListener( AndroidReminderUtils.genOnClickDoVoiceDial() );
         
     	// TODO handle no reminder ID passed in, or an invalid reminder ID
         Button bCreate = (Button) findViewById(R.id.disprem_btn_done);

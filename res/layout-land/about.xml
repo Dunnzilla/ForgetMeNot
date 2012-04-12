@@ -3,33 +3,34 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:layout_gravity="right"
+    android:background="@drawable/logo"
     android:orientation="vertical" >
 
-	<ImageView
-	    android:id="@+id/about_logo"
-	    android:layout_width="fill_parent"
-	    android:layout_height="200dp"
-	    android:layout_centerHorizontal="true"
-	    android:contentDescription="@string/about_title"
-	    android:scaleType="fitStart"
-	    android:src="@drawable/logo" />
+    <TextView
+        android:id="@+id/about_versionName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_marginBottom="23dp"
+        android:shadowColor="#555555"
+        android:shadowDx="0"
+        android:shadowDy="0"
+        android:shadowRadius="8.0"
+        android:text="@string/str_version" />
 
-	<TextView android:text="@string/app_name"
-		android:id="@+id/about_product_title"
-		android:layout_width="wrap_content"
-		android:layout_centerHorizontal="true"
-		android:layout_centerVertical="true"
-		android:layout_height="wrap_content"
-		android:layout_toRightOf="@id/about_logo"
-		android:textColor="#a0a0ff"
-		android:textSize="25dip"
-	 />
-	<TextView android:text="@string/str_version"
-		android:id="@+id/about_versionName"
-		android:layout_width="wrap_content"
-		android:layout_centerHorizontal="true"
-		android:layout_height="wrap_content"
-		android:layout_below="@id/about_product_title"
-	/>
+    <TextView
+        android:id="@+id/about_product_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/about_versionName"
+        android:layout_alignParentLeft="true"
+        android:shadowColor="#555555"
+        android:shadowDx="0"
+        android:shadowDy="0"
+        android:shadowRadius="8.0"
+        android:text="@string/app_name"
+        android:textColor="#a0a0ff"
+        android:textSize="25dip" />
 
 </RelativeLayout>

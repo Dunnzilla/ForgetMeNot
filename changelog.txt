@@ -1,4 +1,26 @@
 --------------------------------------------------------------------------
+DisplayReminder and About page improvements
+
+ForgetMeNot v0.4.21 (versionCode 29, DB v2)
+
+*IMPROVEMENTS*
+- FMN-21 DisplayReminder: Clicking on the Contact now takes you to the system Contact view
+- FMN-17 About page Landscape mode support
+
+*FILE DETAILS*
+* res/layout-land/about.xml
+- Looks a little better at least.
+
+* src/com/dunnzilla/mobile/AndroidReminderUtils.java
+- genOnClickDoVoiceDial() returns a View.OnClickListener() that was previously embedded stupidly in-line in one place.  There are a few other functions I need to pull into this class so they can be called from multiple places.
+
+* src/com/dunnzilla/mobile/DisplayReminder.java
+- Add OnClickListener to launch Android Contact app when icon or name is clicked
+
+* src/com/dunnzilla/mobile/ReminderAdapter.java
+- Call AndroidReminderUtils.genOnClickDoVoiceDial() instead of inlining a bunch of important app logic.
+
+--------------------------------------------------------------------------
 Crash fixes!
 
 ForgetMeNot v0.4.20 (versionCode 28, DB v2)

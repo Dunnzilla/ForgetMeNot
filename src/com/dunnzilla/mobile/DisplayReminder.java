@@ -2,7 +2,9 @@ package com.dunnzilla.mobile;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -34,6 +36,22 @@ public class DisplayReminder extends Activity {
         	return;
         }
         getApplicationContext();
+        
+        View.OnClickListener vocl_openContact = new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+			    Intent intent = new Intent(Intent.ACTION_VIEW);
+			    Uri uri = Uri.withAppendedPath(ContactsContract.Contacts.CONTENT_URI, String.valueOf(reminder.getID()));
+			    intent.setData(uri);
+			    startActivity(intent);
+			}
+		};
+
+		ImageView ivContactIcon = (ImageView) findViewById(R.id.vr_contact_icon);
+		TextView tvName = (TextView) findViewById(R.id.vr_text_who);
+
+        ivContactIcon.setOnClickListener( vocl_openContact );
+        tvName.setOnClickListener( vocl_openContact );
         
     	// TODO handle no reminder ID passed in, or an invalid reminder ID
         Button bCreate = (Button) findViewById(R.id.disprem_btn_done);
@@ -123,6 +141,7 @@ public class DisplayReminder extends Activity {
 			ivContactIcon.setImageBitmap(reminder.getContactIconBitmap());
     	}
 		
+	
 		String displayName = reminder.getDisplayName();
     	if( displayName != null && displayName.length() > 0 ) {
     		TextView tvName = (TextView) findViewById(R.id.vr_text_who);

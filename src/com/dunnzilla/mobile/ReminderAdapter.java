@@ -2,16 +2,10 @@ package com.dunnzilla.mobile;
 
 import java.util.ArrayList;
 
-import android.app.AlertDialog;
-import android.app.AlertDialog.Builder;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -23,7 +17,6 @@ import android.widget.LinearLayout.LayoutParams;
 import android.widget.ListAdapter;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class ReminderAdapter extends BaseAdapter implements ListAdapter {
 	public static final int RA_VIEWID_LAYOUT = 1;	
@@ -208,58 +201,7 @@ public class ReminderAdapter extends BaseAdapter implements ListAdapter {
         	}
         };
 
-		OnClickListener ocCall = new View.OnClickListener() {
-        	public void onClick(View view) {
-        		Reminder r = (Reminder) view.getTag(R.string.TAG_ID_ReminderAdapter_Reminder);
-        		final Context contextParent = (Context) view.getTag(R.string.TAG_ID_ReminderAdapter_Context);					
-        		ArrayList<String> arPhones = new ArrayList<String>();
-
-				Cursor phones = contextParent.getContentResolver().query(
-						ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
-						null,
-						ContactsContract.CommonDataKinds.Phone.CONTACT_ID
-								+ " = " + r.getContactID(), null, null);
-				while (phones.moveToNext()) {
-					String phoneNumber = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
-					arPhones.add(phoneNumber);
-				}
-
-				phones.close();
-				Uri uri;
-				if(arPhones.size() == 0) {
-					Toast.makeText(contextParent, R.string.MSG_ERR_CONTACT_NO_PHONE, Toast.LENGTH_SHORT).show();
-					return;
-				} else if(arPhones.size() > 1) {
-					
-					final String[] phonesArr = new String[arPhones.size()];
-					for (int i = 0; i < arPhones.size(); i++) {
-						phonesArr[i] = arPhones.get(i);
-					}
-
-					AlertDialog.Builder dialog = new AlertDialog.Builder(contextParent);
-					dialog.setTitle(R.string.TITLE_PICK_PHONE);
-					((Builder) dialog).setItems(phonesArr,
-							new DialogInterface.OnClickListener() {
-								public void onClick(DialogInterface dialog,
-										int which) {
-									String selectedPhone = phonesArr[which];
-									Uri uri = Uri.parse("tel://" + selectedPhone);
-									Intent callIntent = new Intent(Intent.ACTION_CALL, uri); 
-									contextParent.startActivity(callIntent);
-									return;
-								}
-							}).create();
-					dialog.show();
-                    return;             
-				} else {
-					uri = Uri.parse("tel://" + arPhones.get(0));
-				}
-
-				Intent callIntent = new Intent(Intent.ACTION_CALL, uri); 
-				contextParent.startActivity(callIntent);
-        	}
-        };
-
+		OnClickListener ocCall = AndroidReminderUtils.genOnClickDoVoiceDial();
 
         // TODO There has got to be a better way:
 		ib.setTag(R.string.TAG_ID_ReminderAdapter_Reminder, r);

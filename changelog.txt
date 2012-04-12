@@ -1,5 +1,5 @@
 --------------------------------------------------------------------------
-DisplayReminder and About page improvements
+Voice Dial button now present on DisplayReminder
 
 ForgetMeNot v0.5.0 (versionCode 30, DB v2)
 

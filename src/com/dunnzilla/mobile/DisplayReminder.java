@@ -42,7 +42,7 @@ public class DisplayReminder extends Activity {
 			@Override
 			public void onClick(View v) {
 			    Intent intent = new Intent(Intent.ACTION_VIEW);
-			    Uri uri = Uri.withAppendedPath(ContactsContract.Contacts.CONTENT_URI, String.valueOf(reminder.getID()));
+			    Uri uri = Uri.withAppendedPath(ContactsContract.Contacts.CONTENT_URI, String.valueOf(reminder.getContactID()));
 			    intent.setData(uri);
 			    startActivity(intent);
 			}

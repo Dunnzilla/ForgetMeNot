@@ -1,4 +1,16 @@
 --------------------------------------------------------------------------
+DisplayReminder launch correct contact ID
+
+ForgetMeNot v0.5.2 (versionCode 32, DB v2)
+
+*IMPROVEMENTS*
+- FMN-22 DisplayReminder will now launch contact page w/ the contact ID
+
+*FILE DETAILS*
+* src/com/dunnzilla/mobile/DisplayReminder.java
+- Should pass in Contact ID, not Reminder ID.  Doh.
+
+--------------------------------------------------------------------------
 Main display tweaks
 
 ForgetMeNot v0.5.1 (versionCode 31, DB v2)

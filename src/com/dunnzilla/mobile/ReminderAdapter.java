@@ -121,7 +121,7 @@ public class ReminderAdapter extends BaseAdapter implements ListAdapter {
 			tvSummary.setId( RA_VIEWID_SUMMARY );
 			tvSummary.setFocusable(false);
 			
-			llRightBar.setBackgroundColor(0xFF000000);
+			llRightBar.setBackgroundColor(0x00000000);
 
 			RelativeLayout.LayoutParams lp_tvName = new RelativeLayout.LayoutParams(
 					LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
@@ -159,7 +159,7 @@ public class ReminderAdapter extends BaseAdapter implements ListAdapter {
 			
 			lp_llSidebar.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
 			lp_llSidebar.addRule(RelativeLayout.ALIGN_PARENT_TOP);
-			lp_llSidebar.setMargins(1, 15, 0, 0);
+			lp_llSidebar.setMargins(0, 0, 0, 0);
 			
 			// Let's add them to the view!
 			v.addView(ib, lp_ibContactIcon);

@@ -1,4 +1,17 @@
 --------------------------------------------------------------------------
+DisplayReminder name/date range text block format fix
+
+ForgetMeNot v0.5.3 (versionCode 33, DB v2)
+
+*IMPROVEMENTS*
+- FMN-18 Date range should no longer slop over the contact icon
+
+*FILE DETAILS*
+
+* res/layout/display_reminder.xml
+- Add a linear layout to the right of the contact icon to hold name, summary and date range.
+
+--------------------------------------------------------------------------
 DisplayReminder launch correct contact ID
 
 ForgetMeNot v0.5.2 (versionCode 32, DB v2)

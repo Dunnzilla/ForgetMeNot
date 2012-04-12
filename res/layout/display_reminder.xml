@@ -10,6 +10,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:orientation="vertical" >
+        
 
         <ImageButton
             android:id="@+id/vr_contact_icon"
@@ -18,13 +19,21 @@
             android:contentDescription="@string/cdesc_image_icon"
             android:src="@drawable/cr_contact_icon" />
 
+        
+        <LinearLayout
+            android:id="@+id/vr_linlay_nameblock"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/vr_contact_icon"
+            android:layout_alignParentTop="true"
+            android:orientation="vertical" >
+
         <TextView
             android:id="@+id/vr_text_who"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="2dip"
             android:layout_marginTop="10dip"
-            android:layout_toRightOf="@+id/vr_contact_icon"
             android:text="@string/vr_default_name"
             android:textColor="#999999"
             android:textSize="25dip" />
@@ -33,10 +42,8 @@
             android:id="@+id/vr_text_who_summary"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/vr_text_who"
             android:layout_marginLeft="2dip"
             android:layout_marginTop="10dip"
-            android:layout_toRightOf="@id/vr_contact_icon"
             android:text="@string/empty"
             android:textColor="#DDDDDD"
             android:textSize="15dip" />
@@ -45,7 +52,6 @@
             android:id="@+id/vr_date_range"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/vr_text_who_summary"
             android:layout_marginBottom="10dp"
             android:layout_marginLeft="2dip"
             android:layout_marginTop="10dip"
@@ -54,12 +60,13 @@
             android:textColor="#DDDDDD"
             android:textSize="15dip"
             />
-        
+        </LinearLayout>
+
         <View
             android:id="@+id/hr_top"
             android:layout_width="fill_parent"
             android:layout_height="1dip"
-            android:layout_below="@id/vr_date_range"
+            android:layout_below="@id/vr_linlay_nameblock"
             android:layout_marginBottom="2dp"
             android:layout_marginTop="2dp"
             android:background="#7777cc" />
@@ -184,6 +191,7 @@
             android:text=""
             android:textColor="#DDDDDD"
             android:textSize="15dip" />
+
 
     </RelativeLayout>
 

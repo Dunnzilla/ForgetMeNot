@@ -1,4 +1,17 @@
 --------------------------------------------------------------------------
+Main display tweaks
+
+ForgetMeNot v0.5.1 (versionCode 31, DB v2)
+
+*IMPROVEMENTS*
+- FMN-16 Cheap workaround/hack to make all the contact icons the same size.  Can't seem to find a way to use a DIP size for the image view *AND* handle both smaller and larger images inside it.
+
+*FILE DETAILS*
+* src/com/dunnzilla/mobile/ReminderAdapter.java
+- Programmatically create a sub-view to hold the voicedial button.
+- Some other changes to try to make wordwrapping work properly.  My assumption is that the TextView is bound by and wrapped within its containing view, but there are what look like Z-layer problems with each row (ReminderAdapter) in the RelativeLayout right now.
+
+--------------------------------------------------------------------------
 Voice Dial button now present on DisplayReminder
 
 ForgetMeNot v0.5.0 (versionCode 30, DB v2)

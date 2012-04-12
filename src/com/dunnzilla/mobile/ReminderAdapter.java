@@ -5,7 +5,9 @@ import java.util.ArrayList;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -13,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.ListAdapter;
 import android.widget.RelativeLayout;
@@ -25,6 +28,10 @@ public class ReminderAdapter extends BaseAdapter implements ListAdapter {
 	public static final int RA_VIEWID_NOTE = 4;
 	public static final int RA_VIEWID_ACTION = 5;
 	public static final int RA_VIEWID_SUMMARY = 6;
+	public static final int RA_VIEWID_SUBLAYOUT = 7;	
+	
+	public static final int RA_CONTACTICON_MAXWIDTH = 72;
+	
 	
 	private static final String TAG = "ReminderAdapter";
 	private ArrayList<Reminder> reminders;
@@ -74,39 +81,47 @@ public class ReminderAdapter extends BaseAdapter implements ListAdapter {
 	@Override
 	public View getView(int arg0, View oldView, ViewGroup vgParent) {
 		RelativeLayout v;
+		LinearLayout llRightBar;
 		TextView tvName, tvNote, tvSummary;
 		ImageButton ib, ibDoIt; 
 		Reminder r = reminders.get(arg0);
 		if (oldView == null) {		 
 			v = new RelativeLayout(context);
+			llRightBar = new LinearLayout(context);
 
 			v.setId( RA_VIEWID_LAYOUT );
+			llRightBar.setId( RA_VIEWID_SUBLAYOUT );
 
 			ib = new ImageButton(context);
 			ib.setPadding(2, 2, 2, 2);
 			ib.setAdjustViewBounds(true);
 			ib.setScaleType(ImageView.ScaleType.FIT_XY);
 			ib.setId( RA_VIEWID_IMAGEBUTTON );
-			ib.setMaxHeight(108);
-			ib.setMaxWidth(108);
+			ib.setMaxHeight(RA_CONTACTICON_MAXWIDTH);
+			ib.setMaxWidth(RA_CONTACTICON_MAXWIDTH);
 			ib.setFocusable(false);
+
 			tvName = new TextView(context);
 			tvName.setId( RA_VIEWID_NAME );
 			tvName.setFocusable(false);
 			tvNote = new TextView(context);
 			tvNote.setId( RA_VIEWID_NOTE );
 			tvNote.setFocusable(false);
+			
 			ibDoIt = new ImageButton(context);
 			ibDoIt.setId( RA_VIEWID_ACTION );
 			ibDoIt.setAdjustViewBounds(true);
-			ibDoIt.setMaxHeight(54);
-			ibDoIt.setMaxWidth(54);
+			ibDoIt.setMaxHeight(72);
+			ibDoIt.setMaxWidth(72);
 			ibDoIt.setScaleType(ImageView.ScaleType.FIT_XY);
 			ibDoIt.setPadding(1, 1, 1, 1);
 			ibDoIt.setFocusable(false);
+			
 			tvSummary = new TextView(context);
 			tvSummary.setId( RA_VIEWID_SUMMARY );
 			tvSummary.setFocusable(false);
+			
+			llRightBar.setBackgroundColor(0xFF000000);
 
 			RelativeLayout.LayoutParams lp_tvName = new RelativeLayout.LayoutParams(
 					LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
@@ -117,16 +132,20 @@ public class ReminderAdapter extends BaseAdapter implements ListAdapter {
 			RelativeLayout.LayoutParams lp_ibDoIt = new RelativeLayout.LayoutParams(
 					LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
 			RelativeLayout.LayoutParams lp_tvSummary = new RelativeLayout.LayoutParams(
-					LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);			
-
+					LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+			RelativeLayout.LayoutParams lp_llSidebar = new RelativeLayout.LayoutParams(
+					LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+			
 			// Set up the relative positions
 			lp_ibContactIcon.addRule(RelativeLayout.ALIGN_PARENT_TOP);
 			
 			lp_tvName.addRule(RelativeLayout.ALIGN_PARENT_TOP);
+			lp_tvName.addRule(RelativeLayout.ALIGN_LEFT);
 			lp_tvName.addRule(RelativeLayout.RIGHT_OF, ib.getId());
 			lp_tvName.setMargins(5, 0, 0, 0);
 
 			lp_tvNote.addRule(RelativeLayout.BELOW, tvName.getId());
+			lp_tvNote.addRule(RelativeLayout.ALIGN_LEFT);
 			lp_tvNote.addRule(RelativeLayout.RIGHT_OF, ib.getId());
 			lp_tvNote.setMargins(5, 0, 0, 0);
 			
@@ -136,15 +155,22 @@ public class ReminderAdapter extends BaseAdapter implements ListAdapter {
 			
 			lp_ibDoIt.addRule(RelativeLayout.BELOW, tvName.getId());
 			lp_ibDoIt.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-			lp_ibDoIt.setMargins(5, 0, 0, 0);
+			lp_ibDoIt.setMargins(5, 5, 5, 5);
 			
-
+			lp_llSidebar.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+			lp_llSidebar.addRule(RelativeLayout.ALIGN_PARENT_TOP);
+			lp_llSidebar.setMargins(1, 15, 0, 0);
+			
 			// Let's add them to the view!
 			v.addView(ib, lp_ibContactIcon);
 			v.addView(tvName, lp_tvName);
 			v.addView(tvNote, lp_tvNote);
 			v.addView(tvSummary, lp_tvSummary);
-			v.addView(ibDoIt, lp_ibDoIt);
+			
+			llRightBar.addView(ibDoIt, lp_ibDoIt);
+			
+			v.addView(llRightBar, lp_llSidebar);
+
 		} else {
 			v = (RelativeLayout) oldView;
 
@@ -156,10 +182,30 @@ public class ReminderAdapter extends BaseAdapter implements ListAdapter {
 			
 		}
 		Bitmap b = AndroidReminderUtils.loadContactPhoto(context, r.getContactID());
+		boolean contactIconIsSmall = false;
 		if (b != null) {
 			ib.setImageBitmap(b);
+			if(b.getWidth() < RA_CONTACTICON_MAXWIDTH || b.getHeight() < RA_CONTACTICON_MAXWIDTH) {
+				contactIconIsSmall = true;
+			}
 		} else {
-			ib.setImageResource(R.drawable.ic_contact_picture);
+			int drawable_resource_id = R.drawable.ic_contact_picture;
+			ib.setImageResource(drawable_resource_id);
+			
+			BitmapFactory.Options o = new BitmapFactory.Options();
+			o.inTargetDensity = DisplayMetrics.DENSITY_DEFAULT;
+			Bitmap bmp = BitmapFactory.decodeResource(context.getResources(), drawable_resource_id, o);
+			if( bmp.getWidth() < RA_CONTACTICON_MAXWIDTH || bmp.getHeight() < RA_CONTACTICON_MAXWIDTH) {
+				contactIconIsSmall = true;
+			}
+		}
+		
+		if( contactIconIsSmall ) {
+			ib.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
+			ib.setMaxHeight(RA_CONTACTICON_MAXWIDTH);
+			ib.setMaxWidth(RA_CONTACTICON_MAXWIDTH);
+		} else {
+			ib.setScaleType(ImageView.ScaleType.CENTER_CROP);
 		}
 		
 		ibDoIt.setImageResource(R.drawable.ic_launcher_voicedial);

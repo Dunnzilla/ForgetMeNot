@@ -1,4 +1,43 @@
 --------------------------------------------------------------------------
+DisplayReminder SMS support
+
+ForgetMeNot v0.5.4 (versionCode 34, DB v2)
+
+*IMPROVEMENTS*
+- FMN-27 DisplayReminder SMS support added
+- FMN-24 EditReminder reorg
+- FMN-30 Add "Default snooze time" to preferences (but actual use of this value is not in the app yet)
+
+*FILE DETAILS*
+* res/layout/create_reminder.xml
+- Reorg for FMN-24 (remember: create_reminder.xml is used for both create and edit)
+
+* res/layout/display_reminder.xml
+- Lots of changes to hopefully make it look better on bigger devices as well as support the new layout with a huge SMS button.
+
+* res/values/arrays.xml
+- Add pref_snooze_delay_options and pref_snooze_delay_values
+
+
+* res/values/strings.xml
+- Reword the start/stop date labels on create reminder
+
+* res/xml/prefs.xml
+- Add Default Snooze Period 
+
+* src/com/dunnzilla/mobile/AndroidReminderUtils.java
+- genOnClickDoVoiceDial() now takes a parameter of either CONTACT_TYPE_VOICEDIAL or CONTACT_TYPE_SMS.
+- (And supports that flag)
+- Now that I write the check-in notes, I realize the function needs renamed.  :P
+
+
+* src/com/dunnzilla/mobile/DisplayReminder.java
+- Support triggering an SMS action on the R.id.vr_sms image
+
+* Remove logging from everything else
+
+
+--------------------------------------------------------------------------
 DisplayReminder name/date range text block format fix
 
 ForgetMeNot v0.5.3 (versionCode 33, DB v2)

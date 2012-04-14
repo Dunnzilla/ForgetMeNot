@@ -31,14 +31,52 @@
 	<View android:id="@+id/hr2" android:layout_below="@id/cr_contact_icon" android:background="#7777cc" android:layout_width = "fill_parent" android:layout_height="1dip" android:layout_marginTop="2dp" android:layout_marginBottom="2dp" />
 	<!--  ======================================================================================== -->
 	
+
+	<TextView  
+		android:id="@+id/cr_label_repeat_period"
+	    android:layout_height="wrap_content" 
+	    android:text="@string/cr_repeat_period"
+	    android:layout_gravity="left"
+	    android:layout_width="35dp"
+	    android:layout_below="@id/hr2"
+	    android:layout_marginTop="12dp"
+	    />
+
+	<EditText
+		android:id="@+id/cr_period" 
+		android:inputType="numberDecimal"
+		android:text="@string/default_period"
+		android:layout_width="75sp" android:layout_height="wrap_content"
+		android:maxLength="3"
+		android:layout_toRightOf="@id/cr_label_repeat_period"
+		android:layout_below="@id/hr2"
+		android:layout_marginLeft="5dp" 
+		/>
+
+		
+	<TextView  
+		android:id="@+id/cr_label_days"
+	    android:layout_width="fill_parent" 
+	    android:layout_height="wrap_content"
+	    android:layout_marginLeft="5dp" 
+	    android:text="@string/days"
+	    android:layout_toRightOf="@id/cr_period"
+	    android:layout_below="@id/hr2"
+	    android:layout_alignTop="@id/cr_label_repeat_period"
+	    />	
+	
+
+	<View android:id="@+id/hr3" android:layout_below="@id/cr_period" android:background="#7777cc" android:layout_width = "fill_parent" android:layout_height="1dip" android:layout_marginTop="2dp" android:layout_marginBottom="2dp" />
+	<!--  ======================================================================================== -->
+	
 	<TextView  
 	    android:id="@+id/cr_label_when"
 	    android:text="@string/cr_when"
 	    android:layout_width="fill_parent" 
 	    android:layout_height="wrap_content" 
-	    android:layout_below="@id/hr2"
+	    android:layout_below="@id/hr3"
 	    />
-	
+		
 	<DatePicker
 		android:id="@+id/cr_datepicker_start"
 		android:layout_height="wrap_content"
@@ -63,44 +101,8 @@
 		android:layout_below="@id/cr_tv_datepicker_stop"
 		/>
 
-	<View android:id="@+id/hr3" android:layout_below="@id/cr_datepicker_stop" android:background="#7777cc" android:layout_width = "fill_parent" android:layout_height="1dip" android:layout_marginTop="2dp" android:layout_marginBottom="2dp" />
 	<!--  ======================================================================================== -->
-	
-
-	<TextView  
-		android:id="@+id/cr_label_repeat_period"
-	    android:layout_height="wrap_content" 
-	    android:text="@string/cr_repeat_period"
-	    android:layout_gravity="left"
-	    android:layout_width="35dp"
-	    android:layout_below="@id/hr3"
-	    android:layout_marginTop="12dp"
-	    />
-
-	<EditText
-		android:id="@+id/cr_period" 
-		android:inputType="numberDecimal"
-		android:text="@string/default_period"
-		android:layout_width="75sp" android:layout_height="wrap_content"
-		android:maxLength="3"
-		android:layout_toRightOf="@id/cr_label_repeat_period"
-		android:layout_below="@id/hr3"
-		android:layout_marginLeft="5dp" 
-		/>
-		
-	<TextView  
-		android:id="@+id/cr_label_days"
-	    android:layout_width="fill_parent" 
-	    android:layout_height="wrap_content"
-	    android:layout_marginLeft="5dp" 
-	    android:text="@string/days"
-	    android:layout_toRightOf="@id/cr_period"
-	    android:layout_below="@id/hr3"
-	    android:layout_alignTop="@id/cr_label_repeat_period"
-	    />	
-
-	<!--  ======================================================================================== -->
-	<View android:id="@+id/hr4" android:layout_below="@id/cr_period" android:background="#7777cc" android:layout_width = "fill_parent" android:layout_height="1dip" android:layout_marginTop="2dp" android:layout_marginBottom="2dp" />
+	<View android:id="@+id/hr4" android:layout_below="@id/cr_datepicker_stop" android:background="#7777cc" android:layout_width = "fill_parent" android:layout_height="1dip" android:layout_marginTop="2dp" android:layout_marginBottom="2dp" />
 
 	<TextView  
 	    android:id="@+id/cr_label_note"

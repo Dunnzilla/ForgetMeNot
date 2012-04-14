@@ -21,11 +21,26 @@ import android.widget.Toast;
 
 public class AndroidReminderUtils {
 	public static final String INTENT_EXTRAS_KEY_REMINDER_ID = "REMINDER_ID";
+	public static final int CONTACT_TYPE_VOICEDIAL = 1;
+	public static final int CONTACT_TYPE_SMS = 2;
 
 
-	public static View.OnClickListener genOnClickDoVoiceDial() {
+	public static View.OnClickListener genOnClickDoVoiceDial(final int contactType) {
 		return new View.OnClickListener() {
         	public void onClick(View view) {
+        		final String intentPrefix;
+        		final String intentType;
+        		switch(contactType) {
+        		case CONTACT_TYPE_SMS:
+            		intentPrefix = "sms://";
+            		intentType = Intent.ACTION_VIEW;
+        			break;
+        		case CONTACT_TYPE_VOICEDIAL:
+        		default:
+            		intentPrefix = "tel://";
+            		intentType = Intent.ACTION_CALL;
+        			break;        			
+        		}
         		Reminder r = (Reminder) view.getTag(R.string.TAG_ID_ReminderAdapter_Reminder);
         		final Context contextParent = (Context) view.getTag(R.string.TAG_ID_ReminderAdapter_Context);					
         		ArrayList<String> arPhones = new ArrayList<String>();
@@ -59,21 +74,21 @@ public class AndroidReminderUtils {
 								public void onClick(DialogInterface dialog,
 										int which) {
 									String selectedPhone = phonesArr[which];
-									Uri uri = Uri.parse("tel://" + selectedPhone);
-									Intent callIntent = new Intent(Intent.ACTION_CALL, uri); 
-									contextParent.startActivity(callIntent);
+									Uri uri = Uri.parse(intentPrefix + selectedPhone);
+									Intent intentContact = new Intent(intentType, uri); 
+									contextParent.startActivity(intentContact);
 									return;
 								}
 							}).create();
 					dialog.show();
                     return;             
 				} else {
-					uri = Uri.parse("tel://" + arPhones.get(0));
+					uri = Uri.parse(intentPrefix + arPhones.get(0));
 				}
 
-				Intent callIntent = new Intent(Intent.ACTION_CALL, uri);
-				callIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-				contextParent.startActivity(callIntent);
+				Intent intentContact = new Intent(intentType, uri);
+				intentContact.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+				contextParent.startActivity(intentContact);
         	}
         };
 	}

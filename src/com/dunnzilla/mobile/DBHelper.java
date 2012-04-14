@@ -2,19 +2,16 @@ package com.dunnzilla.mobile;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.database.sqlite.SQLiteDatabase.CursorFactory;
-import android.util.Log;
-
-import com.dunnzilla.mobile.DBConst;
 
 public class DBHelper extends SQLiteOpenHelper {
 	
 	public DBHelper(Context c, String name, CursorFactory cf, int version) {
 		super(c, name, cf, version);
 	}
-	private static final String TAG = "DBHelper";
+//	private static final String TAG = "DBHelper";
 	private static final String sql_CREATE_TABLES =
 		"CREATE TABLE " + DBConst.TABLE + " ( "
 		+ DBConst.f_ID + " integer PRIMARY KEY AUTOINCREMENT, "
@@ -35,13 +32,12 @@ public class DBHelper extends SQLiteOpenHelper {
 			db.execSQL(sql_CREATE_TABLES);
 		}
 		catch(SQLiteException e) {
-			Log.w("Create table exception: ", e.getMessage());
+			//Log.w("Create table exception: ", e.getMessage());
 		}
 	}
 
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 		// TODO Create upgrade plan so no data is lost.
-		Log.w(TAG, "Upgrading DB from version " + oldVersion + " to version " + newVersion);
 	} 
 }

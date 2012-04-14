@@ -8,7 +8,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -33,7 +32,7 @@ public class ReminderAdapter extends BaseAdapter implements ListAdapter {
 	public static final int RA_CONTACTICON_MAXWIDTH = 72;
 	
 	
-	private static final String TAG = "ReminderAdapter";
+//	private static final String TAG = "ReminderAdapter";
 	private ArrayList<Reminder> reminders;
 	private Context context;
 	TextView tvName;
@@ -232,7 +231,6 @@ public class ReminderAdapter extends BaseAdapter implements ListAdapter {
             		if( null == view.getTag(requiredTagID) ) {
             			// If we were certain there was a good context passed in, we could use the context to get the resources to
             			// get the string for this id, but we're not, so we can't.  You'll just have to make do with the ID:
-            			Log.w(TAG, "Required tag '" + requiredTagID + "' not set!");
             			return;
             		}        			
         		}
@@ -247,7 +245,7 @@ public class ReminderAdapter extends BaseAdapter implements ListAdapter {
         	}
         };
 
-		OnClickListener ocCall = AndroidReminderUtils.genOnClickDoVoiceDial();
+		OnClickListener ocCall = AndroidReminderUtils.genOnClickDoVoiceDial(AndroidReminderUtils.CONTACT_TYPE_VOICEDIAL);
 
         // TODO There has got to be a better way:
 		ib.setTag(R.string.TAG_ID_ReminderAdapter_Reminder, r);

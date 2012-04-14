@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -14,7 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class DisplayReminder extends Activity {
-    private static final String TAG = "DisplayReminder";
+//    private static final String TAG = "DisplayReminder";
     
     private DBReminder	db;
     Reminder			reminder;
@@ -30,7 +29,6 @@ public class DisplayReminder extends Activity {
         Bundle extras = this.getIntent().getExtras();
         if(extras != null) {
         	long idReminder = extras.getLong(AndroidReminderUtils.INTENT_EXTRAS_KEY_REMINDER_ID);
-        	Log.v(TAG, "Loading ID " + idReminder);
         	reminder = AndroidReminderUtils.loadReminderFromID(this, db, idReminder);
         }
         if(reminder == null) {
@@ -51,13 +49,19 @@ public class DisplayReminder extends Activity {
 		ImageView ivContactIcon = (ImageView) findViewById(R.id.vr_contact_icon);
 		TextView tvName = (TextView) findViewById(R.id.vr_text_who);
 		ImageView ivDoVoiceDial = (ImageView) findViewById(R.id.vr_voicedial);
+		ImageView ivDoSMS = (ImageView) findViewById(R.id.vr_sms);
 
         ivContactIcon.setOnClickListener( vocl_openContact );
         tvName.setOnClickListener( vocl_openContact );
 
         ivDoVoiceDial.setTag(R.string.TAG_ID_ReminderAdapter_Reminder, reminder);
         ivDoVoiceDial.setTag(R.string.TAG_ID_ReminderAdapter_Context, context);
-        ivDoVoiceDial.setOnClickListener( AndroidReminderUtils.genOnClickDoVoiceDial() );
+        ivDoVoiceDial.setOnClickListener( AndroidReminderUtils.genOnClickDoVoiceDial(AndroidReminderUtils.CONTACT_TYPE_VOICEDIAL) );
+        
+        ivDoSMS.setTag(R.string.TAG_ID_ReminderAdapter_Reminder, reminder);
+        ivDoSMS.setTag(R.string.TAG_ID_ReminderAdapter_Context, context);
+        ivDoSMS.setOnClickListener( AndroidReminderUtils.genOnClickDoVoiceDial(AndroidReminderUtils.CONTACT_TYPE_SMS) );
+
         
     	// TODO handle no reminder ID passed in, or an invalid reminder ID
         Button bCreate = (Button) findViewById(R.id.disprem_btn_done);
@@ -165,7 +169,6 @@ public class DisplayReminder extends Activity {
     	tvPeriod.setText("Contact " + reminder.getDescrPeriod());
     	
     	TextView tvDateRange = (TextView) findViewById(R.id.vr_date_range);
-    	Log.v(TAG, "Using Android utils to format dates from " + reminder.getDateStart() + " to " + reminder.getDateStop());
     	String dateRange = AndroidReminderUtils.formatDate(reminder.getDateStart()) + " - " + AndroidReminderUtils.formatDate(reminder.getDateStop());
     	tvDateRange.setText(dateRange);
     	

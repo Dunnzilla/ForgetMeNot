@@ -24,7 +24,7 @@
             android:id="@+id/vr_linlay_nameblock"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@id/vr_contact_icon"
+            android:layout_toRightOf="@+id/vr_contact_icon"
             android:layout_alignParentTop="true"
             android:orientation="vertical" >
 
@@ -84,101 +84,74 @@
             android:text="@string/vr_default_note"
             android:textColor="#DDDDDD"
             android:textSize="15dip" />
+
+        <LinearLayout
+            android:id="@+id/vr_linlay_contacticons"
+            android:layout_below="@id/vr_text_note"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:orientation="horizontal"
+		    android:layout_centerHorizontal="true"
+	    >
         <ImageView
             android:id="@+id/vr_voicedial"
             android:layout_width="128dp"
             android:layout_height="128dp"
-            android:layout_below="@id/vr_text_note"
             android:contentDescription="@string/disprem_text_activate_inactive"
-        	android:layout_gravity="center_horizontal"
-        	android:layout_centerHorizontal="true"
             android:src="@drawable/ic_launcher_voicedial"
             />
+        <ImageView
+            android:id="@+id/vr_sms"
+            android:layout_width="128dp"
+            android:layout_height="128dp"
+            android:contentDescription="@string/disprem_text_activate_inactive"
+            android:src="@drawable/ic_launcher_sms" />
+        </LinearLayout>
         
+        <LinearLayout
+            android:id="@+id/disprem_reminder_actions"
+            android:layout_below="@+id/vr_linlay_contacticons"
+		    android:layout_width="fill_parent"
+		    android:layout_height="wrap_content"
+		    android:orientation="vertical"
+            android:layout_centerHorizontal="true"
+            android:layout_marginRight="30dp"
+            android:layout_marginLeft="30dp"
+            >
         
+            <Button
+	            android:id="@+id/disprem_btn_done"
+	            android:layout_width="fill_parent"
+	            android:layout_height="wrap_content"
+	            android:text="@string/disprem_button_complete" />
+	        <Button
+	            android:id="@+id/disprem_btn_snooze"
+	            android:layout_width="fill_parent"
+	            android:layout_height="wrap_content"
+	            android:text="@string/disprem_button_snooze" />
+	        <Button
+	            android:id="@+id/disprem_btn_edit"
+	            android:layout_marginTop="10dp"
+	            android:layout_width="fill_parent"
+	            android:layout_height="wrap_content"
+	            android:text="@string/button_edit" />        
+	        <Button
+	            android:id="@+id/disprem_btn_delete"
+	            android:layout_width="fill_parent"
+	            android:layout_height="wrap_content"
+	            android:text="@string/button_delete" />
+	        </LinearLayout>
 
-        <Button
-            android:id="@+id/disprem_btn_done"
-            android:layout_width="120dp"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/vr_voicedial"
-            android:layout_marginBottom="10dp"
-            android:layout_marginLeft="20dip"
-            android:layout_marginRight="20dip"
-            android:layout_marginTop="10dip"
-            android:text="@string/disprem_button_complete" />
-
-        <Button
-            android:id="@+id/disprem_btn_snooze"
-            android:layout_width="120dp"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/vr_voicedial"
-            android:layout_marginBottom="10dp"
-            android:layout_marginLeft="20dip"
-            android:layout_marginRight="20dip"
-            android:layout_marginTop="10dip"
-            android:layout_toRightOf="@id/disprem_btn_done"
-            android:text="@string/disprem_button_snooze" />
-        <!--
-	<ToggleButton
-		android:id="@+id/disprem_btn_activate"
-		android:text="Active"
-    	android:layout_width="wrap_content"
-    	android:layout_below="@id/disprem_btn_done"
-    	android:layout_height="wrap_content"
-    	android:layout_alignLeft="@id/vr_contact_icon"
-    	android:layout_alignRight="@id/vr_contact_icon"
-    	android:layout_marginTop="15dp"
-    	android:layout_marginBottom="15dp"
-		/>
-
-	<TextView
-	    android:id="@+id/disprem_text_activate"
-	    android:text="@string/disprem_text_activate_inactive"
-		android:layout_toRightOf="@id/disprem_btn_activate"
-		android:layout_alignTop="@id/disprem_btn_activate"
-
-	    android:layout_width="fill_parent" 
-	    android:layout_height="wrap_content" 
-		android:textSize="15dip"
-		android:textColor="#DDDDDD"
-		android:layout_marginLeft="2dip"
-	    />
-	<View android:id="@+id/hr_below_actions" android:layout_below="@id/disprem_btn_done" android:background="#7777cc" android:layout_width = "fill_parent" android:layout_height="1dip" android:layout_marginTop="2dp" android:layout_marginBottom="2dp" />
-        -->
         <!-- ======================================================================================== -->
 
         <View
             android:id="@+id/hr_bottom"
             android:layout_width="fill_parent"
             android:layout_height="1dip"
-            android:layout_below="@id/disprem_btn_snooze"
+            android:layout_below="@+id/disprem_reminder_actions"
             android:layout_marginBottom="2dp"
             android:layout_marginTop="2dp"
             android:background="#7777cc" />
-
-        <Button
-            android:id="@+id/disprem_btn_delete"
-            android:layout_width="120dp"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/hr_bottom"
-            android:layout_marginBottom="10dp"
-            android:layout_marginLeft="20dip"
-            android:layout_marginRight="20dip"
-            android:layout_marginTop="10dip"
-            android:text="@string/button_delete" />
-
-        <Button
-            android:id="@+id/disprem_btn_edit"
-            android:layout_width="120dp"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/hr_bottom"
-            android:layout_marginBottom="10dp"
-            android:layout_marginLeft="20dip"
-            android:layout_marginRight="20dip"
-            android:layout_marginTop="10dip"
-            android:layout_toRightOf="@id/disprem_btn_delete"
-            android:text="@string/button_edit" />
 
         <TextView
             android:id="@+id/vr_period_descr"
@@ -191,7 +164,6 @@
             android:text=""
             android:textColor="#DDDDDD"
             android:textSize="15dip" />
-
 
     </RelativeLayout>
 

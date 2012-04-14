@@ -5,7 +5,6 @@ import java.util.HashMap;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -60,7 +59,6 @@ public class EditReminder extends CreateReminder {
         Bundle extras = this.getIntent().getExtras();
         if(extras != null) {
         	long idReminder = extras.getLong(AndroidReminderUtils.INTENT_EXTRAS_KEY_REMINDER_ID);
-        	Log.v(TAG, "Loading ID " + idReminder);
         	reminder = AndroidReminderUtils.loadReminderFromID(this, db, idReminder);
         }
 		updateLayout();
@@ -71,7 +69,6 @@ public class EditReminder extends CreateReminder {
     	setReminderFromLayout();
     	
     	String dateRange = AndroidReminderUtils.formatDate(reminder.getDateStart()) + " - " + AndroidReminderUtils.formatDate(reminder.getDateStop());
-    	Log.v(TAG, "Updating reminder #" + reminder.getID() + ", for " + reminder.getDisplayName() + ". Note: " + reminder.getNote() + ", period " + reminder.getPeriod() + ", daterange " + dateRange);
     	
     	Intent intent = getIntent();
     	db.update(reminder);

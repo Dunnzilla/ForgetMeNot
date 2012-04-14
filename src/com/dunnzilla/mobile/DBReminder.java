@@ -9,11 +9,10 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteException;
 import android.net.Uri;
 import android.provider.ContactsContract.PhoneLookup;
-import android.util.Log;
 
 public class DBReminder extends DB {
 	
-	private static final String TAG = "com.dunnzilla.mobile.DBReminder";
+//	private static final String TAG = "com.dunnzilla.mobile.DBReminder";
 	
 	public DBReminder(Context c) {
 		super(c);
@@ -39,7 +38,7 @@ public class DBReminder extends DB {
 			db.insert(DBConst.TABLE, null, cv);
 
 		} catch (SQLiteException e) {
-			Log.w(TAG, e.getMessage());
+			//Log.w(TAG, e.getMessage());
 		}
 	}
 	public void delete(Reminder r) {
@@ -48,7 +47,6 @@ public class DBReminder extends DB {
 	public int update(Reminder r) {
 		ContentValues cv = new ContentValues();
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		Log.v(TAG, "update reminder for contact ID " + r.getContactID() + ", date start/stop == " + dateFormat.format(r.getDateStart()) + " - " + dateFormat.format(r.getDateStop()));
 
 		cv.put(DBConst.f_CONTACT_ID, r.getContactID());
 		cv.put(DBConst.f_DATETIME_START, dateFormat.format(r.getDateStart()));
@@ -65,7 +63,6 @@ public class DBReminder extends DB {
 		String[] whereArgs = { Integer.toString(r.getID()) };
 		int rows_affected = db.update(DBConst.TABLE, contentvals, where, whereArgs);
 		db.close();
-		Log.v(TAG, rows_affected + " rows affected.");
 		return rows_affected;
 	}
 	
@@ -75,7 +72,6 @@ public class DBReminder extends DB {
 			"UPDATE " + DBConst.TABLE
 		  + " SET "   + DBConst.f_DATETIME_NEXT + "=" + _newVal
 		  + " WHERE " + DBConst.f_ID +"=?";
-		Log.i(TAG, query);
 		Cursor cu = db.rawQuery(query, args);
 		cu.moveToFirst();
 		cu.close();		
@@ -103,12 +99,6 @@ public class DBReminder extends DB {
 			cursorContactResults.close();
 			return null;
 		}
-		// Iterate over them just to log it.
-		while (cursorContactResults.moveToNext()) {
-			String contactID = cursorContactResults.getString(cursorContactResults.getColumnIndex(PhoneLookup._ID));
-			Log.v(TAG, "Contact for Phone #'" + phoneNumber + "' is " + contactID + " (" + cursorContactResults.getString(cursorContactResults.getColumnIndex(PhoneLookup._ID)) + ")");
-		}
-		cursorContactResults.moveToFirst();
 		return cursorContactResults;		
 	}
 

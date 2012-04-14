@@ -5,8 +5,8 @@
     <string name="er_title">Edit Reminder</string>
     <string name="cr_title">Create a New Reminder</string>
     <string name="cr_who">Select a Contact</string>
-    <string name="cr_when">Start Date</string>
-    <string name="cr_label_datepicker_stop">Stop Date</string>
+    <string name="cr_when">Start reminding me on this date:</string>
+    <string name="cr_label_datepicker_stop">Stop reminding me on this date:</string>
     <string name="str_todo">TODO</string>
     <string name="str_version">Version</string>
     <string name="cr_repeat_period">Every</string>

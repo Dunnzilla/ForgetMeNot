@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.TextView;
 
 /**
@@ -14,7 +13,7 @@ import android.widget.TextView;
 public class About extends Activity {
 
 	String androidManifest_versionName = "0.0.0.0";
-	private static final String TAG = "About";
+//	private static final String TAG = "About";
 
 	@Override
 	public void onCreate(Bundle savedInstanceState)
@@ -33,7 +32,7 @@ public class About extends Activity {
 		}
 		catch (NameNotFoundException e)
 		{
-		    Log.v(TAG, e.getMessage());    
+		    //Log.v(TAG, e.getMessage());    
 		}
 		TextView tvVersion = (TextView) findViewById(R.id.about_versionName);
 		tvVersion.setText("Version " + androidManifest_versionName);

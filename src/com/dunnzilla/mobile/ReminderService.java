@@ -20,7 +20,6 @@ import android.os.Message;
 import android.preference.PreferenceManager;
 import android.provider.ContactsContract;
 import android.provider.ContactsContract.Data;
-import android.util.Log;
 
 public class ReminderService extends Service {
 	private static final String TAG = "Service";
@@ -40,9 +39,7 @@ public class ReminderService extends Service {
 		public void run() {
 			repopulate();
 
-			Log.v(TAG, "Checking for reminders . . . ");
 			if( reminders != null && ! reminders.isEmpty() ) {
-				Log.v(TAG, "Found " + reminders.size() + " reminders ready to create notifications.");
 				for(Reminder r : reminders) {
 					sendNotification(r);					
 				}
@@ -65,7 +62,7 @@ public class ReminderService extends Service {
 			}
 			cu.close();
 		} catch(Exception e) {
-			Log.e(TAG, e.getMessage());
+			//Log.e(TAG, e.getMessage());
 		}
 	}
 	private void notifyFromHandler(Message msg) {
@@ -131,7 +128,6 @@ public class ReminderService extends Service {
 		Message m = Message.obtain();
 		Bundle b = new Bundle();
 		b.putLong(AndroidReminderUtils.INTENT_EXTRAS_KEY_REMINDER_ID, reminderID);
-		Log.v(TAG, "sendNotification(" + reminderID + ")");
 		m.setData(b);
 		handler.sendMessage(m);
 	}
@@ -149,7 +145,6 @@ public class ReminderService extends Service {
  
 		nm = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
 		timer = new Timer();
-		Log.v(TAG, "Starting service. Period is " + timerDelay_ms + "ms");
 		timer.schedule(timerTask, 2000, timerDelay_ms);
 	}
 	

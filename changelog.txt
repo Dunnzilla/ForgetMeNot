@@ -1,4 +1,23 @@
 --------------------------------------------------------------------------
+Database upgrade support
+
+ForgetMeNot v0.5.6 (versionCode 35, DB v3)
+
+*IMPROVEMENTS*
+- FMN-33 Database system now supports upgrading (without wiping out all your data, yay!)
+
+*FILE DETAILS*
+* src/com/dunnzilla/mobile/DBConst.java
+- Add pref_contact_type column
+
+* src/com/dunnzilla/mobile/DBHelper.java
+- Build in incremental DB upgrade routine
+- Append pref_contact_type for upgrading from 2-3
+
+* src/com/dunnzilla/mobile/Reminder.java
+- Define PREF_CONTACT_TYPE_ constants
+
+--------------------------------------------------------------------------
 DisplayReminder SMS support
 
 ForgetMeNot v0.5.4 (versionCode 34, DB v2)

@@ -25,9 +25,14 @@ public class Reminder {
     				dateStop,
     				dateNext;
     private int		period;
+    private int		contactType;
 	// --- App fields ---
     private Bitmap contactIconBitmap;
     private static final String TAG = "Reminder";
+    public static final int PREF_CONTACT_TYPE_USE_SYSTEM_DEFAULT = 0;
+    public static final int PREF_CONTACT_TYPE_VOICEDIAL = 1;
+    public static final int PREF_CONTACT_TYPE_SMS = 2;
+    
 
     // ===========================================
     public int getPeriod() {

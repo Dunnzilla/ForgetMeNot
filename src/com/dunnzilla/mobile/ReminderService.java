@@ -8,6 +8,7 @@ import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -40,8 +41,14 @@ public class ReminderService extends Service {
 			repopulate();
 
 			if( reminders != null && ! reminders.isEmpty() ) {
-				for(Reminder r : reminders) {
-					sendNotification(r);					
+				// Only show 1 notification.  It will either be "Contact Dave!" or "Multiple reminders."
+				if( reminders.size() > 1 ) {
+					nm.cancelAll();
+					sendNotification(reminders.size());
+				} else {
+					for(Reminder r : reminders) {
+						sendNotification(r);					
+					}
 				}
 			}
 		}
@@ -65,56 +72,77 @@ public class ReminderService extends Service {
 			//Log.e(TAG, e.getMessage());
 		}
 	}
+
 	private void notifyFromHandler(Message msg) {
-		Bundle	msgData = msg.getData();		
-		long	reminderID = ((Long)msgData.get(AndroidReminderUtils.INTENT_EXTRAS_KEY_REMINDER_ID)).longValue();
-		Reminder r = new Reminder(db, reminderID); 
-		//String strReminderID = Long.toString(reminderID); 
-		Uri uri = Uri.parse("reminder://com.dunnzilla.mobile/view?id=" + r.getID());
-		
-		Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+		Bundle	msgData = msg.getData();
+		// If this was a "Multiple people to remember!" notification, just go straight to the main activity
+		int reminderType = AndroidReminderUtils.REMINDER_NOTIFICATION_TYPE_SINGLE;
+		if(msgData.containsKey(AndroidReminderUtils.INTENT_EXTRAS_KEY_REMINDER_TYPE)) {
+			reminderType = msgData.getInt(AndroidReminderUtils.INTENT_EXTRAS_KEY_REMINDER_TYPE);
+		}
+
 		Bundle b = new Bundle();
-		b.putLong(AndroidReminderUtils.INTENT_EXTRAS_KEY_REMINDER_ID, r.getID());  
+		Intent intent;
+
+		String notificationText;
+		int notificationID = 0;
+		int notificationImageResource = R.drawable.notify_icon_logo_24;
+
+		switch(reminderType) {
+		case AndroidReminderUtils.REMINDER_NOTIFICATION_TYPE_MULTIPLE:
+			// TODO use different image for multiple reminders
+			notificationText = "Multiple Reminders"; 
+		    intent = new Intent("android.intent.action.MAIN");
+		    intent.setComponent(ComponentName.unflattenFromString("com.dunnzilla.mobile/com.dunnzilla.mobile.ForgetMeNot"));
+		    intent.addCategory("android.intent.category.LAUNCHER");
+			break;
+		case AndroidReminderUtils.REMINDER_NOTIFICATION_TYPE_SINGLE:
+		default:
+			long reminderID = ((Long)msgData.get(AndroidReminderUtils.INTENT_EXTRAS_KEY_REMINDER_ID)).longValue();
+			Reminder r = new Reminder(db, reminderID); 
+			// String strReminderID = Long.toString(reminderID); 
+			Uri uri = Uri.parse("reminder://com.dunnzilla.mobile/view?id=" + r.getID());
+			b.putLong(AndroidReminderUtils.INTENT_EXTRAS_KEY_REMINDER_ID, r.getID());  
+			long id = r.getContactID();
+			// Form an array specifying which columns to return. 
+			String[] projection = new String[] {
+										Data._ID,
+			                             ContactsContract.Contacts.DISPLAY_NAME
+			                          };
+			Cursor cu = getContentResolver().query(Data.CONTENT_URI,
+			          projection,
+			          Data.CONTACT_ID + "=?",
+			          new String[] {String.valueOf(id)}, null);
+
+			String displayName = null;
+		    if( cu.moveToFirst()) {
+		        displayName = cu.getString(cu.getColumnIndexOrThrow(ContactsContract.Contacts.DISPLAY_NAME));
+		    }
+		    cu.close();
+			
+		    if(displayName == null) {
+		    	return;
+		    }
+			notificationText = "Remember " + displayName;
+			String note = r.getNote();
+		    if( note != null && note.length() > 0) {
+		    	notificationText = notificationText.concat(" - " + note);
+		    }
+		    notificationID = r.getID();
+		    intent = new Intent(Intent.ACTION_VIEW, uri);
+			break;
+		}
+		
 		intent.putExtras(b);		
 		PendingIntent pendintent = PendingIntent.getActivity(this, Intent.FLAG_ACTIVITY_NEW_TASK, intent, PendingIntent.FLAG_ONE_SHOT);
-
-		long id = r.getContactID();
-		// Form an array specifying which columns to return. 
-		String[] projection = new String[] {
-									Data._ID,
-		                             ContactsContract.Contacts.DISPLAY_NAME
-		                          };
-		Cursor cu = getContentResolver().query(Data.CONTENT_URI,
-		          projection,
-		          Data.CONTACT_ID + "=?",
-		          new String[] {String.valueOf(id)}, null);
-
-		String displayName = null;
-	    if( cu.moveToFirst()) {
-	        displayName = cu.getString(cu.getColumnIndexOrThrow(ContactsContract.Contacts.DISPLAY_NAME));
-	    }
-	    cu.close();
-		
-	    if(displayName == null) {
-	    	return;
-	    }
-		String notificationText = "Remember " + displayName;
-		
-		String note = r.getNote();
-		// TODO write or import some decent string utils
-	    if( note != null && note.length() > 0) {
-	    	notificationText = notificationText.concat(" - " + note);
-	    }
 		
 		// Why 'final' here, in the middle of a function?
-		final Notification n = new Notification(
-				R.drawable.notify_icon_logo_24, notificationText, System.currentTimeMillis());
+		final Notification n = new Notification(notificationImageResource, notificationText, System.currentTimeMillis());
 
 		n.flags |= Notification.FLAG_AUTO_CANCEL;
-		// TODO get the contentTitle from strings
-		CharSequence contentTitle = "Forget Me Not";
+		CharSequence contentTitle = getResources().getString(R.string.app_name);
 		n.setLatestEventInfo(getApplicationContext(), contentTitle, notificationText, pendintent);
-		nm.notify(r.getID(), n);
+		nm.notify(notificationID, n);
 	}
 	
 	/**
@@ -128,8 +156,17 @@ public class ReminderService extends Service {
 		Message m = Message.obtain();
 		Bundle b = new Bundle();
 		b.putLong(AndroidReminderUtils.INTENT_EXTRAS_KEY_REMINDER_ID, reminderID);
+		b.putInt(AndroidReminderUtils.INTENT_EXTRAS_KEY_REMINDER_TYPE, AndroidReminderUtils.REMINDER_NOTIFICATION_TYPE_SINGLE);
 		m.setData(b);
-		handler.sendMessage(m);
+		handler.sendMessage(m);	
+	}
+	// Calling with 
+	private void sendNotification(int countOfRemindersWithNotifications) {
+		Message m = Message.obtain();
+		Bundle b = new Bundle();
+		b.putInt(AndroidReminderUtils.INTENT_EXTRAS_KEY_REMINDER_TYPE, AndroidReminderUtils.REMINDER_NOTIFICATION_TYPE_MULTIPLE);
+		m.setData(b);
+		handler.sendMessage(m);		
 	}
 
 	private void setDefaults() {
@@ -166,4 +203,3 @@ public class ReminderService extends Service {
         timerDelay_ms = L.longValue() * 1000;
     }
 }
-

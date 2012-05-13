@@ -21,8 +21,11 @@ import android.widget.Toast;
 
 public class AndroidReminderUtils {
 	public static final String INTENT_EXTRAS_KEY_REMINDER_ID = "REMINDER_ID";
+	public static final String INTENT_EXTRAS_KEY_REMINDER_TYPE = "REMINDER_TYPE";
 	public static final int CONTACT_TYPE_VOICEDIAL = 1;
 	public static final int CONTACT_TYPE_SMS = 2;
+	public static final int REMINDER_NOTIFICATION_TYPE_SINGLE = 1;
+	public static final int REMINDER_NOTIFICATION_TYPE_MULTIPLE = 2;
 
 
 	public static View.OnClickListener genOnClickDoVoiceDial(final int contactType) {

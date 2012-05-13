@@ -34,6 +34,7 @@ public class DBReminder extends DB {
 			cv.put(DBConst.f_NOTE, r.getNote());
 			cv.put(DBConst.f_DATETIME_STOP, dateFormat.format(r.getDateStop()));
 			cv.put(DBConst.f_DATETIME_NEXT, dateFormat.format(r.getDateNext()));
+			cv.put(DBConst.f_PREF_CONTACT_TYPE, r.getContactType());
 
 			db.insert(DBConst.TABLE, null, cv);
 
@@ -55,6 +56,8 @@ public class DBReminder extends DB {
 		cv.put(DBConst.f_NOTE, r.getNote());
 		cv.put(DBConst.f_DATETIME_STOP, dateFormat.format(r.getDateStop()));
 		cv.put(DBConst.f_DATETIME_NEXT, dateFormat.format(r.getDateNext()));
+		cv.put(DBConst.f_PREF_CONTACT_TYPE, r.getContactType());
+
 
 		return update(r, cv);
 	}
@@ -121,6 +124,9 @@ public class DBReminder extends DB {
 	public Cursor selectAllActiveByDue() {
 		Cursor c;
 		String orderBy = DBConst.f_DATETIME_NEXT + " asc";
+		if( ! db.isOpen() ) {
+			super.open();
+		}
 		// My eyes, they bleed:
 		c = db.query(DBConst.TABLE, null, null, null, null, null, orderBy);
 		return c;

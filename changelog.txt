@@ -1,3 +1,38 @@
+Notification bar multiple reminder squish
+
+ForgetMeNot v0.5.7 (versionCode 36, DB v3)
+
+*IMPROVEMENTS*
+- Squish multiple notifications into a single "Multiple reminders" notification
+
+*FILE DETAILS*
+
+* AndroidManifest.xml
+- Useless reformat
+
+* res/layout/create_reminder.xml
+- WIP to support different default contact types (call vs text)
+
+* src/com/dunnzilla/mobile/AndroidReminderUtils.java
+- Add support for multiple notification types (single = view that reminder, multi means just show main page)
+
+* src/com/dunnzilla/mobile/CreateReminder.java
+- Trying to learn about radio buttons.  This really isn't ready for the master branch but I'm solo on this project for now so it shouldn't step on any toes.
+
+* src/com/dunnzilla/mobile/DBReminder.java
+- Add new field: Contact Type
+- selectAllActiveByDue() will open the db if it's not.
+
+* src/com/dunnzilla/mobile/ForgetMeNot.java
+- Close cursor and DB
+
+* src/com/dunnzilla/mobile/Reminder.java
+- Beginnings of support for default/voice/sms contact types
+
+* src/com/dunnzilla/mobile/ReminderService.java
+- Only show 1 notification.  It will either be "Contact Dave!" or "Multiple reminders."
+- Lots of code shuffling to suppor the two different notification types.
+
 --------------------------------------------------------------------------
 Database upgrade support
 

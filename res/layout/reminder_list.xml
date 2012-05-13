@@ -8,7 +8,7 @@
     <ListView
     	android:layout_width="fill_parent"
     	android:layout_height="fill_parent"
-    	android:dividerHeight="1px"
+    	android:dividerHeight="1dp"
     	android:id="@+id/listview_reminder_row"
     	>
     </ListView>

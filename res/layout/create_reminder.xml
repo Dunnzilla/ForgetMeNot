@@ -30,7 +30,44 @@
     
 	<View android:id="@+id/hr2" android:layout_below="@id/cr_contact_icon" android:background="#7777cc" android:layout_width = "fill_parent" android:layout_height="1dip" android:layout_marginTop="2dp" android:layout_marginBottom="2dp" />
 	<!--  ======================================================================================== -->
-	
+
+		<TextView
+		    android:id="@+id/cr_label_default_contact_type"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:layout_below="@+id/hr2"
+		    android:layout_centerHorizontal="true"
+		    android:layout_gravity="center_vertical"
+		    android:text="@string/cr_label_default_contact_type" />
+
+	    <RadioGroup
+	        android:id="@+id/cr_radiogroup_contact_types"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:layout_below="@+id/cr_label_default_contact_type"
+	        android:layout_marginLeft="10dp"
+	        android:orientation="vertical" >
+
+	    <RadioButton
+	    android:id="@+id/cr_contact_type_voicedial"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:text="@string/cr_rgcontact_call"
+	    />
+		<RadioButton
+	    android:id="@+id/cr_contact_type_sms"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:text=""
+	    />	        
+		<RadioButton
+	    android:id="@+id/cr_contact_type_use_sys_default"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:text="@string/cr_rgcontact_sys_settings"
+	    android:checked="true"
+	    />	        
+	</RadioGroup>
 
 	<TextView  
 		android:id="@+id/cr_label_repeat_period"
@@ -38,7 +75,7 @@
 	    android:text="@string/cr_repeat_period"
 	    android:layout_gravity="left"
 	    android:layout_width="35dp"
-	    android:layout_below="@id/hr2"
+	    android:layout_below="@+id/cr_radiogroup_contact_types"
 	    android:layout_marginTop="12dp"
 	    />
 
@@ -49,7 +86,7 @@
 		android:layout_width="75sp" android:layout_height="wrap_content"
 		android:maxLength="3"
 		android:layout_toRightOf="@id/cr_label_repeat_period"
-		android:layout_below="@id/hr2"
+		android:layout_below="@+id/cr_radiogroup_contact_types"
 		android:layout_marginLeft="5dp" 
 		/>
 
@@ -132,7 +169,6 @@
 			android:layout_gravity="center"
 			android:layout_below="@id/hr5"
 			/>
-
 
 </RelativeLayout>
 </ScrollView>

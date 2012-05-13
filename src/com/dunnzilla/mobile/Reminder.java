@@ -4,6 +4,7 @@ import java.io.InputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 
 import android.app.Activity;
 import android.content.ContentUris;
@@ -26,13 +27,14 @@ public class Reminder {
     				dateNext;
     private int		period;
     private int		contactType;
+    private HashMap<String, Integer>	idMapContactTypeStringsToValues;
 	// --- App fields ---
     private Bitmap contactIconBitmap;
     private static final String TAG = "Reminder";
     public static final int PREF_CONTACT_TYPE_USE_SYSTEM_DEFAULT = 0;
     public static final int PREF_CONTACT_TYPE_VOICEDIAL = 1;
     public static final int PREF_CONTACT_TYPE_SMS = 2;
-    
+
 
     // ===========================================
     public int getPeriod() {
@@ -47,7 +49,23 @@ public class Reminder {
 	public void setNote(String note) {
 		this.note = note;
 	}
-    
+	public int convertContactTypeString(String _contactType) {
+		try {
+			Integer i = idMapContactTypeStringsToValues.get(_contactType);
+			return i.intValue();
+		} catch (Exception e) {
+			return PREF_CONTACT_TYPE_USE_SYSTEM_DEFAULT;
+		}
+	}
+	public void setContactType(String newContactType) {
+			setContactType(convertContactTypeString(newContactType));
+	}
+	public void setContactType(int _t) {
+		this.contactType = _t;
+	}
+    public int getContactType() {
+    	return contactType;
+    }
     public Date getDateStart() {
 		return dateStart;
 	}
@@ -58,12 +76,20 @@ public class Reminder {
 	public void defaults() {
     	contactID = 0;
     	contactIconBitmap = null;
+    	contactType = PREF_CONTACT_TYPE_USE_SYSTEM_DEFAULT;
     	period = 1;
     	ID = 0;
+    	
 	}
+
     public Reminder() {
+        idMapContactTypeStringsToValues = new HashMap<String,Integer>(3);
+        idMapContactTypeStringsToValues.put("default", PREF_CONTACT_TYPE_USE_SYSTEM_DEFAULT);
+        idMapContactTypeStringsToValues.put("voice", PREF_CONTACT_TYPE_VOICEDIAL);
+        idMapContactTypeStringsToValues.put("sms", PREF_CONTACT_TYPE_SMS);
     	defaults();
     }
+
     public Reminder(DBReminder db, long reminderID) {
     	defaults();
     	Cursor cu = db.selectID(reminderID);

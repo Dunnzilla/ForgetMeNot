@@ -68,7 +68,7 @@ public class EditReminder extends CreateReminder {
     	db.open();
     	setReminderFromLayout();
     	
-    	String dateRange = AndroidReminderUtils.formatDate(reminder.getDateStart()) + " - " + AndroidReminderUtils.formatDate(reminder.getDateStop());
+//    	String dateRange = AndroidReminderUtils.formatDate(reminder.getDateStart()) + " - " + AndroidReminderUtils.formatDate(reminder.getDateStop());
     	
     	Intent intent = getIntent();
     	db.update(reminder);

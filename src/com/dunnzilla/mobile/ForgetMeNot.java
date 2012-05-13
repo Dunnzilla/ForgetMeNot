@@ -90,13 +90,14 @@ public class ForgetMeNot extends ListActivity {
 				reminders.add(r);
 			} while(cu.moveToNext());
 		}
+		cu.close();
     	getListView().setCacheColorHint(0);  // This prevents fancy gradient listviews from going black when scrolling
     	
         ListAdapter adapter;
     	adapter = new ReminderAdapter(this, reminders);
         setListAdapter(adapter);
         registerForContextMenu( getListView() );
-
+        db.close();
 	}
 
 	@Override

@@ -8,11 +8,14 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,9 +27,11 @@ public class CreateReminder extends Activity {
     protected DBReminder				db;
     protected String					errorMessage;
 	protected Map<String,Integer>		idMap;
+	protected Map<Long,Integer>		idMapResourceToReminderContactType;
 
 	protected void mapDBFieldsToResourceIDs() {
-        idMap = new HashMap<String,Integer>(20);    	
+        idMap = new HashMap<String,Integer>(20);
+        idMapResourceToReminderContactType = new HashMap<Long,Integer>(3);
     	idMap.put(DBConst.f_DATETIME_START, R.id.cr_datepicker_start);
     	idMap.put(DBConst.f_DATETIME_STOP, R.id.cr_datepicker_stop);
     	idMap.put(DBConst.f_PERIOD, R.id.cr_period);
@@ -35,6 +40,9 @@ public class CreateReminder extends Activity {
     	idMap.put("__contact_name", R.id.cr_text_who);
     	idMap.put("__button_save_or_update", R.id.cr_save);
     	idMap.put("__layout", R.layout.create_reminder);
+    	idMapResourceToReminderContactType.put(new Long(R.id.cr_contact_type_sms), Reminder.PREF_CONTACT_TYPE_SMS);
+    	idMapResourceToReminderContactType.put(new Long(R.id.cr_contact_type_voicedial), Reminder.PREF_CONTACT_TYPE_VOICEDIAL);
+    	idMapResourceToReminderContactType.put(new Long(R.id.cr_contact_type_use_sys_default), Reminder.PREF_CONTACT_TYPE_USE_SYSTEM_DEFAULT);
 	}
 
 	protected void reminderViewInit() {		 
@@ -101,6 +109,7 @@ public class CreateReminder extends Activity {
 	protected void setErrMessage(String e) {
 		errorMessage = e;
 	}
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
 		if ( resultCode == RESULT_OK ) {
@@ -133,6 +142,20 @@ public class CreateReminder extends Activity {
     	reminder.setDateStart(dateStart);
     	reminder.setDateNext(dateStart);//TODO get the actual next date
     	reminder.setDateStop(dateStop);
+    	
+    	RadioGroup rgDefaultContactType = (RadioGroup) findViewById(R.id.cr_radiogroup_contact_types);
+    	RadioButton rbSelected = (RadioButton) findViewById(rgDefaultContactType.getCheckedRadioButtonId());
+    	
+    	// This can throw if you add new menu items but don't add new keyvals in the hash:
+    	try {
+    		long id = rbSelected.getId();
+    		int contactType = idMapResourceToReminderContactType.get(new Long(id));
+        	reminder.setContactType(contactType);    		
+    	}
+    	catch(Exception e) {
+    		Log.w("ERR", e.getMessage());
+    	}
+    	
     }
 
     public void saveReminder() {

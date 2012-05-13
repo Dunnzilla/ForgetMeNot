@@ -8,14 +8,10 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.provider.ContactsContract;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,17 +28,23 @@ public class CreateReminder extends Activity {
 	protected void mapDBFieldsToResourceIDs() {
         idMap = new HashMap<String,Integer>(20);
         idMapResourceToReminderContactType = new HashMap<Long,Integer>(3);
-    	idMap.put(DBConst.f_DATETIME_START, R.id.cr_datepicker_start);
-    	idMap.put(DBConst.f_DATETIME_STOP, R.id.cr_datepicker_stop);
+        /*
+    	if(Reminder.FEATURE_DATESTOP) {
+        	idMap.put(DBConst.f_DATETIME_START, R.id.cr_datepicker_start);
+    		idMap.put(DBConst.f_DATETIME_STOP, R.id.cr_datepicker_stop);
+    	}
+    	if(Reminder.FEATURE_SET_CONTACT_METHOD) {
+	    	idMapResourceToReminderContactType.put(new Long(R.id.cr_contact_type_sms), Reminder.PREF_CONTACT_TYPE_SMS);
+	    	idMapResourceToReminderContactType.put(new Long(R.id.cr_contact_type_voicedial), Reminder.PREF_CONTACT_TYPE_VOICEDIAL);
+	    	idMapResourceToReminderContactType.put(new Long(R.id.cr_contact_type_use_sys_default), Reminder.PREF_CONTACT_TYPE_USE_SYSTEM_DEFAULT);
+	    }
+    	*/
     	idMap.put(DBConst.f_PERIOD, R.id.cr_period);
     	idMap.put(DBConst.f_NOTE, R.id.cr_note);
     	idMap.put("__contact_icon", R.id.cr_contact_icon);
     	idMap.put("__contact_name", R.id.cr_text_who);
     	idMap.put("__button_save_or_update", R.id.cr_save);
     	idMap.put("__layout", R.layout.create_reminder);
-    	idMapResourceToReminderContactType.put(new Long(R.id.cr_contact_type_sms), Reminder.PREF_CONTACT_TYPE_SMS);
-    	idMapResourceToReminderContactType.put(new Long(R.id.cr_contact_type_voicedial), Reminder.PREF_CONTACT_TYPE_VOICEDIAL);
-    	idMapResourceToReminderContactType.put(new Long(R.id.cr_contact_type_use_sys_default), Reminder.PREF_CONTACT_TYPE_USE_SYSTEM_DEFAULT);
 	}
 
 	protected void reminderViewInit() {		 
@@ -125,11 +127,14 @@ public class CreateReminder extends Activity {
 
     public void setReminderFromLayout()
     {
-    	// TODO also set the contact?
-    	DatePicker dp = (DatePicker)findViewById( idMap.get(DBConst.f_DATETIME_START) );
-    	Date dateStart = new Date(dp.getYear() - 1900, dp.getMonth(), dp.getDayOfMonth());
-    	DatePicker dpStop = (DatePicker)findViewById( idMap.get(DBConst.f_DATETIME_STOP) );
-    	Date dateStop = new Date(dpStop.getYear() - 1900, dpStop.getMonth(), dpStop.getDayOfMonth());
+    	/*
+    	if(Reminder.FEATURE_DATESTOP) {
+        	DatePicker dp = (DatePicker)findViewById( idMap.get(DBConst.f_DATETIME_START) );
+        	Date dateStart = new Date(dp.getYear() - 1900, dp.getMonth(), dp.getDayOfMonth());
+    		DatePicker dpStop = (DatePicker)findViewById( idMap.get(DBConst.f_DATETIME_STOP) );
+    		Date dateStop = new Date(dpStop.getYear() - 1900, dpStop.getMonth(), dpStop.getDayOfMonth());
+    	}
+    	*/
     	  	
     	TextView tvPeriod = (TextView) findViewById( idMap.get(DBConst.f_PERIOD) );
     	TextView tvNote = (TextView) findViewById( idMap.get(DBConst.f_NOTE) );
@@ -139,10 +144,14 @@ public class CreateReminder extends Activity {
   
     	reminder.setPeriod(i);
     	reminder.setNote(tvNote.getText().toString().trim());
+    	Date dateToday = new Date();
+    	reminder.setDateNext(dateToday);
+    	/*
     	reminder.setDateStart(dateStart);
-    	reminder.setDateNext(dateStart);//TODO get the actual next date
     	reminder.setDateStop(dateStop);
+    	*/
     	
+    	/*
     	RadioGroup rgDefaultContactType = (RadioGroup) findViewById(R.id.cr_radiogroup_contact_types);
     	RadioButton rbSelected = (RadioButton) findViewById(rgDefaultContactType.getCheckedRadioButtonId());
     	
@@ -155,6 +164,7 @@ public class CreateReminder extends Activity {
     	catch(Exception e) {
     		Log.w("ERR", e.getMessage());
     	}
+    	*/
     	
     }
 
@@ -197,18 +207,21 @@ public class CreateReminder extends Activity {
     		tvNote.setText(note);
     	}
     	
+    	/*
     	DatePicker dpStart = (DatePicker) findViewById( idMap.get(DBConst.f_DATETIME_START) );
     	Date d = reminder.getDateStart();
     	if(d != null) {
     		dpStart.updateDate(1900 + d.getYear(), d.getMonth(), d.getDate());
     	}
-    	
-    	DatePicker dpStop = (DatePicker) findViewById( idMap.get(DBConst.f_DATETIME_STOP) );
-    	d = reminder.getDateStop();
-    	if(d != null) {
-    		dpStop.updateDate(1900 + d.getYear(), d.getMonth(), d.getDate());
+    	if(Reminder.FEATURE_DATESTOP) {
+	    	DatePicker dpStop = (DatePicker) findViewById( idMap.get(DBConst.f_DATETIME_STOP) );
+	    	d = reminder.getDateStop();
+	    	if(d != null) {
+	    		dpStop.updateDate(1900 + d.getYear(), d.getMonth(), d.getDate());
+	    	}
     	}
-    	
+    	*/
+
     	TextView tvPeriod = (TextView) findViewById( idMap.get(DBConst.f_PERIOD) );
     	tvPeriod.setText(Integer.toString(reminder.getPeriod()));
 

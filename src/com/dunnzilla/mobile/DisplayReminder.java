@@ -167,10 +167,11 @@ public class DisplayReminder extends Activity {
     	
     	TextView tvPeriod = (TextView) findViewById(R.id.vr_text_who_summary);
     	tvPeriod.setText("Contact " + reminder.getDescrPeriod());
-    	
+    	/*
     	TextView tvDateRange = (TextView) findViewById(R.id.vr_date_range);
     	String dateRange = AndroidReminderUtils.formatDate(reminder.getDateStart()) + " - " + AndroidReminderUtils.formatDate(reminder.getDateStop());
     	tvDateRange.setText(dateRange);
+    	*/
     	
     }
 }

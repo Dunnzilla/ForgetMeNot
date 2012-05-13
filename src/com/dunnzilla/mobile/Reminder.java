@@ -34,6 +34,8 @@ public class Reminder {
     public static final int PREF_CONTACT_TYPE_USE_SYSTEM_DEFAULT = 0;
     public static final int PREF_CONTACT_TYPE_VOICEDIAL = 1;
     public static final int PREF_CONTACT_TYPE_SMS = 2;
+    public static final boolean FEATURE_DATESTOP = false;
+    public static final boolean FEATURE_SET_CONTACT_METHOD = false;
 
 
     // ===========================================
@@ -129,6 +131,36 @@ public class Reminder {
     	db.close();
     	return summary;
     }
+    public void setDateNextFrom(Cursor c) {
+    	try {
+	    	String dnext = c.getString(c.getColumnIndex(DBConst.f_DATETIME_NEXT));
+	    	SimpleDateFormat f = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			Date d = f.parse(dnext);
+	    	setDateNext(d);
+    	} catch (ParseException e) {
+    	}
+    }
+    public void setDateStartStopFrom(Cursor c) {
+    	String dstart = c.getString(c.getColumnIndex(DBConst.f_DATETIME_START));
+    	String dstop;
+    	if(Reminder.FEATURE_DATESTOP) {
+    		dstop = c.getString(c.getColumnIndex(DBConst.f_DATETIME_STOP));
+    	}
+    	
+		try {
+			SimpleDateFormat f = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			Date d;
+			d = f.parse(dstart);
+	    	setDateStart(d);
+	    	if(Reminder.FEATURE_DATESTOP) {
+	    		d = f.parse(dstop);
+	    		setDateStop(d);
+	    	}
+		} catch (ParseException e) {
+			//Log.w(TAG, e.getMessage());
+		}
+
+    }
 
     public void setFrom(Cursor c) {    	
     	setID(c.getInt(c.getColumnIndex(DBConst.f_ID)));
@@ -136,23 +168,7 @@ public class Reminder {
     	setNote(c.getString(c.getColumnIndex(DBConst.f_NOTE)));
     	setPeriod(c.getInt(c.getColumnIndex(DBConst.f_PERIOD)));
     	setActionURI(c.getString(c.getColumnIndex(DBConst.f_URI_ACTION)));
-    	
-    	String dstart = c.getString(c.getColumnIndex(DBConst.f_DATETIME_START));
-    	String dstop = c.getString(c.getColumnIndex(DBConst.f_DATETIME_STOP));
-    	String dnext = c.getString(c.getColumnIndex(DBConst.f_DATETIME_NEXT));
-    	
-		try {
-			SimpleDateFormat f = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-			Date d;
-			d = f.parse(dstart);
-	    	setDateStart(d);
-			d = f.parse(dstop);
-	    	setDateStop(d);
-			d = f.parse(dnext);
-	    	setDateNext(d);
-		} catch (ParseException e) {
-			//Log.w(TAG, e.getMessage());
-		}
+    	setDateNextFrom(c);
     }
     
     public boolean valid() {

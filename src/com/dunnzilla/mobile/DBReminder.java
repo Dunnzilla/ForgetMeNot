@@ -28,15 +28,18 @@ public class DBReminder extends DB {
 			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"); 
 
 			cv.put(DBConst.f_CONTACT_ID, r.getContactID());
-			cv.put(DBConst.f_DATETIME_START, dateFormat.format(r.getDateStart()));
 			cv.put(DBConst.f_PERIOD, r.getPeriod());
 			cv.put(DBConst.f_URI_ACTION, r.getActionURI());
 			cv.put(DBConst.f_NOTE, r.getNote());
-			cv.put(DBConst.f_DATETIME_STOP, dateFormat.format(r.getDateStop()));
+	    	if(Reminder.FEATURE_DATESTOP) {
+				cv.put(DBConst.f_DATETIME_START, dateFormat.format(r.getDateStart()));
+	    		cv.put(DBConst.f_DATETIME_STOP, dateFormat.format(r.getDateStop()));
+	    	}
 			cv.put(DBConst.f_DATETIME_NEXT, dateFormat.format(r.getDateNext()));
 			cv.put(DBConst.f_PREF_CONTACT_TYPE, r.getContactType());
 
 			db.insert(DBConst.TABLE, null, cv);
+			close();
 
 		} catch (SQLiteException e) {
 			//Log.w(TAG, e.getMessage());
@@ -50,11 +53,13 @@ public class DBReminder extends DB {
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
 		cv.put(DBConst.f_CONTACT_ID, r.getContactID());
-		cv.put(DBConst.f_DATETIME_START, dateFormat.format(r.getDateStart()));
 		cv.put(DBConst.f_PERIOD, r.getPeriod());
 		cv.put(DBConst.f_URI_ACTION, r.getActionURI());
 		cv.put(DBConst.f_NOTE, r.getNote());
-		cv.put(DBConst.f_DATETIME_STOP, dateFormat.format(r.getDateStop()));
+    	if(Reminder.FEATURE_DATESTOP) {
+    		cv.put(DBConst.f_DATETIME_START, dateFormat.format(r.getDateStart()));
+    		cv.put(DBConst.f_DATETIME_STOP, dateFormat.format(r.getDateStop()));
+    	}
 		cv.put(DBConst.f_DATETIME_NEXT, dateFormat.format(r.getDateNext()));
 		cv.put(DBConst.f_PREF_CONTACT_TYPE, r.getContactType());
 

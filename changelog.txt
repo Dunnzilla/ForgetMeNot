@@ -1,3 +1,28 @@
+Remove cumbersome start/stop date options
+
+ForgetMeNot v0.6.0 (versionCode 37, DB v3)
+
+Java doesn't make it easy to #ifdef like you can in C so there is a mix of if(const) and commented-out code.
+- 
+
+*IMPROVEMENTS*
+- Cleaned up UI by removing the start and stop datepickers and the radiogroups for sms/voice/sysdefault.
+- If you are setting a reminder, you probably want it to start today, and if you don't, well, too bad!  It was cluttering up the screen and maybe will return as a per-item drill-down feature in the future.
+- Fixed bug where you'd get multiple toast notifications when calling someone (one notification per different contact w/ the same phone number)
+
+*FILE DETAILS*
+
+* Comment out the datepickers
+- layout/create_reminder.xml
+- layout/display_reminder.xml
+
+* res/layout/tablet_about.xml
+- Use a string resource, not an inline string
+
+* src/com/dunnzilla/mobile/OutboundCallReceiver.java
+- Use last strmessage, not every strmessage. Not the most elegant solution, but you shouldn't have multiple contacts with the same number, you rascal.
+
+--------------------------------------------------------------------------
 Notification bar multiple reminder squish
 
 ForgetMeNot v0.5.7 (versionCode 36, DB v3)

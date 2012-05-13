@@ -15,9 +15,11 @@ public class EditReminder extends CreateReminder {
     
     @Override
 	protected void mapDBFieldsToResourceIDs() {
-        idMap = new HashMap<String,Integer>();    	
+        idMap = new HashMap<String,Integer>();
+        /*
     	idMap.put(DBConst.f_DATETIME_START, R.id.cr_datepicker_start);
     	idMap.put(DBConst.f_DATETIME_STOP, R.id.cr_datepicker_stop);
+    	*/
     	idMap.put(DBConst.f_PERIOD, R.id.cr_period);
     	idMap.put(DBConst.f_NOTE, R.id.cr_note);
     	idMap.put("__contact_icon", R.id.cr_contact_icon);

@@ -8,7 +8,7 @@ import android.provider.ContactsContract.PhoneLookup;
 import android.widget.Toast;
 
 public class OutboundCallReceiver extends BroadcastReceiver {
-	private static final String TAG = "OutboundCallReceiver";
+	//private static final String TAG = "OutboundCallReceiver";
     @Override 
     public void onReceive(Context context, Intent intent) {
             try {
@@ -17,6 +17,7 @@ public class OutboundCallReceiver extends BroadcastReceiver {
         			DBReminder dbr = new DBReminder(context);
         			Cursor cContacts = dbr.selectAllContactsForPhoneNumber(context, strOutgoing);
         			if(cContacts != null && cContacts.moveToFirst()) {
+        				String strSummary = null;
         				do {
 	    					String contactID = cContacts.getString(cContacts.getColumnIndex(PhoneLookup._ID));
 	    					Cursor cursorRemindersForContact = dbr.getAllRemindersForContactID(Integer.parseInt(contactID));
@@ -24,13 +25,15 @@ public class OutboundCallReceiver extends BroadcastReceiver {
 	    						do {
 		    						Reminder r = new Reminder(cursorRemindersForContact);
 		    						if( r != null ) {
-		        						String strSummary = r.onEventComplete(dbr);
-		        						Toast.makeText(context, strSummary, Toast.LENGTH_SHORT).show();
+		        						strSummary = r.onEventComplete(dbr);
 		    						}
 	    						} while(cursorRemindersForContact.moveToNext());
 	    						cursorRemindersForContact.close();
 	    					}
         				} while(cContacts.moveToNext());
+        				if(strSummary != null) {
+    						Toast.makeText(context, strSummary, Toast.LENGTH_SHORT).show();
+        				}
             			cContacts.close();
         			}
         		}

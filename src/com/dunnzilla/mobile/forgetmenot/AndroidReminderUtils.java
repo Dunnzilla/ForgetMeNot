@@ -28,8 +28,9 @@ public class AndroidReminderUtils {
 	public static final int REMINDER_NOTIFICATION_TYPE_MULTIPLE = 2;
 
 
-	public static View.OnClickListener genOnClickDoVoiceDial(final int contactType) {
+	public static View.OnClickListener genOnClickDoVoiceDial(final int _ct) {
 		return new View.OnClickListener() {
+			private final int contactType = _ct;
         	public void onClick(View view) {
         		final String intentPrefix;
         		final String intentType;

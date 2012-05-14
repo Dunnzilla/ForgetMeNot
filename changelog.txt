@@ -1,4 +1,10 @@
 --------------------------------------------------------------------------
+Fix crash on trying to dial or sms
+
+ForgetMeNot v0.6.3 (versionCode 39, DB v3)
+It was using the wrong context for spawning the dialog box when the contact had two or more phone numbers.
+
+--------------------------------------------------------------------------
 Cosmetic fix: Move a horizontal rule down.
 
 ForgetMeNot v0.6.2 (versionCode 38, DB v3)

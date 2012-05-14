@@ -55,11 +55,11 @@ public class DisplayReminder extends Activity {
         tvName.setOnClickListener( vocl_openContact );
 
         ivDoVoiceDial.setTag(R.string.TAG_ID_ReminderAdapter_Reminder, reminder);
-        ivDoVoiceDial.setTag(R.string.TAG_ID_ReminderAdapter_Context, context);
+        ivDoVoiceDial.setTag(R.string.TAG_ID_ReminderAdapter_Context, this);
         ivDoVoiceDial.setOnClickListener( AndroidReminderUtils.genOnClickDoVoiceDial(AndroidReminderUtils.CONTACT_TYPE_VOICEDIAL) );
         
         ivDoSMS.setTag(R.string.TAG_ID_ReminderAdapter_Reminder, reminder);
-        ivDoSMS.setTag(R.string.TAG_ID_ReminderAdapter_Context, context);
+        ivDoSMS.setTag(R.string.TAG_ID_ReminderAdapter_Context, this);
         ivDoSMS.setOnClickListener( AndroidReminderUtils.genOnClickDoVoiceDial(AndroidReminderUtils.CONTACT_TYPE_SMS) );
 
         

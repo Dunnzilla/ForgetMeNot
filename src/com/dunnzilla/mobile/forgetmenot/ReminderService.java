@@ -1,4 +1,4 @@
-package com.dunnzilla.mobile;
+package com.dunnzilla.mobile.forgetmenot;
 
 import java.util.ArrayList;
 import java.util.Timer;
@@ -93,7 +93,7 @@ public class ReminderService extends Service {
 			// TODO use different image for multiple reminders
 			notificationText = "Multiple Reminders"; 
 		    intent = new Intent("android.intent.action.MAIN");
-		    intent.setComponent(ComponentName.unflattenFromString("com.dunnzilla.mobile/com.dunnzilla.mobile.ForgetMeNot"));
+		    intent.setComponent(ComponentName.unflattenFromString("com.dunnzilla.mobile.forgetmenot/com.dunnzilla.mobile.forgetmenot.ForgetMeNot"));
 		    intent.addCategory("android.intent.category.LAUNCHER");
 			break;
 		case AndroidReminderUtils.REMINDER_NOTIFICATION_TYPE_SINGLE:
@@ -101,7 +101,7 @@ public class ReminderService extends Service {
 			long reminderID = ((Long)msgData.get(AndroidReminderUtils.INTENT_EXTRAS_KEY_REMINDER_ID)).longValue();
 			Reminder r = new Reminder(db, reminderID); 
 			// String strReminderID = Long.toString(reminderID); 
-			Uri uri = Uri.parse("reminder://com.dunnzilla.mobile/view?id=" + r.getID());
+			Uri uri = Uri.parse("reminder://com.dunnzilla.mobile.forgetmenot/view?id=" + r.getID());
 			b.putLong(AndroidReminderUtils.INTENT_EXTRAS_KEY_REMINDER_ID, r.getID());  
 			long id = r.getContactID();
 			// Form an array specifying which columns to return. 

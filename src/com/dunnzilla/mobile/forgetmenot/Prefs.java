@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.dunnzilla.mobile;
+package com.dunnzilla.mobile.forgetmenot;
 
 
 import android.os.Bundle;

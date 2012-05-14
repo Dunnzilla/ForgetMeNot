@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-      package="com.dunnzilla.mobile"
-      android:versionName="0.6.0" android:versionCode="36">
+      package="com.dunnzilla.mobile.forgetmenot"
+      android:versionName="0.6.1" android:versionCode="37">
     <uses-sdk android:minSdkVersion="7" />
     
     <!--  To let you pick a contact: -->
@@ -77,7 +77,7 @@
 			<intent-filter>
 				<action android:name="android.intent.action.VIEW" />
 				<category android:name="android.intent.category.DEFAULT" />
-				<data android:scheme="reminder" host="com.dunnzilla.mobile" /> 
+				<data android:scheme="reminder" host="com.dunnzilla.mobile.forgetmenot" /> 
 			</intent-filter>
 		</activity>
 		<!--  ================================================== -->
@@ -88,8 +88,8 @@
 			</intent-filter>
 		</activity>
 		<!--  ================================================== -->
-		<provider android:name="com.dunnzilla.mobile.ReminderProvider"
-          android:authorities="com.example.autos.reminderprovider" 
+		<provider android:name="com.dunnzilla.mobile.forgetmenot.ReminderProvider"
+          android:authorities="com.dunnzilla.mobile.forgetmenot.reminderprovider" 
           />
         <!--  ================================================== -->
 	</application>

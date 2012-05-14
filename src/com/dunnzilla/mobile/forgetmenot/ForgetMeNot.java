@@ -1,4 +1,4 @@
-package com.dunnzilla.mobile;
+package com.dunnzilla.mobile.forgetmenot;
 
 import java.util.ArrayList;
 
@@ -42,7 +42,7 @@ public class ForgetMeNot extends ListActivity {
 	    ActivityManager manager = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
 	    for (RunningServiceInfo s : manager.getRunningServices(Integer.MAX_VALUE)) {
 	    	// TODO SPA-10 Determine service name from manifest or reflection. Don't hardcode.
-	        if ( "com.dunnzilla.mobile.ReminderService".equals(s.service.getClassName())) {
+	        if ( "com.dunnzilla.mobile.forgetmenot.ReminderService".equals(s.service.getClassName())) {
 	        	startReminderService = false;
 	        }
 	    }

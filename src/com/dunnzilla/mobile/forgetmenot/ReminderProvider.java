@@ -1,4 +1,4 @@
-package com.dunnzilla.mobile;
+package com.dunnzilla.mobile.forgetmenot;
 
 import android.content.ContentProvider;
 import android.content.ContentValues;
@@ -8,7 +8,7 @@ import android.net.Uri;
 public class ReminderProvider extends ContentProvider {
 
 	public static final Uri CONTENT_URI = 
-            Uri.parse("content://com.dunnzilla.mobile.reminderprovider");
+            Uri.parse("content://com.dunnzilla.mobile.forgetmenot.reminderprovider");
 	
 	public ReminderProvider() {
 		// TODO Auto-generated constructor stub

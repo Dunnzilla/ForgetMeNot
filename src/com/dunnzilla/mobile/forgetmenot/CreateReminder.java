@@ -1,4 +1,4 @@
-package com.dunnzilla.mobile;
+package com.dunnzilla.mobile.forgetmenot;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -61,7 +61,7 @@ public class CreateReminder extends Activity {
         setContentView( lid );
         
     	db = new DBReminder(this);
-    	reminder = new Reminder();
+    	reminder = new Reminder(getApplicationContext());
 
         View.OnClickListener vocl_pickContact = new View.OnClickListener() {
         	public void onClick(View view) {

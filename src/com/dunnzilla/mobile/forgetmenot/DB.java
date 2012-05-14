@@ -1,4 +1,4 @@
-package com.dunnzilla.mobile;
+package com.dunnzilla.mobile.forgetmenot;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -9,7 +9,7 @@ public class DB {
 	protected SQLiteDatabase	db;
 	private final Context		context;
 	private final DBHelper		dbHelper;
-//	private static final String TAG = "com.dunnzilla.mobile.DB";
+//	private static final String TAG = "com.dunnzilla.mobile.forgetmenot.DB";
 	
 	
 	public DB(Context c) {

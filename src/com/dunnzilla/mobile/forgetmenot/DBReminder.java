@@ -1,4 +1,4 @@
-package com.dunnzilla.mobile;
+package com.dunnzilla.mobile.forgetmenot;
 
 import java.text.SimpleDateFormat;
 
@@ -12,7 +12,7 @@ import android.provider.ContactsContract.PhoneLookup;
 
 public class DBReminder extends DB {
 	
-//	private static final String TAG = "com.dunnzilla.mobile.DBReminder";
+//	private static final String TAG = "com.dunnzilla.mobile.forgetmenot.DBReminder";
 	
 	public DBReminder(Context c) {
 		super(c);

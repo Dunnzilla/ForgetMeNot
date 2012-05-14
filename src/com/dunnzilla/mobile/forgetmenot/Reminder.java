@@ -1,4 +1,4 @@
-package com.dunnzilla.mobile;
+package com.dunnzilla.mobile.forgetmenot;
 
 import java.io.InputStream;
 import java.text.ParseException;
@@ -8,6 +8,8 @@ import java.util.HashMap;
 
 import android.app.Activity;
 import android.content.ContentUris;
+import android.content.Context;
+import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -76,19 +78,39 @@ public class Reminder {
 	}
 	// -----------------------------
 	public void defaults() {
+		defaults(null);
+	}
+	public void defaults(Context context) {
     	contactID = 0;
     	contactIconBitmap = null;
     	contactType = PREF_CONTACT_TYPE_USE_SYSTEM_DEFAULT;
-    	period = 1;
-    	ID = 0;
+
+    	if(context != null) {
+    		Resources res = context.getResources();
+	    	int defaultPeriodFromConfig = Integer.parseInt(res.getString(R.string.default_period));
+	    	period = defaultPeriodFromConfig;
+    	}
+    	else {
+    		period = 7;
+    	}
     	
+    	ID = 0;
 	}
 
-    public Reminder() {
+	private void construct()
+	{
         idMapContactTypeStringsToValues = new HashMap<String,Integer>(3);
         idMapContactTypeStringsToValues.put("default", PREF_CONTACT_TYPE_USE_SYSTEM_DEFAULT);
         idMapContactTypeStringsToValues.put("voice", PREF_CONTACT_TYPE_VOICEDIAL);
         idMapContactTypeStringsToValues.put("sms", PREF_CONTACT_TYPE_SMS);
+	}
+	public Reminder(Context context)
+	{
+		construct();
+    	defaults(context);
+	}
+    public Reminder() {
+    	construct();
     	defaults();
     }
 

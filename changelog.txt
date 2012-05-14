@@ -1,3 +1,23 @@
+Fix package name and Create Reminder period box
+
+Renamed app package from com.dunnzilla.mobile to com.dunnzilla.mobile.forgetmenot
+
+ForgetMeNot v0.6.1 (versionCode 38, DB v3)
+
+*IMPROVEMENTS*
+- When creating a reminder, the Period it shows when you first enter that activity is persisted when you get back from picking a contact.
+
+*FILE DETAILS*
+
+* src/com/dunnzilla/mobile/forgetmenot/CreateReminder.java
+- Creates reminder by passing in app context (so Reminder can get the string resource of default_period)
+
+* src/com/dunnzilla/mobile/forgetmenot/Reminder.java
+- defaults() will use either period of 7 (magic #) or, if context is available, the string default_period
+- Moved reused constructor code into construct()
+
+* Everything else: simple renames.
+--------------------------------------------------------------------------
 Remove cumbersome start/stop date options
 
 ForgetMeNot v0.6.0 (versionCode 37, DB v3)

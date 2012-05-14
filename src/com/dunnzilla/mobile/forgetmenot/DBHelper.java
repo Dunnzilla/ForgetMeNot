@@ -1,4 +1,4 @@
-package com.dunnzilla.mobile;
+package com.dunnzilla.mobile.forgetmenot;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;

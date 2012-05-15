@@ -12,13 +12,14 @@
   		android:entries="@array/pref_notify_delay_options"
 		android:entryValues="@array/pref_notify_delay_values"
 	/>
-      
+     <!-- 
  	<ListPreference
   		android:title="Default Snooze Period"
   		android:summary="When you click Snooze, the default time to move this Reminder forward."
   		android:key="pref_snooze_default"
   		android:entries="@array/pref_snooze_delay_options"
 		android:entryValues="@array/pref_snooze_delay_values"
-	/>      
+	/>    
+	 -->  
 
 </PreferenceScreen>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
       package="com.dunnzilla.mobile.forgetmenot"
-      android:versionName="0.6.3" android:versionCode="39">
+      android:versionName="0.6.4" android:versionCode="40">
     <uses-sdk android:minSdkVersion="7" />
     
     <!--  To let you pick a contact: -->

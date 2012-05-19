@@ -28,6 +28,19 @@ public class AndroidReminderUtils {
 	public static final int REMINDER_NOTIFICATION_TYPE_MULTIPLE = 2;
 
 
+	public static int ParseIntOrSetToDefaultResourceID(Context c, String supposedlyInt, int ResourceIDOfADefaultIntValue)
+	{
+		int i;
+    	try
+    	{
+    		i = Integer.parseInt(supposedlyInt);
+    	}
+    	catch(Exception e)
+    	{
+    		i = Integer.parseInt(c.getResources().getString(ResourceIDOfADefaultIntValue));
+    	}
+    	return i;
+	}
 	public static View.OnClickListener genOnClickDoVoiceDial(final int _ct) {
 		return new View.OnClickListener() {
 			private final int contactType = _ct;

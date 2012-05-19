@@ -140,7 +140,7 @@ public class CreateReminder extends Activity {
     	TextView tvNote = (TextView) findViewById( idMap.get(DBConst.f_NOTE) );
     	
     	String sPeriod = tvPeriod.getText().toString().trim();
-    	int i = Integer.parseInt(sPeriod);
+    	int i = AndroidReminderUtils.ParseIntOrSetToDefaultResourceID(this, sPeriod, R.string.default_period);
   
     	reminder.setPeriod(i);
     	reminder.setNote(tvNote.getText().toString().trim());

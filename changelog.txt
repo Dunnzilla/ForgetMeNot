@@ -1,4 +1,21 @@
 --------------------------------------------------------------------------
+Fix crash on trying to enter floats for period
+
+ForgetMeNot v0.6.5 (versionCode 31, DB v3)
+
+*IMPROVEMENTS*
+- If you try to enter ".5" for the period, the reminder will default to the system default 7 days.
+- Side rant: I don't consider parsing a real as an int worthy of throwing an exception.  Java.  I'm looking at you.
+
+*FILE DETAILS*
+
+* src/com/dunnzilla/mobile/forgetmenot/AndroidReminderUtils.java
+- Add handy ParseIntOrSetToDefaultResourceID() util
+
+* src/com/dunnzilla/mobile/forgetmenot/CreateReminder.java
+- Replace Integer.parseInt() call with a call to ParseIntOrSetToDefaultResourceID()
+
+--------------------------------------------------------------------------
 Fix crash on trying to dial or sms
 
 ForgetMeNot v0.6.3 (versionCode 39, DB v3)
